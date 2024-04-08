@@ -1,0 +1,62 @@
+.product-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Center align the cards */
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: calc(33.33% - 20px);
+    padding: 20px;
+    transition: transform 0.3s ease;
+    display: flex; /* Make the card contents flex */
+    flex-direction: column; /* Arrange contents vertically */
+    align-items: center; /* Center align contents */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    width: 100%; /* Make the image fill the container */
+    height: 200px;
+    object-fit: cover; /* Maintain aspect ratio */
+    border-radius: 10px; /* Match card border radius */
+    margin-bottom: 10px;
+}
+
+.product-details h3 {
+    margin-top: 0;
+    font-size: 1.2rem; /* Increase font size for title */
+}
+
+.product-details p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1.1rem; /* Increase font size for price */
+    color: rebeccapurple; /* Change price color */
+}
+
+button {
+    background-color: rebeccapurple;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make button fill the width */
+}
+
+button:hover {
+    background-color: purple;
+}
