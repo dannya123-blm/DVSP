@@ -6,7 +6,7 @@ require_once "classes/Products.php";
 
 <main class="container">
     <div class="filters">
-        <h2>Filtersss</h2>
+        <h2>Filtersssss</h2>
         <button>Keyboard</button>
         <button>Mouse</button>
         <button>Computers</button>
