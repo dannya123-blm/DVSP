@@ -97,7 +97,8 @@ require '../template/header.php';
 <br>
 </main>
 </body>
+</html>>
+
 <?php
 require '../template/footer.php';
 ?>
-</html>
