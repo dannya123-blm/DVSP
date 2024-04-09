@@ -1,0 +1,113 @@
+/* Basic styling for the container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #3C0295;
+    display: flex; /* Set container to flex layout */
+    justify-content: center; /* Center contents horizontally */
+}
+
+/* Styling for the filters */
+.filters {
+    margin-right: 20px; /* Add margin to separate filters from products */
+}
+
+.filters h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.filters button {
+    margin-bottom: 10px; /* Add margin between filter buttons */
+    padding: 8px 16px;
+    background-color: transparent; /* Removed green background color */
+    color: #3C0295; /* Updated text color to match the container */
+    border: 1px solid #3C0295; /* Added border color */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.filters button:hover {
+    background-color: #3C0295;
+    color: white;
+}
+
+.sort-by {
+    margin-top: 20px; /* Add margin between filters and sort by */
+}
+
+.sort-by label {
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+.sort-by select {
+    padding: 8px;
+    font-size: 1rem;
+}
+
+/* Styling for the product cards */
+.product-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center; /* Center products horizontally */
+    margin-top: 20px; /* Add margin between filters/sort by and products */
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.product-details h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.product-details p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.product-details .price {
+    font-size: 1.2rem;
+    color: #3C0295;
+}
+
+.product-details button {
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #3C0295;
+    border: 1px solid #3C0295;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.product-details button:hover {
+    background-color: #3C0295;
+    color: white;
+}
+
+.no-products {
+    font-size: 1.2rem;
+    color: #777;
+    text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Change layout to column on smaller screens */
+        align-items: center; /* Center contents vertically */
+    }
+
+    .filters {
+        margin-right: 0; /* Remove margin on smaller screens */
+        margin-bottom: 20px; /* Add margin at the bottom */
+    }
+}
