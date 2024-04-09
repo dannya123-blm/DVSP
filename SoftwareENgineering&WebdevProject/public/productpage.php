@@ -24,7 +24,7 @@ require_once '../classes/Products.php';
     </div>
 
     <section class="categories top-categories">
-        <div class="container">
+        <div class="product-container">
             <div class="product-cards">
                 <?php
 
@@ -53,7 +53,7 @@ require_once '../classes/Products.php';
                                 <h3><?php echo $product->getName(); ?></h3>
                                 <p><?php echo $product->getDescription(); ?></p>
                                 <p class="price">$<?php echo $product->getPrice(); ?></p>
-                                <form action="add_to_cart.php" method="post">
+                                <form action="" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
                                     <button type="submit">Add to Cart</button>
                                 </form>
