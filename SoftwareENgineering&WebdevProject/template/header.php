@@ -31,11 +31,11 @@
 
                 // Display appropriate link and text based on login status
                 if ($isLoggedIn) {
-                    echo '<a href="logout.php"><img src="../images/login.png" alt="Account"></a>';
-                    echo '<div class="loginButton"><a href="logout.php">Logout</a></div>';
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Account"></a>';
+                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
                 } else {
-                    echo '<a href="customerlogin.php"><img src="../images/login.png" alt="Account"></a>';
-                    echo '<div class="loginButton"><a href="customerlogin.php">Login</a></div>';
+                    echo '<a href="../public/login.php"><img src="../images/login.png" alt="Account"></a>';
+                    echo '<div class="loginButton"><a href="../public/login.php">Login</a></div>';
                 }
                 ?>
             </div>
