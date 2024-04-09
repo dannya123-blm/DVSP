@@ -25,11 +25,11 @@
 
         <div class="account-basket">
             <div>
-                <a href="customerlogin.php"><img src="images/login.png" alt="Account"></a>
+                <a href="customerlogin.php"><img src="../images/login.png" alt="Account"></a>
                 <div class="loginButton">Account</div>
             </div>
             <div>
-                <a href="cart.php"><img src="images/cart.png" alt="Basket"></a>
+                <a href="cart.php"><img src="../images/cart.png" alt="Basket"></a>
                 <div class="cartBuutton">Cart</div>
             </div>
         </div>
