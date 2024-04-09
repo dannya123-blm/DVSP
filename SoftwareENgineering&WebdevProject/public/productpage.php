@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 include '../template/header.php';
 require_once '../src/dbconnect.php';
 require_once '../classes/Products.php';
