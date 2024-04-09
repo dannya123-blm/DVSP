@@ -70,22 +70,26 @@ require '../template/header.php';
             </div>
         </div>
     </section>
-
+    <!--The Product boxes we want to it to work with the db where when the we post the product and we
+    want it to show it will show there maybe or we will change it into something else like gallery or something or we might keep it like this dont know -->
 <br>
-    <section class="product">
-        <div class="product-display">
+    <br>
+    <h2>Hot Bundles</h2>
+    <p>Check out our Bundles</p>
+    <section class="products">
+        <div class="container">
             <div class="product-list">
-                <div class="product-box">
+                <div class="product">
                     <a href="#">
-                        <img src="../images/pcbannerimage.jpg" alt="Product 1">
+                        <img src="../images/pxsbundle.jpg" alt="Product 1">
                         <h3>Product Name 1</h3>
                         <p>Description...</p>
                         <span class="price">€199.99</span>
                     </a>
                 </div>
-                <div class="product-box2">
+                <div class="product">
                     <a href="#">
-                        <img src="../images/pcbannerimage2.jpg" alt="Product 2">
+                        <img src="../images/pxsbundle.jpg" alt="Product 2">
                         <h3>Product Name 2</h3>
                         <p>Description...</p>
                         <span class="price">€249.99</span>
@@ -94,7 +98,7 @@ require '../template/header.php';
             </div>
         </div>
     </section>
-<br>
+    <br>
 </main>
 </body>
 <?php

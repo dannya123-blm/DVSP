@@ -3,8 +3,9 @@ body {
     margin: 0;
     padding: 0;
     background-color: white;
-    color: #3C0295 ;
+    color: #3C0295;
 }
+
 .banner {
     width: 99vw;
     height: calc(100vw * 1920 / 1197);
@@ -89,70 +90,52 @@ h2 {
     }
 }
 
-.product-box {
-    float: left;
-}
-.product-box2 {
-    float: right;
+.products {
+    padding: 20px;
+    color: #6a0dad; /* Purple text color */
 }
 
-.product-boxes {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 10px;
+.product-list {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap; /* Allow products to wrap to the next line if needed */
+    margin: 0 -15px; /* Adjusted negative margin for spacing */
 }
 
-.product-box,
-.product-box2 {
-    width: 40%;
-    padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(106, 13, 173, 0.2);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.product {
+    flex: 0 0 calc(100% - 30px); /* Each product takes half of the container width minus padding and additional spacing */
+    margin: 225px; /* Increased margin for more space between products */
+    padding: 100px; /* Reduced padding for a smaller frame */
+    border: 2px solid #6a0dad; /* Purple border */
+    border-radius: 8px; /* Rounded product cards */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+    transition: transform 0.3s ease; /* Smooth scale transition */
+    width: 48%; /* Adjusted width to allow for spacing */
+    max-width: 250px; /* Limit maximum width of each product */
 }
 
-.product-box img,
-.product-box2 img {
+.product:hover {
+    transform: scale(1.05); /* Scale up on hover */
+}
+
+.product img {
     width: 100%;
-    height: 500px;
-    object-fit: cover;
-    border-radius: 8px;
+    height:auto;
+    border-radius: 8px; /* Rounded product images */
 }
 
-
-.product-box h3,
-.product-box2 h3 {
-    font-size: 18px;
-    color: #3C0295;
-    margin-bottom: 10px;
+.product h3 {
+    margin-top: 15px; /* Add more space between product name and image */
+    font-size: 1.2em;
 }
 
-.product-box p,
-.product-box2 p {
-    font-size: 14px;
-    color: grey;
-    margin-bottom: 10px;
+.product p {
+    color: #666;
+    margin-bottom: 15px; /* Add space between description and price */
 }
 
-.product-box .price,
-.product-box2 .price {
-    font-size: 16px;
+.product .price {
+    font-size: 1.1em;
     font-weight: bold;
-    color: black;
-    margin-bottom: 15px;
+    color: #333;
 }
 
-.product-box a,
-.product-box2 a {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: white;
-    color: #3C0295;
-    text-decoration: none;
-    border-radius: 5px;
-}
