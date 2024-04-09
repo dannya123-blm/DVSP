@@ -74,9 +74,8 @@ require '../template/header.php';
     want it to show it will show there maybe or we will change it into something else like gallery or something or we might keep it like this dont know -->
 <br>
     <br>
-    <h2>Hot Bundles</h2>
-    <p>Check out our Bundles</p>
     <section class="products">
+        <h2>Hot Bundles</h2>
         <div class="container">
             <div class="product-list">
                 <div class="product">
