@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: whitesmoke;
+    background-color: white;
     color: black ;
 }
 .banner {
@@ -42,6 +42,11 @@ body {
     background-color: #000;
     color: #fff;
 }
+h2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
 .categories {
     display: flex;
     justify-content: flex-start;
@@ -57,7 +62,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 20px;
+    margin-right: 100px;
 }
 
 .category-item img {

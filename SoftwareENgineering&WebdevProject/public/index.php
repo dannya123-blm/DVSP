@@ -30,42 +30,41 @@ require '../template/header.php';
                 <div class="category-item BestDeals">
                     <a href="#">
                         <img src="../images/category1.png" alt="Category 1">
-                        <span>Best Deals!</span>
+
                     </a>
                 </div>
 
                 <div class="category-item Controllers">
                     <a href="#">
                         <img src="../images/category2.png" alt="Category 2">
-                        <span>Controllers</span>
+
                     </a>
                 </div>
 
                 <div class="category-item Keyboard">
                     <a href="#">
                         <img src="../images/category3.png" alt="Category 3">
-                        <span>Keyboard</span>
+
                     </a>
                 </div>
 
                 <div class="category-item Mice">
                     <a href="#">
                         <img src="../images/category4.png" alt="Category 4">
-                        <span>Mice</span>
+
                     </a>
                 </div>
 
                 <div class="category-item Computers">
                     <a href="#">
                         <img src="../images/category5.png" alt="Category 5">
-                        <span>Computers</span>
+
                     </a>
                 </div>
 
                 <div class="category-item Headsets">
                     <a href="#">
                         <img src="../images/category6.png" alt="Category 6">
-                        <span>Headsets</span>
                     </a>
                 </div>
             </div>
@@ -90,3 +89,6 @@ require '../template/header.php';
 </main>
 </body>
 </html>
+<?php
+require '../template/footer.php';
+?>

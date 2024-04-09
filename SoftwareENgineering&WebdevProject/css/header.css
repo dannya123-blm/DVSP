@@ -1,17 +1,14 @@
-/* Reset default margin and padding */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff; /* White background */
-    color: #6a0dad; /* Purple text color */
+    background-color: white;
+    color: black ;
 }
 
-/* Header styles */
 header {
     position: relative; /* Make the header position relative */
     background-color: #fff; /* White header background */
-    color: #6a0dad; /* Purple text color */
+    color: black; /* Purple text color */
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for depth - this the line on product page*/
 }
@@ -27,7 +24,7 @@ header {
 }
 
 .logo img {
-    max-width: 150px; /* Limit logo size */
+    max-width: 150px;
 }
 
 /* Navigation styles */
@@ -49,7 +46,7 @@ nav ul {
 
 nav a {
     text-decoration: none;
-    color: #6a0dad; /* Purple text color */
+    color:black; /* Purple text color */
     font-weight: bold;
     padding: 15px;
     transition: color 0.3s ease; /* Smooth color transition */
@@ -80,7 +77,7 @@ nav a:hover {
 
 .button-name {
     font-size: 12px;
-    color: rebeccapurple; /* Adjust font size as needed */
+    color: black; /* Adjust font size as needed */
 }
 
 .searchBarButton {
@@ -98,8 +95,8 @@ nav a:hover {
 }
 
 .searchBarButton button {
-    background-color: rebeccapurple; /* Yellow search button */
-    color: whitesmoke; /* Purple text color */
+    background-color: black; /* Yellow search button */
+    color: white; /* Purple text color */
     cursor: pointer;
     transition: background-color 0.5s ease; /* Smooth background color transition */
 }
