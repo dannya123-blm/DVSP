@@ -1,13 +1,14 @@
 body {
+    font-family: "Bubblegum Sans", cursive;
     margin: 0;
     padding: 0;
     background-color: white;
-    color: black ;
+    color: #3C0295 ;
 }
 .banner {
-    width: 100vw;
-    height: calc(100vw * 864 / 360);
-    max-height: 400px;
+    width: 99vw;
+    height: calc(100vw * 1920 / 1197);
+    max-height: 700px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -30,16 +31,16 @@ body {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 20px;
-    color: #000;
+    color: #3C0295;
     background-color: #fff;
     text-decoration: none;
-    border: 2px solid #000;
+    border: 5px solid white;
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .productbutton:hover {
     transform: scale(1.1);
-    background-color: #000;
+    background-color:#3C0295;
     color: #fff;
 }
 h2 {
@@ -62,7 +63,13 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 100px;
+    margin-right: 150px;
+    transition: transform 0.2s ease;
+}
+
+.category-item:hover {
+    transform: scale(1.1);
+
 }
 
 .category-item img {

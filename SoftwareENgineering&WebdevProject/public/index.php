@@ -12,7 +12,7 @@ require '../template/header.php';
 
 <body>
 <main>
-    <section class="banner" style="background-image: url('../images/bannertest.jpg');">
+    <section class="banner" style="background-image: url('../images/pcbannerimage2.jpg');">
         <div class="bannercontainer">
             <div class="bannercontent">
                 <h1>Looking for something?</h1>

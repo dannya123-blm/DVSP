@@ -8,7 +8,7 @@
 </head>
 <body>
 <header>
-    <div class="container">
+    <div class="logoscontainer">
         <div class="logo">
             <img src="../images/logo.png" alt="DVS Expansion">
         </div>

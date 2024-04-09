@@ -1,24 +1,25 @@
 body {
+    font-family: "Bubblegum Sans", cursive;
     margin: 0;
     padding: 0;
     background-color: white;
-    color: black ;
+    color: #3C0295;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 header {
-    position: relative; /* Make the header position relative */
-    background-color: #fff; /* White header background */
-    color: black; /* Purple text color */
+    position: relative;
+    background-color: #fff;
+    color: #3C0295;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for depth - this the line on product page*/
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Container styles */
 .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 100%; /* Adjust max-width for responsiveness */
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -28,11 +29,10 @@ header {
 }
 
 nav {
-    background-color: #fff;
     position: absolute;
     bottom: 10px;
-    width: 100%;
-    left: 10px;
+    left: 50%; /* Position the nav element at the horizontal center */
+    transform: translateX(-50%); /* Center the nav element using translate */
 }
 
 nav ul {
@@ -40,19 +40,20 @@ nav ul {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center the list items horizontally */
 }
 
 nav a {
     text-decoration: none;
-    color:black; /* Purple text color */
+    color: #3C0295;
     font-weight: bold;
     padding: 15px;
     transition: color 0.3s ease;
 }
 
+
 nav a:hover {
-    color: black;
+    color: lightskyblue;
 }
 
 .account-basket {
@@ -61,10 +62,12 @@ nav a:hover {
     right: 20px;
 }
 
-.account-basket div {
+.account-basket > div {
     display: inline-block;
     text-align: center;
     margin-top: 3px;
+    margin-right: 20px;
+    transition: transform 0.3s ease;
 }
 
 .account-basket img {
@@ -74,28 +77,36 @@ nav a:hover {
     margin: 0 auto;
 }
 
-.button-name {
-    font-size: 12px;
-    color: black; /* Adjust font size as needed */
+/* Hover effect for button */
+.account-basket > div:hover {
+    transform: scale(1.1);
+}
+
+/* Optional: Style for the button text */
+.loginButton, .cartButton {
+    font-size: 14px;
+    color: black;
 }
 
 .searchBarButton {
     position: absolute;
     top: 120px;
-    left: 600px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 999;
 }
 
 .searchBarButton input[type="text"],
 .searchBarButton button {
+    font-family: "Bubblegum Sans", cursive;
     padding: 10px;
     border: none;
     border-radius: 20px;
 }
 
 .searchBarButton button {
-    background-color: black; /* Yellow search button */
-    color: white; /* Purple text color */
+    background-color: #3C0295;
+    color: white;
     cursor: pointer;
     transition: background-color 0.5s ease;
 }
@@ -104,69 +115,13 @@ nav a:hover {
     background-color: black;
 }
 
-.hero {
-    background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.gamingdebugged.com%2F2021%2F09%26%2Fbuilding-your-purple-gaming-setup%2F&psig=AOvVawZ7q03lwOt7lr-SeojOMfA&ust=170816912000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCPjs0IycxYQDFQAAAAAdAAAAABAE') center/cover no-repeat;
-    width: 100%;
-    height: 500px;
-    position: relative;
-    color: white;
-    padding: 10px;
-}
+/* Media Query for Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+    }
 
-.hero h1 {
-    margin: 0;
-    font-size: 3em;
-    position: absolute;
-    top: 100px;
-    transform: translateY(-50%);
+    .searchBarButton {
+        top: 160px; /* Adjust position for smaller screens */
+    }
 }
-
-.hero p {
-    margin: 0;
-    font-size: 1.2em;
-    position: absolute;
-    top: calc(35% + 0px);
-    transform: translateY(-50%);
-}
-
-.hero .button {
-    color: whitesmoke;
-    padding: 20px 40px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.4s;
-    display: inline-flex;
-    align-items: center;
-    position: absolute;
-    bottom: 200px;
-    left: 120px;
-    background: linear-gradient(to right, purple 10%, rebeccapurple 100%);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    font-size: 15px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-left: 0;
-}
-
-.social ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.social li {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-.social li img {
-    width: 40px;
-    height: auto;
-    transition: transform 0.3s ease;
-}
-
-.social li img:hover {
-    transform: scale(1.1);
-}
-
