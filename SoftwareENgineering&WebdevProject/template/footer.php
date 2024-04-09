@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="#"><img src="facebook-icon.png" alt="Facebook"></a></li>
                 <li><a href="#"><img src="twitter-icon.png" alt="Twitter"></a></li>
-                <li><a href="#"><img src="instagram-icon.png" alt="Instagram"></a></li>
+                <li><a href="#"><img src="../images/instalogo.png" alt="Instagram"></a></li>
             </ul>
         </div>
         <div class="footer-links">
