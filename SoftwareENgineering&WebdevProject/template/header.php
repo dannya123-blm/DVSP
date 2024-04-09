@@ -25,14 +25,26 @@
 
         <div class="account-basket">
             <div>
-                <a href="customerlogin.php"><img src="../images/login.png" alt="Account"></a>
-                <div class="loginButton"></div>
+                <?php
+                // Check if user is logged in (you need to implement this logic)
+                $isLoggedIn = false; // Assuming user is not logged in by default
+
+                // Display appropriate link and text based on login status
+                if ($isLoggedIn) {
+                    echo '<a href="logout.php"><img src="../images/login.png" alt="Account"></a>';
+                    echo '<div class="loginButton"><a href="logout.php">Logout</a></div>';
+                } else {
+                    echo '<a href="customerlogin.php"><img src="../images/login.png" alt="Account"></a>';
+                    echo '<div class="loginButton"><a href="customerlogin.php">Login</a></div>';
+                }
+                ?>
             </div>
             <div>
                 <a href="cart.php"><img src="../images/cart.png" alt="Basket"></a>
-                <div class="cartButton"></div>
+                <div class="cartButton"><a href="cart.php">Cart</a></div>
             </div>
         </div>
+
         <div class="searchBarButton">
             <input type="text" placeholder="Search">
             <button type="button">Search</button>

@@ -82,11 +82,22 @@ nav a:hover {
     transform: scale(1.1);
 }
 
-/* Optional: Style for the button text */
-.loginButton, .cartButton {
+/* Styling for button text */
+.loginButton a,
+.cartButton a {
     font-size: 14px;
-    color: black;
+    color: black !important; /* Ensure black color overrides any other styles */
+    text-decoration: none; /* Remove underline */
+    font-family: "Bubblegum Sans", cursive; /* Apply custom font */
+    transition: color 0.3s ease; /* Smooth color transition on hover */
 }
+
+/* Hover effect for button text */
+.loginButton a:hover,
+.cartButton a:hover {
+    color: purple; /* Change text color on hover */
+}
+
 
 .searchBarButton {
     position: absolute;
