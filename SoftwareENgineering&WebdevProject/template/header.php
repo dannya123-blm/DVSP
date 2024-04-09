@@ -10,13 +10,13 @@
 <header>
     <div class="container">
         <div class="logo">
-            <img src="images/logo.png" alt="DVS Expansion">
+            <img src="../images/logo.png" alt="DVS Expansion">
         </div>
         <nav>
             <ul>
                 <li><a href="../public/index.php">HOME</a></li>
                 <li><a href="../public/productpage.php">PRODUCT</a></li>
-                <li><a href="loginform.php">CONNECTIONS</a></li>
+                <li><a href="#">CONNECTIONS</a></li>
                 <li><a href="#">DEALS</a></li>
                 <li><a href="#">FIND US</a></li>
             </ul>

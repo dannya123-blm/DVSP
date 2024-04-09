@@ -6,8 +6,8 @@ body {
 }
 .banner {
     width: 100vw;
-    height: calc(60vw * 700 / 1900);
-    max-height: 700px;
+    height: calc(100vw * 864 / 360);
+    max-height: 400px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -41,4 +41,38 @@ body {
     transform: scale(1.1);
     background-color: #000;
     color: #fff;
+}
+.categories {
+    display: flex;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.category-list {
+    display: flex;
+    animation: slide-in 2s forwards;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.category-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }
