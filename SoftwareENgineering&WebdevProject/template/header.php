@@ -32,7 +32,7 @@
             </div>
             <div>
                 <a href="cart.php"><img src="images/cart.png" alt="Basket"></a>
-                <div class="cartButton">Cart</div>
+                <div class="cartBuutton">Cart</div>
             </div>
         </div>
         <div class="searchBarButton">
