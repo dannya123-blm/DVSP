@@ -71,3 +71,30 @@ nav a:hover {
 .searchBarButton button:hover {
     background-color: #4a0072;
 }
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav {
+        margin-top: 20px;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav a {
+        padding: 10px;
+    }
+
+    .account-basket {
+        margin-top: 20px;
+    }
+
+    .searchBarButton {
+        margin-top: 20px;
+    }
+}

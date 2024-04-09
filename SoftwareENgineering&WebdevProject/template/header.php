@@ -14,8 +14,8 @@
         </div>
         <nav>
             <ul>
-                <li><a href="index.php">HOME</a></li>
-                <li><a href="product.php">PRODUCT</a></li>
+                <li><a href="../public/index.php">HOME</a></li>
+                <li><a href="../public/productpage.php">PRODUCT</a></li>
                 <li><a href="loginform.php">CONNECTIONS</a></li>
                 <li><a href="#">DEALS</a></li>
                 <li><a href="#">FIND US</a></li>
