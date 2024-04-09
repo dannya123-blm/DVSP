@@ -26,11 +26,11 @@
         <div class="account-basket">
             <div>
                 <a href="customerlogin.php"><img src="../images/login.png" alt="Account"></a>
-                <div class="loginButton">Account</div>
+                <div class="loginButton"></div>
             </div>
             <div>
                 <a href="cart.php"><img src="../images/cart.png" alt="Basket"></a>
-                <div class="cartButton">Cart</div>
+                <div class="cartButton"></div>
             </div>
         </div>
         <div class="searchBarButton">
