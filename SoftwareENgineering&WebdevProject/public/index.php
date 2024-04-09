@@ -1,6 +1,5 @@
 <?php
 require '../template/header.php';
-require '../template/footer.php';
 ?>
 <!--Start Html here i dont think we will need php for now-->
 <html lang="en">
