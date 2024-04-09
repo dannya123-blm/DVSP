@@ -1,7 +1,44 @@
-ody {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+body {
     margin: 0;
     padding: 0;
-    background-color: #fff; /* White background */
-    color: #6a0dad; /* Purple text color */
+    background-color: whitesmoke;
+    color: black ;
+}
+.banner {
+    width: 100vw;
+    height: calc(60vw * 700 / 1900);
+    max-height: 700px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.bannercontainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    color: #fff;
+}
+
+.bannercontent {
+    max-width: 100%;
+}
+
+.productbutton {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    color: #000;
+    background-color: #fff;
+    text-decoration: none;
+    border: 2px solid #000;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.productbutton:hover {
+    transform: scale(1.1);
+    background-color: #000;
+    color: #fff;
 }
