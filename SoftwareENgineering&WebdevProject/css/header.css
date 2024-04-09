@@ -1,22 +1,19 @@
-/* Reset default margin and padding */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff; /* White background */
-    color: #6a0dad; /* Purple text color */
+    background-color: #fff;
+    color: #6a0dad;
 }
 
-/* Header styles */
 header {
-    position: relative; /* Make the header position relative */
-    background-color: #fff; /* White header background */
-    color: #6a0dad; /* Purple text color */
+    position: relative;
+    background-color: #fff;
+    color: #6a0dad;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for depth - this the line on product page*/
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Container styles */
 .container {
     display: flex;
     justify-content: space-between;
@@ -27,15 +24,14 @@ header {
 }
 
 .logo img {
-    max-width: 150px; /* Limit logo size */
+    max-width: 150px;
 }
 
-/* Navigation styles */
 nav {
-    background-color: #fff; /* White background */
-    position: absolute; /* Position the navigation absolutely */
-    bottom: 10px; /* Align it to the bottom of the header */
-    width: 100%; /* Full width */
+    background-color: #fff;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
     left: 10px;
 }
 
@@ -44,19 +40,19 @@ nav ul {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center; /* Center align navigation items */
+    justify-content: center;
 }
 
 nav a {
     text-decoration: none;
-    color: #6a0dad; /* Purple text color */
+    color: #6a0dad;
     font-weight: bold;
     padding: 15px;
-    transition: color 0.3s ease; /* Smooth color transition */
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-    color: black; /* Purple color on hover */
+    color: black;
 }
 
 .account-basket {
@@ -66,76 +62,74 @@ nav a:hover {
 }
 
 .account-basket div {
-    display: inline-block; /* Display the divs side by side */
-    text-align: center; /* Centers the button name */
-    margin-top: 3px; /* Adjust this value as per your preference for the distance */
+    display: inline-block;
+    text-align: center;
+    margin-top: 3px;
 }
 
 .account-basket img {
-    display: block; /* Ensures the image occupies its own line */
+    display: block;
     width: 30px;
     height: auto;
-    margin: 0 auto; /* Centers the image horizontally */
+    margin: 0 auto;
 }
 
 .button-name {
     font-size: 12px;
-    color: rebeccapurple; /* Adjust font size as needed */
+    color: rebeccapurple;
 }
 
 .searchBarButton {
-    position: absolute; /* Position the search bar absolutely */
-    top: 120px; /* Adjust top position as needed */
-    left: 600px; /* Adjust left position as needed */
-    z-index: 999; /* Ensure it appears above other elements */
+    position: absolute;
+    top: 120px;
+    left: 600px;
+    z-index: 999;
 }
 
 .searchBarButton input[type="text"],
 .searchBarButton button {
-    padding: 10px; /* Increase padding for better appearance */
+    padding: 10px;
     border: none;
-    border-radius: 20px; /* Rounded search bar */
+    border-radius: 20px;
 }
 
 .searchBarButton button {
-    background-color: rebeccapurple; /* Yellow search button */
-    color: whitesmoke; /* Purple text color */
+    background-color: rebeccapurple;
+    color: whitesmoke;
     cursor: pointer;
-    transition: background-color 0.5s ease; /* Smooth background color transition */
+    transition: background-color 0.5s ease;
 }
 
 .searchBarButton button:hover {
-    background-color: black; /* Lighter yellow on hover */
+    background-color: black;
 }
 
-/* Main content styles */
 .hero {
-    background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.gamingdebugged.com%2F2021%2F09%26%2Fbuilding-your-purple-gaming-setup%2F&psig=AOvVawZ7q03lwOt7lr-SeojOMfA&ust=170816912000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCPjs0IycxYQDFQAAAAAdAAAAABAE') center/cover no-repeat; /* Set banner as a background image */
-    width: 100%; /* Make the banner fill the width of the container */
-    height: 500px; /* Set the height of the banner */
-    position: relative; /* Allow absolute positioning of child elements */
-    color: white; /* White text color */
-    padding: 10px; /* Add padding to the banner */
+    background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.gamingdebugged.com%2F2021%2F09%26%2Fbuilding-your-purple-gaming-setup%2F&psig=AOvVawZ7q03lwOt7lr-SeojOMfA&ust=170816912000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCPjs0IycxYQDFQAAAAAdAAAAABAE') center/cover no-repeat;
+    width: 100%;
+    height: 500px;
+    position: relative;
+    color: white;
+    padding: 10px;
 }
 
 .hero h1 {
-    margin: 0; /* Remove margins from the heading */
-    font-size: 3em; /* Set the font size of the heading */
-    position: absolute; /* Make the heading absolute positioned */
-    top: 100px; /* Position the heading vertically at the center */
-    transform: translateY(-50%); /* Offset the heading to the top to account for its half height */
+    margin: 0;
+    font-size: 3em;
+    position: absolute;
+    top: 100px;
+    transform: translateY(-50%);
 }
 
 .hero p {
-    margin: 0; /* Remove margins from the paragraph */
-    font-size: 1.2em; /* Set the font size of the paragraph */
-    position: absolute; /* Make the paragraph absolute positioned */
-    top: calc(35% + 0px); /* Position the paragraph below the heading */
-    transform: translateY(-50%); /* Offset the paragraph to the top to account for its half height */
+    margin: 0;
+    font-size: 1.2em;
+    position: absolute;
+    top: calc(35% + 0px);
+    transform: translateY(-50%);
 }
 
 .hero .button {
-    /* Base styles */
     color: whitesmoke;
     padding: 20px 40px;
     border: none;
@@ -144,25 +138,15 @@ nav a:hover {
     transition: background-color 0.4s;
     display: inline-flex;
     align-items: center;
-    position: absolute; /* Make the button absolute positioned */
-    bottom: 200px; /* Position the button at the bottom of the banner */
-    left: 120px; /* Position the button from the left */
-    /* Gradient for cool effect */
+    position: absolute;
+    bottom: 200px;
+    left: 120px;
     background: linear-gradient(to right, purple 10%, rebeccapurple 100%);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     font-size: 15px;
     font-weight: bold;
-    text-transform: uppercase; /* Make text uppercase for impact */
-    margin-left: 0; /* Remove left margin to align text left */
-}
-
-/* Footer styles */
-footer {
-    background-color: rebeccapurple; /* Purple background */
-    color: white; /* White text color */
-    padding: 20px; /* Adjust padding */
-    text-align: center;
-    clear: both; /* Clear float */
+    text-transform: uppercase;
+    margin-left: 0;
 }
 
 .social ul {
@@ -179,16 +163,10 @@ footer {
 .social li img {
     width: 40px;
     height: auto;
-    transition: transform 0.3s ease; /* Smooth scale transition */
+    transition: transform 0.3s ease;
 }
 
 .social li img:hover {
-    transform: scale(1.1); /* Scale up on hover */
+    transform: scale(1.1);
 }
 
-/* Footer links */
-footer a.footer-link {
-    color: white; /* Set text color to white */
-    text-decoration: none; /* Remove underline */
-    margin: 0 10px; /* Add some space between links */
-}
