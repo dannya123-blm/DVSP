@@ -1,18 +1,16 @@
-/* Basic styling for the container */
 .product-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     display: flex;
-    flex-direction: column; /* Ensure filters and products are stacked vertically */
+    flex-direction: column;
 }
 
-/* Styling for the filters */
 .filters {
     margin-right: 20px;
-    display: flex; /* Set filters to flex layout */
-    flex-direction: column; /* Arrange filters in a column */
-    align-self: flex-start; /* Align filters to the start of the container */
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
 }
 
 .filters h2 {
@@ -51,11 +49,10 @@
     font-size: 1rem;
 }
 
-/* Styling for the product cards */
 .product-cards {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribute products evenly in the row */
+    justify-content: flex-start;
     gap: 20px;
 }
 
@@ -64,9 +61,9 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
-    width: calc(33.33% - 10px); /* Three products per row with spacing */
+    width: calc(33.33% - 20px);
     margin-bottom: 20px;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
+    box-sizing: border-box;
 }
 
 .product-details h3 {
@@ -106,10 +103,9 @@
     text-align: center;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .product-container {
-        align-items: center; /* Center contents vertically on smaller screens */
+        align-items: center;
     }
 
     .filters {
@@ -122,6 +118,6 @@
     }
 
     .product-card {
-        width: calc(50% - 10px); /* Two products per row on smaller screens */
+        width: calc(50% - 20px);
     }
 }
