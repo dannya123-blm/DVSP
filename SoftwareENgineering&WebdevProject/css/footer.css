@@ -1,5 +1,5 @@
 footer {
-    background-color:  #3C0295;
+    background-color: #3C0295;
     color: white;
     padding: 20px 0;
     text-align: center;
@@ -13,10 +13,15 @@ footer {
     align-items: center;
 }
 
+.social {
+    flex: 1; /* Take up remaining space */
+}
+
 .social ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    text-align: left; /* Align social icons to the left */
 }
 
 .social li {
@@ -35,9 +40,8 @@ footer {
 }
 
 .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex: 1; /* Take up remaining space */
+    text-align: right; /* Align footer links to the right */
 }
 
 .footer-link {
