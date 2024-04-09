@@ -1,5 +1,4 @@
-<?php
-?>
+<link rel="stylesheet" href="../css/footer.css">
 <footer>
     <div class="social">
         <ul>
