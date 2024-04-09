@@ -1,5 +1,6 @@
 <?php
 require '../template/header.php';
+require '../classes/Products.php';
 ?>
 <!--Start Html here i dont think we will need php for now-->
 <html lang="en">
