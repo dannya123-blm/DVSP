@@ -4,7 +4,7 @@
 // Delivery class
 class Delivery {
     protected $idDelivery;
-    protected $idOrder;
+    protected $idOrders;
     protected $deliveryDate;
     protected $deliveryAddress;
     protected $status;
@@ -18,11 +18,11 @@ class Delivery {
     }
 
     public function getOrderID() {
-        return $this->idOrder;
+        return $this->idOrders;
     }
 
     public function setOrderID($orderID) {
-        $this->idOrder = $orderID;
+        $this->idOrders = $orderID;
     }
 
     public function getDeliveryDate() {
