@@ -15,8 +15,13 @@ header {
     padding: 0 20px;
 }
 
+.logo {
+    width: 150px; /* Set width for logo container */
+}
+
 .logo img {
-    max-width: 150px;
+    max-width: 100%; /* Ensure logo image doesn't exceed container width */
+    height: auto; /* Maintain aspect ratio */
 }
 
 nav {
