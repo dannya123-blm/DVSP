@@ -31,7 +31,7 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
                     echo '<li><a href="../administrator/adminscrud.php">CONNECTIONS</a></li>';
                 }
                 ?>
-                <li><a href="#">DEALS</a></li>
+                <li><a href="#">ContactUs</a></li>
                 <li><a href="#">FIND US</a></li>
             </ul>
         </nav>
