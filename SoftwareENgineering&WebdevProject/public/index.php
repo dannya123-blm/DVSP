@@ -26,49 +26,44 @@ require '../classes/Products.php';
         <div class="container">
             <div class="category-list">
                 <div class="category-item BestDeals">
-                    <a href="#">
+                    <a href="productpage.php?category=">
                         <img src="../images/category1.png" alt="Category 1">
                         <span class="category-name">DEALS</span>
-
                     </a>
                 </div>
 
                 <div class="category-item Controllers">
-                    <a href="#">
+                    <a href="productpage.php?category=Controller">
                         <img src="../images/category2.jpeg" alt="Category 2">
                         <span class="category-name">CONTROLLER</span>
-
                     </a>
                 </div>
 
                 <div class="category-item Keyboard">
-                    <a href="#">
+                    <a href="productpage.php?category=Keyboard">
                         <img src="../images/category3.jpeg" alt="Category 3">
                         <span class="category-name">KEYBOARD</span>
-
                     </a>
                 </div>
 
                 <div class="category-item Mice">
-                    <a href="#">
+                    <a href="productpage.php?category=Mice">
                         <img src="../images/category4.jpeg" alt="Category 4">
-                        <span class="category-name">HEADPHONES</span>
-
+                        <span class="category-name">MOUSES</span>
                     </a>
                 </div>
 
                 <div class="category-item Computers">
-                    <a href="#">
+                    <a href="productpage.php?category=PC">
                         <img src="../images/category5.jpeg" alt="Category 5">
                         <span class="category-name">COMPUTERS</span>
-
                     </a>
                 </div>
 
                 <div class="category-item Headsets">
-                    <a href="#">
+                    <a href="productpage.php?category=Headphone">
                         <img src="../images/category6.jpeg" alt="Category 6">
-                        <span class="category-name">MOUSES</span>
+                        <span class="category-name">HEADPHONES</span>
                     </a>
                 </div>
             </div>
