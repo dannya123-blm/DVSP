@@ -10,6 +10,15 @@ require_once '../classes/Products.php';
 // Initialize Products class with database connection
 $productObj = new Products($pdo);
 
+?>
+
+<html>
+<head>
+    <link rel="stylesheet" href="../css/cart.css">
+</head>
+<body>
+
+<?php
 // Check if the cart session variable is set and not empty
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     // Array to store cart items and their quantities
@@ -40,21 +49,24 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     }
 
     // Display cart items
-    echo '<div id="cart-items">';
+    echo '<div class="product-container">';
     echo '<h2>Cart Items</h2>';
-    echo '<ul>';
+    echo '<ul class="cart-items">';
     foreach ($cartItems as $productId => $item) {
-        echo '<li>' . $item['name'] . ' - Quantity: ' . $item['quantity'] . ' - Total: €' . ($item['price'] * $item['quantity']) . '</li>';
+        echo '<li class="cart-item">';
+        echo '<div class="cart-item-details">';
+        echo '<h3 class="cart-item-name">' . $item['name'] . '</h3>';
+        echo '<p class="cart-item-price">Price: €' . $item['price'] . '</p>';
+        echo '<p class="cart-item-quantity">Quantity: ' . $item['quantity'] . '</p>';
+        echo '<p class="cart-item-total">Total: €' . ($item['price'] * $item['quantity']) . '</p>';
+        echo '</div>';
+        echo '<button class="remove-btn" data-product-id="' . $productId . '">Remove</button>';
+        echo '</li>';
     }
     echo '</ul>';
     // Display subtotal
     echo '<p>Subtotal: €' . $subtotal . '</p>';
     echo '</div>';
-
-    // Display "Clear Basket" button
-    echo '<form action="" method="post">';
-    echo '<button type="submit" name="clear_basket">Clear Basket</button>';
-    echo '</form>';
 
     // Display "Purchase" button
     echo '<button type="button" onclick="purchase()">Purchase</button>';
@@ -62,7 +74,11 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     // If the cart is empty, display a message
     echo '<p>Your cart is empty</p>';
 }
+?>
 
+</body>
+</html>
+
+<?php
 require '../template/footer.php';
-
 ?>
