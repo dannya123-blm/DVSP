@@ -42,23 +42,36 @@ require '../template/header.php';
             require_once '../classes/Products.php';
             $productObj = new Products($pdo);
 
-            // Array to store cart items and subtotal
+            // Associative array to store cart items and their quantities
             $cartItems = [];
-            $subtotal = 0;
 
             // Loop through each product ID in the cart
             foreach ($_SESSION['cart'] as $productId) {
-                // Fetch product details from the database
-                $product = $productObj->getProductById($productId);
-                if ($product) {
-                    // Add product details to the cart items array
-                    $cartItems[] = $product;
-                    $subtotal += $product->getPrice();
-
-                    // Display the product in the cart
-                    echo '<li>' . $product->getName() . ' - €' . $product->getPrice() . '</li>';
+                // If the product is already in the cart, increment its quantity
+                if (isset($cartItems[$productId])) {
+                    $cartItems[$productId]['quantity']++;
+                } else {
+                    // Fetch product details from the database
+                    $product = $productObj->getProductById($productId);
+                    if ($product) {
+                        // Add product details to the cart items array
+                        $cartItems[$productId] = [
+                            'product' => $product,
+                            'quantity' => 1
+                        ];
+                    }
                 }
             }
+
+            // Display cart items and their quantities
+            foreach ($cartItems as $productId => $cartItem) {
+                echo '<li>' . $cartItem['product']->getName() . ' - Quantity: ' . $cartItem['quantity'] . ' - €' . ($cartItem['product']->getPrice() * $cartItem['quantity']) . '</li>';
+            }
+
+            // Calculate subtotal
+            $subtotal = array_reduce($cartItems, function ($carry, $item) {
+                return $carry + ($item['product']->getPrice() * $item['quantity']);
+            }, 0);
 
             // Display subtotal
             echo '<p>Subtotal: €' . $subtotal . '</p>';
