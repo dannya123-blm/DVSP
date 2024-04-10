@@ -2,6 +2,10 @@
 include '../template/header.php';
 require_once '../src/dbconnect.php';
 require_once '../classes/Products.php';
+
+// Initialize Products class with database connection
+$productObj = new Products($pdo);
+
 ?>
 
 <link rel="stylesheet" href="../css/products.css">
@@ -38,22 +42,15 @@ require_once '../classes/Products.php';
                     // Output data of each row
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         // Create a new Product object
-                        $product = new Products();
-                        // Set product properties from database
-                        $product->setProductID($row["idProducts"]);
-                        $product->setName($row["Name"]);
-                        $product->setDescription($row["Description"]);
-                        $product->setPrice($row["Price"]);
-                        $product->setStockQuantity($row["StockQuantity"]);
-                        $product->setCategory($row["Category"]);
+                        $product = $productObj->getProductById($row["idProducts"]);
                         $category = strtolower($product->getCategory());
                         $imageName = "{$category}{$row['idProducts']}.jpg";
                         ?>
                         <div class="product-card">
                             <div class="product-image">
-                            <img src="../images/<?php echo $imageName; ?>" alt="<?php echo $product->getName(); ?>">
+                                <img src="../images/<?php echo $imageName; ?>" alt="<?php echo $product->getName(); ?>">
                             </div>
-                                <div class="product-details">
+                            <div class="product-details">
                                 <h3><?php echo $product->getName(); ?></h3>
                                 <p><?php echo $product->getDescription(); ?></p>
                                 <p class="price">$<?php echo $product->getPrice(); ?></p>
