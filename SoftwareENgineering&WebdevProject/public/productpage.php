@@ -1,16 +1,5 @@
 <?php
-
-// Check if the product is added to the cart
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
-    // Store the product ID in the session
-    $_SESSION['cart'][] = $_POST['product_id'];
-    // Redirect to prevent form resubmission
-    header("Location: cart.php");
-    exit();
-}
-
-global $pdo;
-include '../template/header.php';
+require '../template/header.php';
 require_once '../src/dbconnect.php';
 require_once '../classes/Products.php';
 
@@ -22,16 +11,19 @@ $categoryFilter = isset($_GET['category']) ? $_GET['category'] : '';
 
 // SQL query to fetch products from the database
 $sql = "SELECT * FROM products";
+
 // If a category filter is applied, add a WHERE clause to filter products by category
 if (!empty($categoryFilter)) {
     $sql .= " WHERE Category = :category";
 }
+
 $stmt = $pdo->prepare($sql);
+
 if (!empty($categoryFilter)) {
     $stmt->bindParam(':category', $categoryFilter);
 }
-$stmt->execute();
 
+$stmt->execute();
 ?>
 
 <link rel="stylesheet" href="../css/products.css">
@@ -41,9 +33,10 @@ $stmt->execute();
         <h2>Filters</h2>
         <a href="?category=" class="filter-btn">All</a>
         <a href="?category=Keyboard" class="filter-btn">Keyboard</a>
-        <a href="?category=Mice" class="filter-btn" data-category="Mouse">Mouse</a>
-        <a href="?category=PC" class="filter-btn" data-category="PC">PC</a>
-        <a href="?category=Headphone" class="filter-btn" data-category="Headphones">Headphones</a>
+        <a href="?category=Mice" class="filter-btn">Mice</a>
+        <a href="?category=PC" class="filter-btn">PC</a>
+        <a href="?category=Headphone" class="filter-btn">Headphones</a>
+
 
         <div class="sort-by">
             <label for="sort-by">Sort by:</label>
