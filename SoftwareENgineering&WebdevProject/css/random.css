@@ -1,0 +1,76 @@
+.random-products {
+    padding: 20px;
+    color: #6a0dad;
+}
+
+.random-products .product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.random-products .product-card {
+    flex: 0 0 calc(25% - 30px);
+    margin: 15px;
+    padding: 20px;
+    border: 2px solid #6a0dad;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    max-width: 250px;
+}
+
+.random-products .product-card:hover {
+    transform: scale(1.05);
+}
+
+.random-products .product-card .product-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+}
+
+.random-products .product-card .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.random-products .product-card .product-details {
+    padding: 15px 0;
+}
+
+.random-products .product-card h3 {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+.random-products .product-card p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.random-products .product-card .price {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+.random-products .product-card button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #6a0dad;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.random-products .product-card button:hover {
+    background-color: #4a0072;
+}

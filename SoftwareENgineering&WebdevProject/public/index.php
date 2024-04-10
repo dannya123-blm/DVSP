@@ -1,15 +1,20 @@
 <?php
-global $pdo, $productObj;
 require '../template/header.php';
-require '../classes/Products.php';
+require_once '../src/dbconnect.php';
+require_once '../classes/Products.php';
+
+// Initialize Products class with database connection
+$productObj = new Products($pdo);
 ?>
-<!--Start Html here i dont think we will need php for now-->
+
+<!-- Start HTML -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DVS Expansion HomePage</title>
-<link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/random.css">
     <script src="../js/home.js"></script>
 </head>
 <body>
@@ -22,7 +27,6 @@ require '../classes/Products.php';
         </div>
     </section>
     <h2>Top Categories</h2>
-    <br>
     <section class="categories left-to-right-categories">
         <div class="container">
             <div class="category-list">
@@ -70,9 +74,7 @@ require '../classes/Products.php';
             </div>
         </div>
     </section>
-    <!--The Product boxes we want to it to work with the db where when the we post the product and we
-    want it to show it will show there maybe or we will change it into something else like gallery or something or we might keep it like this dont know -->
-<br>
+    <br>
     <br>
     <section class="random-products">
         <h2>Random Products</h2>
@@ -101,12 +103,7 @@ require '../classes/Products.php';
             <?php } ?>
         </div>
     </section>
-    <br>
 </main>
-
 </body>
 </html>
-
-<?php
-require '../template/footer.php';
-?>
+<?php require '../template/footer.php'; ?>

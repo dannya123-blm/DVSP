@@ -101,5 +101,27 @@ class Products {
             'productId' => $productId
         ]);
     }
-}
 
+    public function getRandomProducts($limit = 5) {
+        $stmt = $this->pdo->prepare("SELECT * FROM Products ORDER BY RAND() LIMIT :limit");
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $products = array();
+        while ($productData = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $product = new Products($this->pdo);
+            $product->idProducts = $productData['idProducts'];
+            $product->Name = $productData['Name'];
+            $product->Description = $productData['Description'];
+            $product->Price = $productData['Price'];
+            $product->StockQuantity = $productData['StockQuantity'];
+            $product->Category = $productData['Category'];
+            $product->idAdmin = $productData['idAdmin'];
+
+            $products[] = $product;
+        }
+
+        return $products;
+    }
+}
+?>
