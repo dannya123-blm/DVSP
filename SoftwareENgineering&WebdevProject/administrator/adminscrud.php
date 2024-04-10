@@ -17,6 +17,31 @@ if(isset($_POST['delete_product'])) {
     $stmt->execute(['productId' => $productId]);
 }
 
+// Check if product addition form is submitted
+if(isset($_POST['add_product'])) {
+    $idAdmin = 1; // Set idAdmin value to 1
+    $idProducts = $_POST['product_id']; // Get product ID from the form
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+    $stockQuantity = $_POST['stock_quantity'];
+    $category = $_POST['category'];
+
+    // Build query to insert product
+    $insertSql = "INSERT INTO Products (idAdmin, idProducts, Name, Description, Price, StockQuantity, Category) VALUES (:idAdmin, :idProducts, :name, :description, :price, :stockQuantity, :category)";
+    // Prepare and execute insert query
+    $stmt = $pdo->prepare($insertSql);
+    $stmt->execute([
+        'idAdmin' => $idAdmin,
+        'idProducts' => $idProducts,
+        'name' => $name,
+        'description' => $description,
+        'price' => $price,
+        'stockQuantity' => $stockQuantity,
+        'category' => $category
+    ]);
+}
+
 // Prepare and execute query to select all products
 $sql = "SELECT * FROM Products";
 $stmt = $pdo->query($sql);
@@ -70,6 +95,9 @@ echo "<br/>";
 <body>
 <h2>Add Product</h2>
 <form action="" method="POST">
+    <label for="product_id">Product ID:</label><br>
+    <input type="text" id="product_id" name="product_id" required><br>
+
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name" required><br>
 
@@ -90,7 +118,7 @@ echo "<br/>";
         <option value="headphone">Headphone</option>
     </select><br><br>
 
-    <input type="submit" value="Submit">
+    <input type="submit" name="add_product" value="Submit">
 </form>
 </body>
 </html>

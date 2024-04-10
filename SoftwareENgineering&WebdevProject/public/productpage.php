@@ -53,7 +53,7 @@ $productObj = new Products($pdo);
                             <div class="product-details">
                                 <h3><?php echo $product->getName(); ?></h3>
                                 <p><?php echo $product->getDescription(); ?></p>
-                                <p class="price">$<?php echo $product->getPrice(); ?></p>
+                                <p class="price">€<?php echo $product->getPrice(); ?></p>
                                 <form action="" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
                                     <button type="submit">Add to Cart</button>
