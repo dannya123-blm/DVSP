@@ -46,10 +46,14 @@ require_once '../classes/Products.php';
                         $product->setPrice($row["Price"]);
                         $product->setStockQuantity($row["StockQuantity"]);
                         $product->setCategory($row["Category"]);
+                        $category = strtolower($product->getCategory());
+                        $imageName = "{$category}{$row['idProducts']}.jpg";
                         ?>
                         <div class="product-card">
-                            <div class="product-image"></div>
-                            <div class="product-details">
+                            <div class="product-image">
+                            <img src="../images/<?php echo $imageName; ?>" alt="<?php echo $product->getName(); ?>">
+                            </div>
+                                <div class="product-details">
                                 <h3><?php echo $product->getName(); ?></h3>
                                 <p><?php echo $product->getDescription(); ?></p>
                                 <p class="price">$<?php echo $product->getPrice(); ?></p>
