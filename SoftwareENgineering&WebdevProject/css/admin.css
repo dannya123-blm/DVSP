@@ -1,0 +1,92 @@
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #3C0295;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #3C0295;
+}
+
+th {
+    background-color: #3C0295;
+    color: #ffffff;
+}
+
+/* Form styling */
+form {
+    margin-bottom: 20px;
+    border-radius: 10px;
+
+}
+
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #000000;
+}
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 25%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+input[type="submit"],
+input[type="button"],
+button {
+    width: 25%;
+    padding: 12px;
+    border: none;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #3C0295;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover,
+input[type="button"]:hover,
+button:hover {
+    background-color: #7a3dbc;
+}
+/* Target the specific class name 'product-form' for styling */
+.product-form input[type="submit"],
+.product-form input[type="button"],
+.product-form button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #3C0295;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Hover effect for the specific class name 'product-form' */
+.product-form input[type="submit"]:hover,
+.product-form input[type="button"]:hover,
+.product-form button:hover {
+    background-color: #7a3dbc;
+}

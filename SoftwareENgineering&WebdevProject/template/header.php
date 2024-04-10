@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// Check if user is logged in
+$isAdminLoggedIn = isset($_SESSION['admin_id']);
+$isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variable for customer login
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +25,13 @@
             <ul>
                 <li><a href="../public/index.php">HOME</a></li>
                 <li><a href="../public/productpage.php">PRODUCT</a></li>
-                <li><a href="#">CONNECTIONS</a></li>
-                <li><a href="#">DEALS</a></li>
+                <?php
+                // Display "CONNECTIONS" link only if user is logged in as admin
+                if ($isAdminLoggedIn) {
+                    echo '<li><a href="../administrator/adminscrud.php">CONNECTIONS</a></li>';
+                }
+                ?>
+                <li><a href="#">CONTACT US</a></li>
                 <li><a href="#">FIND US</a></li>
             </ul>
         </nav>
@@ -26,16 +40,15 @@
         <div class="account-basket">
             <div>
                 <?php
-                // Check if user is logged in (you need to implement this logic)
-                $isLoggedIn = false; // Assuming user is not logged in by default
-
-                // Display appropriate link and text based on login status
-                if ($isLoggedIn) {
-                    echo '<a href="logout.php"><img src="../images/login.png" alt="Account"></a>';
-                    echo '<div class="loginButton"><a href="logout.php">Logout</a></div>';
+                if ($isAdminLoggedIn) {
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
+                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
+                } elseif ($isLoggedIn) {
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
+                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
                 } else {
-                    echo '<a href="customerlogin.php"><img src="../images/login.png" alt="Account"></a>';
-                    echo '<div class="loginButton"><a href="customerlogin.php">Login</a></div>';
+                    echo '<a href="../public/login.php"><img src="../images/login.png" alt="Login"></a>';
+                    echo '<div class="loginButton"><a href="../public/login.php">Login</a></div>';
                 }
                 ?>
             </div>

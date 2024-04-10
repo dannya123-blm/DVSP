@@ -1,0 +1,45 @@
+/* Styles for the login form container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+    background-color: #f5f5f5; /* Light gray background color */
+}
+
+h2 {
+    text-align: center;
+    color: #000000; /* Black text color */
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #000000; /* Black text color */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3C0295; /* Purple button color */
+    color: #ffffff; /* White text color */
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #3C0295; /* Darker purple on hover */
+}
