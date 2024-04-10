@@ -94,7 +94,3 @@ echo "<br/>";
 </form>
 </body>
 </html>
-
-<?php
-include '../template/footer.php';
-?>
