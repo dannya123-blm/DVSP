@@ -1,5 +1,6 @@
 <?php
 // Include header and necessary files
+global $pdo;
 include '../template/header.php';
 require_once '../src/dbconnect.php'; // Assuming this includes database connection
 require_once '../classes/User.php';

@@ -1,4 +1,8 @@
 <?php
+// Start the session
+
+// Include necessary files and configurations
+global $pdo;
 require '../template/header.php';
 require_once '../src/dbconnect.php';
 require_once '../classes/Products.php';
@@ -24,10 +28,19 @@ if (!empty($categoryFilter)) {
 }
 
 $stmt->execute();
+
+// Check if the product is added to the cart
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
+    // Store the product ID in the session
+    $_SESSION['cart'][] = $_POST['product_id'];
+}
+
 ?>
 
 <link rel="stylesheet" href="../css/products.css">
 <script src="../js/filter.js"></script>
+<script src="../js/cart.js"></script>
+
 <main class="container">
     <div class="filters">
         <h2>Filters</h2>
@@ -70,9 +83,10 @@ $stmt->execute();
                                 <h3><?php echo $product->getName(); ?></h3>
                                 <p><?php echo $product->getDescription(); ?></p>
                                 <p class="price">€<?php echo $product->getPrice(); ?></p>
+                                <!-- Modified the form to include a hidden input for product ID -->
                                 <form action="" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
-                                    <button type="submit">Add to Cart</button>
+                                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                                 </form>
                             </div>
                         </div>

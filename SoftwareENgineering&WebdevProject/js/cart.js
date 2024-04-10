@@ -23,4 +23,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Call updateCart function when the page loads
     updateCart();
+
+    // Add event listener to all Add to Cart buttons
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', addToCart);
+    });
+
+    // Function to handle adding product to the cart
+    function addToCart(event) {
+        const productId = event.target.getAttribute('data-product-id');
+
+        // Send an asynchronous request to add the product to the cart
+        fetch('productpage.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                product_id: productId
+            }),
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Product added successfully, redirect to cart page
+                    window.location.href = "cart.php";
+                } else {
+                    // Handle error
+                    console.error('Failed to add product to cart');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding product to cart:', error);
+            });
+    }
 });
