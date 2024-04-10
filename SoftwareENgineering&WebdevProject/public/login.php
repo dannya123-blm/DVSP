@@ -1,33 +1,39 @@
 <?php
-session_start(); // Start the session
-
 include '../template/header.php';
-require_once '../src/dbconnect.php';
-require_once '../classes/User.php';
-require_once '../classes/Customer.php';
-require_once '../classes/admin.php';
+require_once '../src/dbconnect.php'; // Include your database connection file
+require_once '../classes/User.php'; // Assuming this is your User class
+require_once '../classes/Customer.php'; // Assuming this is your Customer class
 
-// Check if the user is already logged in, redirect if necessary
-if (isset($_SESSION['user_id'])) {
-    header("Location: ../public/index.php"); // Redirect to dashboard if already logged in
-    exit;
-}
-
-// Handle form submission
+// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate login credentials and process login
+    // Retrieve username and password from the form
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Example login validation (assuming User class handles user authentication)
-    $user = User::findByUsername($username);
-    if ($user && password_verify($password, $user->getPassword())) {
-        $_SESSION['user_id'] = $user->getId(); // Store user ID in session
-        header("Location: ../public/index.php"); // Redirect after successful login
-        exit;
+    // Validate the credentials against the database
+    $sql = "SELECT * FROM customer WHERE Username = :username";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        // Verify the password
+        if (password_verify($password, $user['Password'])) {
+            // Password is correct, create session and redirect
+            $_SESSION['user_id'] = $user['idCustomer']; // Store user ID in session
+            $_SESSION['username'] = $user['Username'];
+            $_SESSION['email'] = $user['Email'];
+            // Add other relevant session data as needed
+
+            // Redirect to dashboard or any other page after login
+            header("Location: index.php");
+            exit();
+        } else {
+            $loginError = "Invalid username or password.";
+        }
     } else {
-        // Invalid login
-        $loginError = "Invalid username or password. Please try again.";
+        $loginError = "Invalid username or password.";
     }
 }
 ?>

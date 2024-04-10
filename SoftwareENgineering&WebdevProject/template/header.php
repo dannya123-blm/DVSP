@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+// Check if user is logged in
+$isLoggedIn = isset($_SESSION['user_id']);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,15 +34,12 @@
         <div class="account-basket">
             <div>
                 <?php
-                // Check if user is logged in (you need to implement this logic)
-                $isLoggedIn = false; // Assuming user is not logged in by default
-
                 // Display appropriate link and text based on login status
                 if ($isLoggedIn) {
-                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Account"></a>';
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
                     echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
                 } else {
-                    echo '<a href="../public/login.php"><img src="../images/login.png" alt="Account"></a>';
+                    echo '<a href="../public/login.php"><img src="../images/login.png" alt="Login"></a>';
                     echo '<div class="loginButton"><a href="../public/login.php">Login</a></div>';
                 }
                 ?>
