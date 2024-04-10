@@ -1,6 +1,4 @@
 <?php
-
-
 // Product class
 class Products {
     protected $pdo;

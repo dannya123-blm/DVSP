@@ -1,4 +1,5 @@
 <?php
+global $pdo, $productObj;
 require '../template/header.php';
 require '../classes/Products.php';
 ?>
@@ -73,27 +74,31 @@ require '../classes/Products.php';
     want it to show it will show there maybe or we will change it into something else like gallery or something or we might keep it like this dont know -->
 <br>
     <br>
-    <section class="products">
-        <h2>Hot Bundles</h2>
-        <div class="container">
-            <div class="product-list">
-                <div class="product">
-                    <a href="#">
-                        <img src="../images/pxsbundle.jpg" alt="Product 1">
-                        <h3>Product Name 1</h3>
-                        <p>Description...</p>
-                        <span class="price">€199.99</span>
-                    </a>
+    <section class="random-products">
+        <h2>Random Products</h2>
+        <div class="product-container">
+            <?php
+            // Get a random selection of products (limit to 4)
+            $randomProducts = $productObj->getRandomProducts(4);
+
+            foreach ($randomProducts as $product) {
+                $imageName = strtolower($product->getCategory()) . $product->getProductID() . '.jpg';
+                ?>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="../images/<?php echo $imageName; ?>" alt="<?php echo htmlspecialchars($product->getName()); ?>">
+                    </div>
+                    <div class="product-details">
+                        <h3><?php echo htmlspecialchars($product->getName()); ?></h3>
+                        <p><?php echo htmlspecialchars($product->getDescription()); ?></p>
+                        <p class="price">€<?php echo number_format($product->getPrice(), 2); ?></p>
+                        <form action="cart.php" method="post">
+                            <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
+                            <button type="submit">Buy Now</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="product">
-                    <a href="#">
-                        <img src="../images/pxsbundle.jpg" alt="Product 2">
-                        <h3>Product Name 2</h3>
-                        <p>Description...</p>
-                        <span class="price">€249.99</span>
-                    </a>
-                </div>
-            </div>
+            <?php } ?>
         </div>
     </section>
     <br>
