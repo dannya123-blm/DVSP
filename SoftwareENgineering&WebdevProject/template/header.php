@@ -2,10 +2,8 @@
 session_start();
 
 // Check if user is logged in
-$isLoggedIn = isset($_SESSION['user_id']);
-
-// Check if user is an admin
-$isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin';
+$isAdminLoggedIn = isset($_SESSION['admin_id']);
+$isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variable for customer login
 
 ?>
 
@@ -28,9 +26,9 @@ $isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin';
                 <li><a href="../public/index.php">HOME</a></li>
                 <li><a href="../public/productpage.php">PRODUCT</a></li>
                 <?php
-                // Display "CONNECTIONS" link only if user is an admin
-                if ($isAdmin) {
-                    echo '<li><a href="#">CONNECTIONS</a></li>';
+                // Display "CONNECTIONS" link only if user is logged in as admin
+                if ($isAdminLoggedIn) {
+                    echo '<li><a href="../administrator/adminscrud.php">CONNECTIONS</a></li>';
                 }
                 ?>
                 <li><a href="#">DEALS</a></li>
@@ -42,7 +40,10 @@ $isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin';
         <div class="account-basket">
             <div>
                 <?php
-                if ($isLoggedIn) {
+                if ($isAdminLoggedIn) {
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
+                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
+                } elseif ($isLoggedIn) {
                     echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
                     echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
                 } else {

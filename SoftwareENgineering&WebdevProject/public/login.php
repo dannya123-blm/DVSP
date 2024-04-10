@@ -1,8 +1,7 @@
 <?php
+// Include header and database connection
 include '../template/header.php';
-require_once '../src/dbconnect.php'; // Include your database connection file
-require_once '../classes/User.php'; // Assuming this is your User class
-require_once '../classes/Customer.php'; // Assuming this is your Customer class
+require_once '../src/dbconnect.php';
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -20,15 +19,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user) {
         // Verify the password
         if (password_verify($password, $user['Password'])) {
-            // Password is correct, create session and redirect
-            $_SESSION['user_id'] = $user['idCustomer']; // Store user ID in session
-            $_SESSION['username'] = $user['Username'];
-            $_SESSION['email'] = $user['Email'];
-            // Add other relevant session data as needed
+            // Check if the user is an admin
+            if ($user['Role'] == 'admin') {
+                // Admin login
+                $_SESSION['user_id'] = $user['idCustomer'];
+                $_SESSION['username'] = $user['Username'];
+                $_SESSION['email'] = $user['Email'];
+                $_SESSION['role'] = 'admin'; // Set user role to 'admin'
 
-            // Redirect to dashboard or any other page after login
-            header("Location: index.php");
-            exit();
+                // Redirect to admin dashboard or any other admin page
+                header("Location: ../administrator/adminsadminscrud.php");
+                exit();
+            } else {
+                // Regular user login
+                $_SESSION['user_id'] = $user['idCustomer'];
+                $_SESSION['username'] = $user['Username'];
+                $_SESSION['email'] = $user['Email'];
+
+                // Redirect to user dashboard or any other user page
+                header("Location: index.php");
+                exit();
+            }
         } else {
             $loginError = "Invalid username or password.";
         }
@@ -69,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <?php
+// Include footer
 require "../template/footer.php";
 ?>
 </body>
