@@ -1,6 +1,11 @@
 <?php
+// Include necessary files
 include '../template/header.php';
 include "../src/dbconnect.php";
+include "../classes/Products.php"; // Include the Products class file
+
+// Create an instance of the Products class with the database connection parameter
+$productObj = new Products($pdo);
 
 // Check if product deletion form is submitted
 if(isset($_POST['delete_product'])) {
@@ -12,10 +17,8 @@ if(isset($_POST['delete_product'])) {
     $stmt->execute(['productId' => $productId]);
 }
 
-// Build query to select all products
+// Prepare and execute query to select all products
 $sql = "SELECT * FROM Products";
-
-// Prepare and execute query
 $stmt = $pdo->query($sql);
 
 // Check if there are any results
@@ -34,7 +37,16 @@ if ($stmt->rowCount() > 0) {
         echo "<td>" . $row["Price"] . "</td>";
         echo "<td>" . $row["StockQuantity"] . "</td>";
         echo "<td>" . $row["Category"] . "</td>";
-        echo "<td><form method='post'><input type='hidden' name='product_id' value='" . $row["idProducts"] . "'><input type='submit' name='delete_product' value='Delete'></form></td>";
+        echo "<td>
+                <form method='post' style='display: inline;'>
+                    <input type='hidden' name='product_id' value='" . $row["idProducts"] . "'>
+                    <input type='submit' name='delete_product' value='Delete'>
+                </form>
+                <form method='get' action='adminedit.php' style='display: inline;'>
+                    <input type='hidden' name='product_id' value='" . $row["idProducts"] . "'>
+                    <input type='submit' value='Edit'>
+                </form>
+              </td>";
         echo "</tr>";
     }
 
@@ -45,42 +57,43 @@ if ($stmt->rowCount() > 0) {
     echo "No products found!";
 }
 
-echo "<br/>"
+echo "<br/>";
 ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add Product</title>
-    </head>
-    <body>
-    <h2>Add Product</h2>
-    <form action="insert_product.php" method="POST">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/admin.css">
+    <title>Add Product</title>
+</head>
+<body>
+<h2>Add Product</h2>
+<form action="" method="POST">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br>
 
-        <label for="description">Description:</label><br>
-        <textarea id="description" name="description" required></textarea><br>
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" required></textarea><br>
 
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" min="0" step="0.01" required><br>
+    <label for="price">Price:</label><br>
+    <input type="number" id="price" name="price" min="0" step="0.01" required><br>
 
-        <label for="stock_quantity">Stock Quantity:</label><br>
-        <input type="number" id="stock_quantity" name="stock_quantity" min="0" required><br>
+    <label for="stock_quantity">Stock Quantity:</label><br>
+    <input type="number" id="stock_quantity" name="stock_quantity" min="0" required><br>
 
-        <label for="category">Category:</label><br>
-        <select id="category" name="category" required>
-            <option value="mice">Mice</option>
-            <option value="keyboard">Keyboard</option>
-            <option value="pc">PC</option>
-            <option value="headphone">Headphone</option>
-        </select><br><br>
+    <label for="category">Category:</label><br>
+    <select id="category" name="category" required>
+        <option value="mice">Mice</option>
+        <option value="keyboard">Keyboard</option>
+        <option value="pc">PC</option>
+        <option value="headphone">Headphone</option>
+    </select><br><br>
 
-        <input type="submit" value="Submit">
-    </form>
-    </body>
-    </html>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
 
 <?php
 include '../template/footer.php';
