@@ -35,14 +35,14 @@ input[type="submit"] {
     padding: 12px;
     border: none;
     border-radius: 5px;
-    background-color: #5b2c6f;
+    background-color: #3C0295;
     color: #ffffff;
     font-size: 16px;
     cursor: pointer;
 }
 
 input[type="submit"]:hover {
-    background-color: #4b225c;
+    background-color: #3C0295;
 }
 
 p {
@@ -51,7 +51,7 @@ p {
 }
 
 a {
-    color: #007bff;
+    color: #3C0295;
     text-decoration: none;
 }
 
