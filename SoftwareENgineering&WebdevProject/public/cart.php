@@ -1,104 +1,84 @@
 <?php
+// Start the session
+global $pdo;
 
-// Check if the product is added to the cart
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
-    // Store the product ID in the session
-    $_SESSION['cart'][] = $_POST['product_id'];
-}
-
-// Clear the cart if the "Clear Basket" button is pressed
-if (isset($_POST['clear_basket'])) {
-    unset($_SESSION['cart']); // Clear the cart session variable
-}
-
+// Include necessary files and configurations
 require '../template/header.php';
+require_once '../src/dbconnect.php';
+require_once '../classes/Products.php';
+
+// Initialize Products class with database connection
+$productObj = new Products($pdo);
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DVS Expansion HomePage</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <script src="../js/home.js"></script>
+    <link rel="stylesheet" href="../css/cart.css">
 </head>
 <body>
-<main>
-    <section class="categories left-to-right-categories">
-        <!-- Category HTML here -->
-    </section>
-    <br>
-    <br>
-    <!-- Cart Display -->
-    <div id="cart-items">
-        <h2>Cart Items</h2>
-        <?php
-        if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-            // Initialize Products class with database connection
-            global $pdo;
-            require_once '../src/dbconnect.php';
-            require_once '../classes/Products.php';
-            $productObj = new Products($pdo);
 
-            // Associative array to store cart items and their quantities
-            $cartItems = [];
+<?php
+// Check if the cart session variable is set and not empty
+if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    // Array to store cart items and their quantities
+    $cartItems = [];
+    // Total price of all items in the cart
+    $subtotal = 0;
 
-            // Loop through each product ID in the cart
-            foreach ($_SESSION['cart'] as $productId) {
-                // If the product is already in the cart, increment its quantity
-                if (isset($cartItems[$productId])) {
-                    $cartItems[$productId]['quantity']++;
-                } else {
-                    // Fetch product details from the database
-                    $product = $productObj->getProductById($productId);
-                    if ($product) {
-                        // Add product details to the cart items array
-                        $cartItems[$productId] = [
-                            'product' => $product,
-                            'quantity' => 1
-                        ];
-                    }
-                }
+    // Loop through each product ID in the cart
+    foreach ($_SESSION['cart'] as $productId) {
+        // Fetch product details from the database
+        $product = $productObj->getProductById($productId);
+        if ($product) {
+            // Check if the product is already in the cart
+            if (array_key_exists($productId, $cartItems)) {
+                // Increment the quantity if the product is already in the cart
+                $cartItems[$productId]['quantity']++;
+            } else {
+                // Add the product to the cart with quantity 1
+                $cartItems[$productId] = [
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(),
+                    'quantity' => 1
+                ];
             }
-
-            // Display cart items and their quantities
-            foreach ($cartItems as $productId => $cartItem) {
-                echo '<li>' . $cartItem['product']->getName() . ' - Quantity: ' . $cartItem['quantity'] . ' - €' . ($cartItem['product']->getPrice() * $cartItem['quantity']) . '</li>';
-            }
-
-            // Calculate subtotal
-            $subtotal = array_reduce($cartItems, function ($carry, $item) {
-                return $carry + ($item['product']->getPrice() * $item['quantity']);
-            }, 0);
-
-            // Display subtotal
-            echo '<p>Subtotal: €' . $subtotal . '</p>';
-
-            // Display "Clear Basket" button
-            echo '<form action="" method="post">';
-            echo '<button type="submit" name="clear_basket">Clear Basket</button>';
-            echo '</form>';
-
-            // Display "Purchase" button
-            echo '<button type="button" onclick="purchase()">Purchase</button>';
-        } else {
-            echo '<p>Your cart is empty</p>';
+            // Update the subtotal
+            $subtotal += $product->getPrice();
         }
-        ?>
-    </div>
-</main>
-
-<script>
-    function purchase() {
-        // Perform purchase actions, such as redirecting to a checkout page
-        // For demonstration, let's redirect to a checkout.php page
-        window.location.href = "checkout.php";
     }
-</script>
+
+    // Display cart items
+    echo '<div class="product-container">';
+    echo '<h2>Cart Items</h2>';
+    echo '<ul class="cart-items">';
+    foreach ($cartItems as $productId => $item) {
+        echo '<li class="cart-item">';
+        echo '<div class="cart-item-details">';
+        echo '<h3 class="cart-item-name">' . $item['name'] . '</h3>';
+        echo '<p class="cart-item-price">Price: €' . $item['price'] . '</p>';
+        echo '<p class="cart-item-quantity">Quantity: ' . $item['quantity'] . '</p>';
+        echo '<p class="cart-item-total">Total: €' . ($item['price'] * $item['quantity']) . '</p>';
+        echo '</div>';
+        echo '<button class="remove-btn" data-product-id="' . $productId . '">Remove</button>';
+        echo '</li>';
+    }
+    echo '</ul>';
+    // Display subtotal
+    echo '<p>Subtotal: €' . $subtotal . '</p>';
+    echo '</div>';
+
+    // Display "Purchase" button
+    echo '<button type="button" onclick="purchase()">Purchase</button>';
+} else {
+    // If the cart is empty, display a message
+    echo '<p>Your cart is empty</p>';
+}
+?>
 
 </body>
 </html>
+
 <?php
 require '../template/footer.php';
 ?>
