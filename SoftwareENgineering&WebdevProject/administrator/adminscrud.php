@@ -113,10 +113,11 @@ echo "<br/>";
 
     <label for="category">Category:</label><br>
     <select id="category" name="category" required>
-        <option value="mice">Mouse</option>
-        <option value="keyboard">Keyboard</option>
-        <option value="pc">PC</option>
-        <option value="headphone">Headphones</option>
+        <option value="Mice">Mouse</option>
+        <option value="Keyboard">Keyboard</option>
+        <option value="Pc">PC</option>
+        <option value="Headphone">Headphones</option>
+        <option value="Controllers">Controllers</option>
     </select><br><br>
 
     <input type="submit" name="add_product" value="Submit">

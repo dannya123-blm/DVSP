@@ -66,10 +66,11 @@ if(isset($_POST['update_product'])) {
 
     <label for="category">Category:</label><br>
     <select id="category" name="category" required>
-        <option value="mice" <?php if($product->getCategory() == 'mice') echo 'selected'; ?>>Mouse</option>
-        <option value="keyboard" <?php if($product->getCategory() == 'keyboard') echo 'selected'; ?>>Keyboard</option>
-        <option value="pc" <?php if($product->getCategory() == 'pc') echo 'selected'; ?>>PC</option>
-        <option value="headphone" <?php if($product->getCategory() == 'headphone') echo 'selected'; ?>>Headphones</option>
+        <option value="Mice" <?php if($product->getCategory() == 'Mice') echo 'selected'; ?>>Mouse</option>
+        <option value="Keyboard" <?php if($product->getCategory() == 'Keyboard') echo 'selected'; ?>>Keyboard</option>
+        <option value="Pc" <?php if($product->getCategory() == 'Pc') echo 'selected'; ?>>PC</option>
+        <option value="Headphone" <?php if($product->getCategory() == 'Headphone') echo 'selected'; ?>>Headphones</option>
+        <option value="Controllers" <?php if($product->getCategory() == 'Controllers') echo 'selected'; ?>>Controllers</option>
     </select><br><br>
 
     <input type="submit" name="update_product" value="Update">
