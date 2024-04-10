@@ -4,6 +4,9 @@ session_start();
 // Check if user is logged in
 $isLoggedIn = isset($_SESSION['user_id']);
 
+// Check if user is an admin
+$isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin';
+
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +27,12 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <ul>
                 <li><a href="../public/index.php">HOME</a></li>
                 <li><a href="../public/productpage.php">PRODUCT</a></li>
-                <li><a href="#">CONNECTIONS</a></li>
+                <?php
+                // Display "CONNECTIONS" link only if user is an admin
+                if ($isAdmin) {
+                    echo '<li><a href="#">CONNECTIONS</a></li>';
+                }
+                ?>
                 <li><a href="#">DEALS</a></li>
                 <li><a href="#">FIND US</a></li>
             </ul>
@@ -34,7 +42,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <div class="account-basket">
             <div>
                 <?php
-                // Display appropriate link and text based on login status
                 if ($isLoggedIn) {
                     echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
                     echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
