@@ -96,7 +96,7 @@ echo "<br/>";
 <h2>Add Product</h2>
 <form action="" method="POST">
     <label for="product_id">Product ID:</label><br>
-    <input type="text" id="product_id" name="product_id" required><br>
+    <input type="number" id="product_id" name="product_id" required><br>
 
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name" required><br>
