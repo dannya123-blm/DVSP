@@ -1,5 +1,6 @@
 <?php
 // Include necessary files
+global $pdo;
 include '../template/header.php';
 include "../src/dbconnect.php";
 include "../classes/Products.php"; // Include the Products class file
@@ -112,10 +113,10 @@ echo "<br/>";
 
     <label for="category">Category:</label><br>
     <select id="category" name="category" required>
-        <option value="mice">Mice</option>
+        <option value="mice">Mouse</option>
         <option value="keyboard">Keyboard</option>
         <option value="pc">PC</option>
-        <option value="headphone">Headphone</option>
+        <option value="headphone">Headphones</option>
     </select><br><br>
 
     <input type="submit" name="add_product" value="Submit">

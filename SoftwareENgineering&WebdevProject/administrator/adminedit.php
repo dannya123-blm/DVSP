@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 include '../template/header.php';
 include "../src/dbconnect.php";
 include "../classes/Products.php"; // Include the Product class file
@@ -65,10 +66,10 @@ if(isset($_POST['update_product'])) {
 
     <label for="category">Category:</label><br>
     <select id="category" name="category" required>
-        <option value="mice" <?php if($product->getCategory() == 'mice') echo 'selected'; ?>>Mice</option>
+        <option value="mice" <?php if($product->getCategory() == 'mice') echo 'selected'; ?>>Mouse</option>
         <option value="keyboard" <?php if($product->getCategory() == 'keyboard') echo 'selected'; ?>>Keyboard</option>
         <option value="pc" <?php if($product->getCategory() == 'pc') echo 'selected'; ?>>PC</option>
-        <option value="headphone" <?php if($product->getCategory() == 'headphone') echo 'selected'; ?>>Headphone</option>
+        <option value="headphone" <?php if($product->getCategory() == 'headphone') echo 'selected'; ?>>Headphones</option>
     </select><br><br>
 
     <input type="submit" name="update_product" value="Update">

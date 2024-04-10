@@ -13,4 +13,4 @@ try {
     echo "Connection failed: " . $e->getMessage();
     // You can log this error for further analysis if needed
 }
->
+?>

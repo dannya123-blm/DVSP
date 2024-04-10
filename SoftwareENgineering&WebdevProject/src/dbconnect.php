@@ -1,4 +1,5 @@
 <?php
+global $dsn, $username, $password, $options;
 require_once 'config.php';
 try {
     $pdo = new PDO($dsn, $username, $password, $options);
