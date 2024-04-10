@@ -1,5 +1,4 @@
 <?php
-session_start(); // Start session to access session variables
 
 // Check if the product is added to the cart
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
