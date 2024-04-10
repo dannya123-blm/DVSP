@@ -1,24 +1,40 @@
 <?php
-// Start the session
 global $pdo;
-
-// Include necessary files and configurations
 require '../template/header.php';
-require_once '../src/dbconnect.php';
-require_once '../classes/Products.php';
+include '../src/dbconnect.php';
+require_once '../classes/Products.php'; // Include the Products class file
 
 // Initialize Products class with database connection
-$productObj = new Products($pdo);
-
+try {
+    $productObj = new Products($pdo); // Assuming $pdo is your PDO instance
+} catch (PDOException $e) {
+    // Handle any potential PDO connection errors
+    echo "Database connection failed: " . $e->getMessage();
+    exit(); // Terminate script execution
+}
 ?>
-
 <html>
 <head>
     <link rel="stylesheet" href="../css/cart.css">
+
 </head>
 <body>
-
 <?php
+// Function to remove a product from the cart
+function removeFromCart($productId) {
+    // Check if the product ID exists in the cart session
+    if (isset($_SESSION['cart']) && in_array($productId, $_SESSION['cart'])) {
+        // Find the index of the product in the cart session
+        $index = array_search($productId, $_SESSION['cart']);
+        // Remove the product from the cart session
+        unset($_SESSION['cart'][$index]);
+        // Reindex the cart session array
+        $_SESSION['cart'] = array_values($_SESSION['cart']);
+        // Optionally, you can update other cart-related variables or data
+        // For example, decrement the quantity of the product in the cart, update subtotal, etc.
+    }
+}
+
 // Check if the cart session variable is set and not empty
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     // Array to store cart items and their quantities
@@ -60,25 +76,34 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         echo '<p class="cart-item-quantity">Quantity: ' . $item['quantity'] . '</p>';
         echo '<p class="cart-item-total">Total: €' . ($item['price'] * $item['quantity']) . '</p>';
         echo '</div>';
-        echo '<button class="remove-btn" data-product-id="' . $productId . '">Remove</button>';
+        // Add form with hidden input field for product ID to submit
+        echo '<form method="post">';
+        echo '<input type="hidden" name="remove_product_id" value="' . $productId . '">';
+        echo '<button type="submit" name="remove_from_cart" class="remove-btn">Remove</button>';
+        echo '</form>';
         echo '</li>';
     }
     echo '</ul>';
-    // Display subtotal
-    echo '<p>Subtotal: €' . $subtotal . '</p>';
     echo '</div>';
-
-    // Display "Purchase" button
-    echo '<button type="button" class="purchase-btn animated" onclick="purchase()">Purchase</button>';
 } else {
-    // If the cart is empty, display a message
-    echo '<p>Your cart is empty</p>';
+    // Display message indicating that the cart is empty
+    echo '<div class="empty-cart-message">';
+    echo '<p>Your cart is currently empty.</p>';
+    echo '</div>';
+}
+
+// Check if the "Remove" button is clicked
+if (isset($_POST['remove_from_cart']) && isset($_POST['remove_product_id'])) {
+    // Call the removeFromCart function to remove the product from the cart
+    removeFromCart($_POST['remove_product_id']);
+    // Optionally, you can redirect the user to the cart page or refresh the current page
+    // header('Location: cart.php');
+    // exit;
 }
 ?>
-
-</body>
-</html>
 
 <?php
 require '../template/footer.php';
 ?>
+</body>
+</html>
