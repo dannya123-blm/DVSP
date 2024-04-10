@@ -1,7 +1,10 @@
 <?php
+session_start();
+
 // Check if user is logged in
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
 $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variable for customer login
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +40,10 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
         <div class="account-basket">
             <div>
                 <?php
-                if ($isAdminLoggedIn || $isLoggedIn) {
+                if ($isAdminLoggedIn) {
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
+                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
+                } elseif ($isLoggedIn) {
                     echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
                     echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
                 } else {

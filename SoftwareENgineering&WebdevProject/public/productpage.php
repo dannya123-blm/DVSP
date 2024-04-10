@@ -1,5 +1,4 @@
 <?php
-session_start(); // Start session to access session variables
 
 // Check if the product is added to the cart
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
@@ -42,9 +41,9 @@ $stmt->execute();
         <h2>Filters</h2>
         <a href="?category=" class="filter-btn">All</a>
         <a href="?category=Keyboard" class="filter-btn">Keyboard</a>
-        <a href="?category=Mouse" class="filter-btn" data-category="Mouse">Mouse</a>
+        <a href="?category=Mice" class="filter-btn" data-category="Mouse">Mouse</a>
         <a href="?category=PC" class="filter-btn" data-category="PC">PC</a>
-        <a href="?category=Headphones" class="filter-btn" data-category="Headphones">Headphones</a>
+        <a href="?category=Headphone" class="filter-btn" data-category="Headphones">Headphones</a>
 
         <div class="sort-by">
             <label for="sort-by">Sort by:</label>
