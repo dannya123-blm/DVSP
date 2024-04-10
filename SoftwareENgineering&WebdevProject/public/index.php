@@ -53,7 +53,7 @@ $productObj = new Products($pdo);
 
                 <div class="category-item Mice">
                     <a href="productpage.php?category=Mice">
-                        <img src="../images/category4.jpeg" alt="Category 4">
+                        <img src="../images/category6.jpeg" alt="Category 4">
                         <span class="category-name">MOUSES</span>
                     </a>
                 </div>
@@ -67,7 +67,7 @@ $productObj = new Products($pdo);
 
                 <div class="category-item Headsets">
                     <a href="productpage.php?category=Headphone">
-                        <img src="../images/category6.jpeg" alt="Category 6">
+                        <img src="../images/category4.jpeg" alt="Category 6">
                         <span class="category-name">HEADPHONES</span>
                     </a>
                 </div>
