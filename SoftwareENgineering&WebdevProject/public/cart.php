@@ -69,7 +69,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     echo '</div>';
 
     // Display "Purchase" button
-    echo '<button type="button" onclick="purchase()">Purchase</button>';
+    echo '<button type="button" class="purchase-btn animated" onclick="purchase()">Purchase</button>';
 } else {
     // If the cart is empty, display a message
     echo '<p>Your cart is empty</p>';
