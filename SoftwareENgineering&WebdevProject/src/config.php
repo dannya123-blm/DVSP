@@ -5,7 +5,7 @@
  */
 $host = "localhost";
 $username = "root";
-$password = 'root';
+$password = '';
 $dbname = "dvsdb";
 $dsn = "mysql:host=$host;dbname=$dbname";
 $options = array(
