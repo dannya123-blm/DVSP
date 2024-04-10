@@ -38,11 +38,11 @@ if ($stmt->rowCount() > 0) {
         echo "<td>" . $row["StockQuantity"] . "</td>";
         echo "<td>" . $row["Category"] . "</td>";
         echo "<td>
-                <form method='post' style='display: inline;'>
+                <form class='product-form' method='post' style='display: inline;'>
                     <input type='hidden' name='product_id' value='" . $row["idProducts"] . "'>
                     <input type='submit' name='delete_product' value='Delete'>
                 </form>
-                <form method='get' action='adminedit.php' style='display: inline;'>
+                <form class='product-form' method='get' action='adminedit.php' style='display: inline;'>
                     <input type='hidden' name='product_id' value='" . $row["idProducts"] . "'>
                     <input type='submit' value='Edit'>
                 </form>
