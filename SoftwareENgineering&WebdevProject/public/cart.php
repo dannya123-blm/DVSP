@@ -21,7 +21,7 @@ require '../template/header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DVS Expansion HomePage</title>
     <link rel="stylesheet" href="../css/style.css">
-    <script src="../js/home.js"></script>
+    <script src="../js/cart.js"></script>
 </head>
 <body>
 <main>
@@ -41,36 +41,23 @@ require '../template/header.php';
             require_once '../classes/Products.php';
             $productObj = new Products($pdo);
 
-            // Associative array to store cart items and their quantities
+            // Array to store cart items and subtotal
             $cartItems = [];
+            $subtotal = 0;
 
             // Loop through each product ID in the cart
             foreach ($_SESSION['cart'] as $productId) {
-                // If the product is already in the cart, increment its quantity
-                if (isset($cartItems[$productId])) {
-                    $cartItems[$productId]['quantity']++;
-                } else {
-                    // Fetch product details from the database
-                    $product = $productObj->getProductById($productId);
-                    if ($product) {
-                        // Add product details to the cart items array
-                        $cartItems[$productId] = [
-                            'product' => $product,
-                            'quantity' => 1
-                        ];
-                    }
+                // Fetch product details from the database
+                $product = $productObj->getProductById($productId);
+                if ($product) {
+                    // Add product details to the cart items array
+                    $cartItems[] = $product;
+                    $subtotal += $product->getPrice();
+
+                    // Display the product in the cart
+                    echo '<li>' . $product->getName() . ' - €' . $product->getPrice() . '</li>';
                 }
             }
-
-            // Display cart items and their quantities
-            foreach ($cartItems as $productId => $cartItem) {
-                echo '<li>' . $cartItem['product']->getName() . ' - Quantity: ' . $cartItem['quantity'] . ' - €' . ($cartItem['product']->getPrice() * $cartItem['quantity']) . '</li>';
-            }
-
-            // Calculate subtotal
-            $subtotal = array_reduce($cartItems, function ($carry, $item) {
-                return $carry + ($item['product']->getPrice() * $item['quantity']);
-            }, 0);
 
             // Display subtotal
             echo '<p>Subtotal: €' . $subtotal . '</p>';

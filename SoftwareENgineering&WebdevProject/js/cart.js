@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to fetch cart items and calculate subtotal
     function updateCart() {
         // Fetch cart items from session
-        fetch("get_cart_items.php")
+        fetch("productpage.php")
             .then(response => response.json())
             .then(data => {
                 // Clear previous cart items
