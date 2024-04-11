@@ -14,7 +14,7 @@ $address = $customer->getAddress();
 
 ?>
 
-<h2>Find Us</h2>
+<h1>Find Us</h1>
 <link rel="stylesheet" href="../css/findus.css">
 <div class="map-container">
     <div class="map-frame">
@@ -22,13 +22,17 @@ $address = $customer->getAddress();
     </div>
     <div class="map-info">
         <p>Location: <?php echo $address; ?></p>
-        <p>Number: +123456789</p>
-        <p>Socials:
-            <a href="https://instagram.com">Instagram</a>,
-            <a href="https://facebook.com">Facebook</a>,
-            <a href="https://twitter.com">Twitter</a>,
-            <a href="https://linkedin.com">LinkedIn</a>
-        </p>
+        <p>Number: +0858096251</p>
+
+        <h2>Socials:</h2>
+        <ul>
+            <li><a href="https://www.instagram.com/dvsexpansion/">Instagram</a></li>
+            <li><a href="https://facebook.com">Facebook</a></li>
+            <li><a href="https://twitter.com">Twitter</a></li>
+            <li><a href="https://www.linkedin.com/in/daniel-aigbe-184057253/">Daniel Aigbe: LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/adefolajuwon-adeniran-9918b7258/">Adefolajuwon Adeniran: LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/salem-elatrash/">Salem Elatrash: LinkedIn</a></li>
+        </ul>
     </div>
 </div>
 
