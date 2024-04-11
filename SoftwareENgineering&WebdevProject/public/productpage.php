@@ -1,5 +1,4 @@
 <?php
-// Start the session
 
 // Include necessary files and configurations
 global $pdo;
@@ -66,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
         <a href="?category=Mice" class="filter-btn">Mice</a>
         <a href="?category=PC" class="filter-btn">PC</a>
         <a href="?category=Headphone" class="filter-btn">Headphones</a>
-        <a href="?category=Controller" class="filter-btn">Controllers</a>
+        <a href="?category=Controllers" class="filter-btn">Controllers</a>
 
 
         <div class="sort-by">
