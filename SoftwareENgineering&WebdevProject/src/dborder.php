@@ -1,18 +1,20 @@
 <?php
-function getConnection() {
-    $host = 'localhost';
-    $dbname = 'dvsdb';
-    $username = 'root';
-    $password = 'Yxng$alem951';
+include '../src/dbconnect.php';
+include '../src/config.php';
 
-    // Establish PDO connection
-    try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Enable error reporting
-        return $pdo;
-    } catch (PDOException $e) {
-        // Handle connection error
-        die("Connection failed: " . $e->getMessage());
-    }
+
+function getConnection() {
+    $host = 'localhost';  // Database host (e.g., localhost)
+    $dbname = 'dvsdb';  // Database name
+    $username = 'root';  // Database username
+    $password = 'Yxng$alem951';  // Database password
+
+    // Establish a PDO connection
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+
+    // Set PDO attributes (optional)
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    return $pdo;
 }
 ?>

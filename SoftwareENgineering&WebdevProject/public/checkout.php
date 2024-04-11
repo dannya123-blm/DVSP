@@ -1,45 +1,17 @@
 <?php
-// Include necessary files and configurations
+// Include necessary files
 include '../template/header.php';
 include '../src/dborder.php';
 include '../classes/Order.php';
 include '../classes/Products.php';
 
-// Check if the checkout form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['checkout'])) {
-    // Get order details from the session/cart
-    $idCustomer = $_SESSION['user_id']; // Assuming you have a way to retrieve the customer ID
-    $idAdmin = 1; // Assuming admin ID (you may adjust this accordingly)
-    $orderDate = date('Y-m-d H:i:s'); // Current date and time
-    $totalAmount = calculateTotalAmount(); // Function to calculate total amount from cart
-
-    // Create a new Order object with required arguments
-    $order = new Order($idCustomer, $idAdmin, $orderDate, $totalAmount);
-
-    // Save order to the database
-    $pdo = getConnection(); // Assuming getConnection() gets the PDO connection
-    $orderSaved = $order->saveOrderToDatabase($pdo);
-
-    if ($orderSaved) {
-        // Order saved successfully
-        unset($_SESSION['cart']); // Clear the cart after placing the order
-        echo '<div class="success-message">Order placed successfully!</div>';
-    } else {
-        // Error saving order
-        echo '<div class="error-message">Failed to place order. Please try again.</div>';
-    }
-}
-
-// Function to calculate total amount from cart
-function calculateTotalAmount() {
+// Function to calculate total amount based on cart contents
+function calculateTotalAmount($pdo) {
     $totalAmount = 0;
 
     if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-        // Initialize Products class with database connection
-        $pdo = getConnection(); // Assuming getConnection() gets the PDO connection
         $productObj = new Products($pdo);
 
-        // Calculate total amount based on cart items
         foreach ($_SESSION['cart'] as $productId) {
             $product = $productObj->getProductById($productId);
             if ($product) {
@@ -49,6 +21,36 @@ function calculateTotalAmount() {
     }
 
     return $totalAmount;
+}
+
+// Main processing when the checkout form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['checkout'])) {
+    $idCustomer = $_SESSION['user_id'];
+    $idAdmin = 1; // Example admin ID
+    $orderDate = date('Y-m-d H:i:s');
+    $pdo = getConnection(); // Get database connection
+
+    // Calculate total amount
+    $totalAmount = calculateTotalAmount($pdo);
+
+    $idPayment = 1; // Example payment ID
+
+    $order = new Order($idCustomer, $idAdmin, $orderDate, $totalAmount, $idPayment);
+
+    try {
+        $orderSaved = $order->saveOrderToDatabase($pdo);
+
+        if ($orderSaved) {
+            $orderId = $pdo->lastInsertId(); // Get auto-generated order ID
+            unset($_SESSION['cart']); // Clear the cart after placing the order
+            echo '<div class="success-message">Order placed successfully!</div>';
+            echo '<p>Order ID: ' . $orderId . '</p>';
+        } else {
+            echo '<div class="error-message">Failed to place order. Please try again.</div>';
+        }
+    } catch (PDOException $e) {
+        echo '<div class="error-message">Error saving order: ' . $e->getMessage() . '</div>';
+    }
 }
 ?>
 
@@ -61,8 +63,7 @@ function calculateTotalAmount() {
             <h3>Order Summary</h3>
             <ul>
                 <?php
-                // Display order summary with product details
-                $pdo = getConnection(); // Assuming getConnection() gets the PDO connection
+                $pdo = getConnection(); // Get database connection
                 $productObj = new Products($pdo);
 
                 foreach ($_SESSION['cart'] as $productId) {
@@ -73,8 +74,8 @@ function calculateTotalAmount() {
                 }
                 ?>
             </ul>
-            <p>Total Amount: €<?php echo calculateTotalAmount(); ?></p>
-            <form method="post">
+            <p>Total Amount: €<?php echo calculateTotalAmount($pdo); ?></p>
+            <form method="post" id="checkoutForm" onsubmit="submitCheckout(event)">
                 <button type="submit" name="checkout" class="checkout-btn">Place Order</button>
             </form>
         </div>
@@ -83,7 +84,32 @@ function calculateTotalAmount() {
     <?php endif; ?>
 </main>
 
+<script>
+    function submitCheckout(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Create AJAX request
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '../src/process_order.php', true); // Adjust URL to your processing script
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                // Success response received
+                var response = xhr.responseText;
+
+                // Display the response (order ID)
+                document.getElementById('checkoutResponse').innerHTML = response;
+            } else {
+                // Error handling
+                console.error('Request failed with status:', xhr.status);
+            }
+        };
+
+        // Send the form data
+        xhr.send(new FormData(event.target));
+    }
+</script>
+
 <?php
-// Include footer at the end
-require_once '../template/footer.php';
+include '../template/footer.php';
 ?>
