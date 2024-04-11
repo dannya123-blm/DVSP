@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is logged in
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
-$isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variable for customer login
+$isLoggedIn = isset($_SESSION['user_id']);
 
 ?>
 

@@ -1,5 +1,4 @@
 <?php
-
 include '../src/dbconnect.php'; // Include your database connection file
 include '../template/header.php';
 
@@ -17,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->fetch();
 
     if ($result) {
-        // Credentials are correct, store admin_id in session
+        // Credentials are correct, start the session and store admin_id
+        session_start();
         $_SESSION['admin_id'] = $admin_id;
         $_SESSION['user_role'] = 'admin'; // Set user role as admin
         header("Location: ../administrator/adminscrud.php"); // Redirect to admin page

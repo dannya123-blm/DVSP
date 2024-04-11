@@ -1,36 +1,40 @@
 <?php
-// Include necessary files
-global $pdo;
-include '../template/header.php';
+// Start the session
+session_start();
+
+// Check if the user is not logged in or not an admin
+if (!isset($_SESSION['admin_id']) || $_SESSION['user_role'] !== 'admin') {
+    // Redirect the user to the login page
+    header("Location: adminlogin.php");
+    exit(); // Stop further execution of the script
+}
+
+// Continue with the rest of your code
 include "../src/dbconnect.php";
-include "../classes/Products.php"; // Include the Products class file
 
-// Create an instance of the Products class with the database connection parameter
-$productObj = new Products($pdo);
-
-// Check if product deletion form is submitted
+// Handle product deletion
 if(isset($_POST['delete_product'])) {
+    // Sanitize input
     $productId = $_POST['product_id'];
-    // Build query to delete product
+    // Delete product query
     $deleteSql = "DELETE FROM Products WHERE idProducts = :productId";
-    // Prepare and execute delete query
     $stmt = $pdo->prepare($deleteSql);
     $stmt->execute(['productId' => $productId]);
 }
 
-// Check if product addition form is submitted
+// Handle product addition
 if(isset($_POST['add_product'])) {
+    // Sanitize inputs
     $idAdmin = 1; // Set idAdmin value to 1
-    $idProducts = $_POST['product_id']; // Get product ID from the form
+    $idProducts = $_POST['product_id'];
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
     $stockQuantity = $_POST['stock_quantity'];
     $category = $_POST['category'];
 
-    // Build query to insert product
+    // Insert product query
     $insertSql = "INSERT INTO Products (idAdmin, idProducts, Name, Description, Price, StockQuantity, Category) VALUES (:idAdmin, :idProducts, :name, :description, :price, :stockQuantity, :category)";
-    // Prepare and execute insert query
     $stmt = $pdo->prepare($insertSql);
     $stmt->execute([
         'idAdmin' => $idAdmin,
@@ -43,19 +47,93 @@ if(isset($_POST['add_product'])) {
     ]);
 }
 
-// Prepare and execute query to select all products
+// Select all products
 $sql = "SELECT * FROM Products";
 $stmt = $pdo->query($sql);
 
-// Check if there are any results
+// Check if user is logged in
+$isAdminLoggedIn = isset($_SESSION['admin_id']);
+$isLoggedIn = isset($_SESSION['user_id']);
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVS Expansion</title>
+    <link rel="stylesheet" href="../css/header.css">
+</head>
+<body>
+<header>
+    <div class="logoscontainer">
+        <div class="logo">
+            <img src="../images/logo.png" alt="DVS Expansion">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../public/index.php">HOME</a></li>
+                <li><a href="../public/productpage.php">PRODUCT</a></li>
+                <?php
+                // Display "CONNECTIONS" link only if user is logged in as admin
+                if ($isAdminLoggedIn) {
+                    echo '<li><a href="../administrator/adminscrud.php">CONNECTIONS</a></li>';
+                }
+                ?>
+                <li><a href="#">CONTACT US</a></li>
+                <li><a href="#">FIND US</a></li>
+            </ul>
+        </nav>
+        <br>
+
+        <div class="account-basket">
+            <div>
+                <?php
+                if ($isAdminLoggedIn) {
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
+                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
+                } elseif ($isLoggedIn) {
+                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
+                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
+                } else {
+                    echo '<a href="../public/login.php"><img src="../images/login.png" alt="Login"></a>';
+                    echo '<div class="loginButton"><a href="../public/login.php">Login</a></div>';
+                }
+                ?>
+            </div>
+            <div>
+                <a href="cart.php"><img src="../images/cart.png" alt="Basket"></a>
+                <div class="cartButton"><a href="cart.php">Cart</a></div>
+            </div>
+        </div>
+
+        <div class="searchBarButton">
+            <form action="productpage.php" method="GET" class="searchForm">
+                <input type="text" name="search" placeholder="Search products">
+                <button type="submit">Search</button>
+            </form>
+
+        </div>
+    </div>
+</header>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/admin.css">
+    <title>Add Product</title>
+</head>
+<body>
+<?php
+// Output products table
 if ($stmt->rowCount() > 0) {
-    // Output table header
     echo "<table border='1'>";
     echo "<tr><th>Product ID</th><th>Name</th><th>Description</th><th>Price</th><th>Stock Quantity</th><th>Category</th><th>Action</th></tr>";
-
-    // Loop through each row
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Output table row
         echo "<tr>";
         echo "<td>" . $row["idProducts"] . "</td>";
         echo "<td>" . $row["Name"] . "</td>";
@@ -75,25 +153,12 @@ if ($stmt->rowCount() > 0) {
               </td>";
         echo "</tr>";
     }
-
-    // Close the table
     echo "</table>";
 } else {
-    // Output message if no products found
     echo "No products found!";
 }
-
-echo "<br/>";
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/admin.css">
-    <title>Add Product</title>
-</head>
-<body>
+
 <h2>Add Product</h2>
 <form action="" method="POST">
     <label for="product_id">Product ID:</label><br>
