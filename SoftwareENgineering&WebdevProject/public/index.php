@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
                 </div>
 
                 <div class="category-item Controllers">
-                    <a href="productpage.php?category=Controller">
+                    <a href="productpage.php?category=Controllers">
                         <img src="../images/category2.jpeg" alt="Category 2">
                         <span class="category-name">CONTROLLER</span>
                     </a>

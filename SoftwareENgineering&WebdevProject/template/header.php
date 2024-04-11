@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is logged in
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
-$isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variable for customer login
+$isLoggedIn = isset($_SESSION['user_id']);
 
 ?>
 
@@ -32,7 +32,7 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
                 }
                 ?>
                 <li><a href="#">CONTACT US</a></li>
-                <li><a href="#">FIND US</a></li>
+                <li><a href="../public/findus.php">FIND US</a></li>
             </ul>
         </nav>
         <br>
@@ -59,7 +59,7 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
         </div>
 
         <div class="searchBarButton">
-            <form action="productpage.php" method="GET" class="searchForm">
+            <form action="../public/productpage.php" method="GET" class="searchForm">
                 <input type="text" name="search" placeholder="Search products">
                 <button type="submit">Search</button>
             </form>
