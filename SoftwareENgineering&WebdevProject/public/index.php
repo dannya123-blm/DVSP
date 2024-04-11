@@ -6,6 +6,12 @@ require_once '../classes/Products.php';
 
 // Initialize Products class with database connection
 $productObj = new Products($pdo);
+
+// Check if the product is added to the cart
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
+    // Store the product ID in the session
+    $_SESSION['cart'][] = $_POST['product_id'];
+}
 ?>
 
 <!-- Start HTML -->
@@ -94,9 +100,9 @@ $productObj = new Products($pdo);
                         <h3><?php echo htmlspecialchars($product->getName()); ?></h3>
                         <p><?php echo htmlspecialchars($product->getDescription()); ?></p>
                         <p class="price">€<?php echo number_format($product->getPrice(), 2); ?></p>
-                        <form action="cart.php" method="post">
+                        <form action="" method="post">
                             <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
-                            <button type="submit">Buy Now</button>
+                            <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                         </form>
                     </div>
                 </div>

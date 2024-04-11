@@ -1,5 +1,4 @@
 <?php
-// Start the session
 
 // Include necessary files and configurations
 global $pdo;
