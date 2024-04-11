@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 require '../template/header.php';
 require_once '../src/dbconnect.php';
 require_once '../classes/Products.php';
@@ -15,7 +16,6 @@ $productObj = new Products($pdo);
     <title>DVS Expansion HomePage</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/random.css">
-    <script src="../js/home.js"></script>
 </head>
 <body>
 <main>

@@ -57,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
 
 <link rel="stylesheet" href="../css/products.css">
 <script src="../js/filter.js"></script>
-<script src="../js/cart.js"></script>
 
 <main class="container">
     <div class="filters">
