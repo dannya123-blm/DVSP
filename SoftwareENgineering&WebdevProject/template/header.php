@@ -59,8 +59,11 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
         </div>
 
         <div class="searchBarButton">
-            <input type="text" placeholder="Search">
-            <button type="button">Search</button>
+            <form action="productpage.php" method="GET" class="searchForm">
+                <input type="text" name="search" placeholder="Search products">
+                <button type="submit">Search</button>
+            </form>
+
         </div>
     </div>
 </header>

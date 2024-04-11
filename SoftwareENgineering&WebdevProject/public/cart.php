@@ -1,4 +1,5 @@
 <?php
+
 global $pdo;
 require '../template/header.php';
 include '../src/dbconnect.php';
@@ -16,7 +17,6 @@ try {
 <html>
 <head>
     <link rel="stylesheet" href="../css/cart.css">
-
 </head>
 <body>
 <?php
@@ -83,8 +83,15 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         echo '</form>';
         echo '</li>';
     }
+    // Display subtotal
+    echo '<li class="subtotal">Subtotal: €' . $subtotal . '</li>';
     echo '</ul>';
     echo '</div>';
+
+    // Checkout button
+    echo '<form action="checkout.php" method="post">';
+    echo '<button type="submit" name="checkout" class="purchase-btn animated">Checkout</button>';
+    echo '</form>';
 } else {
     // Display message indicating that the cart is empty
     echo '<div class="empty-cart-message">';

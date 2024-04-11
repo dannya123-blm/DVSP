@@ -13,6 +13,9 @@ $productObj = new Products($pdo);
 // Check if a category filter is applied
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : '';
 
+// Check if a search term is provided
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+
 // SQL query to fetch products from the database
 $sql = "SELECT * FROM products";
 
@@ -21,10 +24,26 @@ if (!empty($categoryFilter)) {
     $sql .= " WHERE Category = :category";
 }
 
+// If both category filter and search term are applied, combine them with AND
+if (!empty($categoryFilter) && !empty($searchTerm)) {
+    $sql .= " AND Name LIKE :searchTerm";
+}
+// If only search term is applied, add a WHERE clause to filter products by name
+elseif (!empty($searchTerm)) {
+    $sql .= " WHERE Name LIKE :searchTerm";
+}
+
 $stmt = $pdo->prepare($sql);
 
+// Bind category parameter if filter applied
 if (!empty($categoryFilter)) {
     $stmt->bindParam(':category', $categoryFilter);
+}
+
+// Bind search term parameter if provided
+if (!empty($searchTerm)) {
+    $searchParam = "%$searchTerm%"; // Adjusted the search term to include wildcard characters (%)
+    $stmt->bindParam(':searchTerm', $searchParam);
 }
 
 $stmt->execute();
@@ -34,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
     // Store the product ID in the session
     $_SESSION['cart'][] = $_POST['product_id'];
 }
-
 ?>
 
 <link rel="stylesheet" href="../css/products.css">
@@ -49,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
         <a href="?category=Mice" class="filter-btn">Mice</a>
         <a href="?category=PC" class="filter-btn">PC</a>
         <a href="?category=Headphone" class="filter-btn">Headphones</a>
-        <a href="?category=Controllers" class="filter-btn">Controllers</a>
+        <a href="?category=Controller" class="filter-btn">Controllers</a>
 
 
         <div class="sort-by">
