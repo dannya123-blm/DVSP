@@ -53,8 +53,8 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
                 ?>
             </div>
             <div>
-                <a href="cart.php"><img src="../images/cart.png" alt="Basket"></a>
-                <div class="cartButton"><a href="cart.php">Cart</a></div>
+                <a href="../public/cart.php"><img src="../images/cart.png" alt="Basket"></a>
+                <div class="cartButton"><a href="../public/cart.php">Cart</a></div>
             </div>
         </div>
 
