@@ -1,76 +1,48 @@
 <?php
 
-
 class Order {
-    protected $idOrders;
     protected $idCustomer;
     protected $idAdmin;
     protected $orderDate;
     protected $totalAmount;
+    protected $idPayment;
 
-    // Constructor to set initial values
-    public function __construct($idCustomer, $idAdmin, $orderDate, $totalAmount) {
+    public function __construct($idCustomer, $idAdmin, $orderDate, $totalAmount, $idPayment) {
         $this->idCustomer = $idCustomer;
         $this->idAdmin = $idAdmin;
         $this->orderDate = $orderDate;
         $this->totalAmount = $totalAmount;
+        $this->idPayment = $idPayment;
     }
 
-    public function getOrderID() {
-        return $this->idOrders;
-    }
+    public function saveOrderToDatabase($pdo) {
+        try {
+            // Prepare the SQL statement to insert the order into the database
+            $sql = "INSERT INTO orders (OrderDate, TotalAmount, idAdmin, idCustomer, idPayment) VALUES (:OrderDate, :TotalAmount, :idAdmin, :idCustomer, :idPayment)";
+            $stmt = $pdo->prepare($sql);
 
-    public function setOrderID($orderID) {
-        $this->idOrders = $orderID;
-    }
+            // Bind parameters
+            $stmt->bindParam(':OrderDate', $this->orderDate, PDO::PARAM_STR);
+            $stmt->bindParam(':TotalAmount', $this->totalAmount, PDO::PARAM_STR);
+            $stmt->bindParam(':idAdmin', $this->idAdmin, PDO::PARAM_INT);
+            $stmt->bindParam(':idCustomer', $this->idCustomer, PDO::PARAM_INT);
+            $stmt->bindParam(':idPayment', $this->idPayment, PDO::PARAM_INT);
 
-    public function getCustomerID() {
-        return $this->idCustomer;
-    }
+            // Execute the prepared statement
+            $result = $stmt->execute();
 
-    public function setCustomerID($customerID) {
-        $this->idCustomer = $customerID;
-    }
-
-    public function getAdminID() {
-        return $this->idAdmin;
-    }
-
-    public function setAdminID($adminID) {
-        $this->idAdmin = $adminID;
-    }
-
-    public function getOrderDate() {
-        return $this->orderDate;
-    }
-
-    public function setOrderDate($orderDate) {
-        $this->orderDate = $orderDate;
-    }
-
-    public function getTotalAmount() {
-        return $this->totalAmount;
-    }
-
-    public function setTotalAmount($totalAmount) {
-        $this->totalAmount = $totalAmount;
-    }
-
-    // Function to save order details to the database
-    public function saveOrderToDatabase($conn) {
-        // Prepare the SQL statement to insert the order into the database
-        $sql = "INSERT INTO orders (idCustomer, idAdmin, orderDate, totalAmount) VALUES (?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "iisd", $this->idCustomer, $this->idAdmin, $this->orderDate, $this->totalAmount);
-
-        // Execute the prepared statement
-        $result = mysqli_stmt_execute($stmt);
-
-        // Check if the order was successfully saved
-        if ($result) {
-            return true;
-        } else {
-            return false;
+            // Check if the order was successfully saved
+            if ($result) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            // Handle any PDO exceptions (e.g., database connection error, SQL error)
+            // You can log the error or return false based on your error handling strategy
+            // For simplicity, rethrow the exception here for demonstration
+            throw $e;
         }
     }
 }
+?>

@@ -1,6 +1,7 @@
 <?php
+// Include necessary files and configurations
 include '../template/header.php';
-include '../src/dbconnect.php';
+include '../src/dborder.php';
 include '../classes/Order.php';
 include '../classes/Products.php';
 
@@ -15,6 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['checkout'])) {
     // Create a new Order object with required arguments
     $order = new Order($idCustomer, $idAdmin, $orderDate, $totalAmount);
 
+    // Save order to the database
+    $pdo = getConnection(); // Assuming getConnection() gets the PDO connection
+    $orderSaved = $order->saveOrderToDatabase($pdo);
+
     if ($orderSaved) {
         // Order saved successfully
         unset($_SESSION['cart']); // Clear the cart after placing the order
@@ -27,13 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['checkout'])) {
 
 // Function to calculate total amount from cart
 function calculateTotalAmount() {
-    global $pdo;
     $totalAmount = 0;
 
     if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         // Initialize Products class with database connection
-        $productObj = new Products($pdo); // Assuming getConnection() gets the PDO connection
+        $pdo = getConnection(); // Assuming getConnection() gets the PDO connection
+        $productObj = new Products($pdo);
 
+        // Calculate total amount based on cart items
         foreach ($_SESSION['cart'] as $productId) {
             $product = $productObj->getProductById($productId);
             if ($product) {
@@ -55,7 +61,10 @@ function calculateTotalAmount() {
             <h3>Order Summary</h3>
             <ul>
                 <?php
-                $productObj = new Products(getConnection());
+                // Display order summary with product details
+                $pdo = getConnection(); // Assuming getConnection() gets the PDO connection
+                $productObj = new Products($pdo);
+
                 foreach ($_SESSION['cart'] as $productId) {
                     $product = $productObj->getProductById($productId);
                     if ($product) {
@@ -75,5 +84,6 @@ function calculateTotalAmount() {
 </main>
 
 <?php
+// Include footer at the end
 require_once '../template/footer.php';
 ?>
