@@ -32,7 +32,7 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
                 }
                 ?>
                 <li><a href="#">CONTACT US</a></li>
-                <li><a href="#">FIND US</a></li>
+                <li><a href="../public/findus.php">FIND US</a></li>
             </ul>
         </nav>
         <br>
@@ -53,13 +53,13 @@ $isLoggedIn = isset($_SESSION['user_id']); // Assuming you have a session variab
                 ?>
             </div>
             <div>
-                <a href="cart.php"><img src="../images/cart.png" alt="Basket"></a>
-                <div class="cartButton"><a href="cart.php">Cart</a></div>
+                <a href="../public/cart.php"><img src="../images/cart.png" alt="Basket"></a>
+                <div class="cartButton"><a href="../public/cart.php">Cart</a></div>
             </div>
         </div>
 
         <div class="searchBarButton">
-            <form action="productpage.php" method="GET" class="searchForm">
+            <form action="../public/productpage.php" method="GET" class="searchForm">
                 <input type="text" name="search" placeholder="Search products">
                 <button type="submit">Search</button>
             </form>
