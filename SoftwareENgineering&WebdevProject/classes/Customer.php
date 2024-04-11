@@ -1,6 +1,6 @@
 <?php
 
-
+require 'User.php';
 // Customer class inheriting from User
 class Customer extends User
 {

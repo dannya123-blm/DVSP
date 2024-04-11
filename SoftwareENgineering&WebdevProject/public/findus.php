@@ -1,8 +1,17 @@
 <?php
 require '../template/header.php';
+require '../classes/Customer.php'; // Update the path to Customer.php
 
-// Address to display on the map
-$address = "Half&Half, Unit 42a Coolmine Industrial Estate, Blanchardstown, Dublin, Ireland Dublin 15, Ireland";
+// Create an instance of the Customer class
+$customer = new Customer();
+
+// Set a new address using the setAddress method
+$newAddress = "Half&Half, Unit 42a Coolmine Industrial Estate, Blanchardstown, Dublin, Ireland Dublin 15";
+$customer->setAddress($newAddress);
+
+// Get the updated address using getAddress method
+$address = $customer->getAddress();
+
 ?>
 
 <h2>Find Us</h2>
