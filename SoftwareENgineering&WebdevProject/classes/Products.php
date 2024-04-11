@@ -124,4 +124,5 @@ class Products {
         return $products;
     }
 }
+
 ?>
