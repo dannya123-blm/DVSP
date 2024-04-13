@@ -1,5 +1,3 @@
-/* Styles for checkout page */
-
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -36,7 +34,7 @@ h2 {
 }
 
 .checkout-btn {
-    background-color: #007bff;
+    background-color: #3C0295;
     color: #fff;
     border: none;
     padding: 10px 20px;

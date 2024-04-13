@@ -4,9 +4,8 @@ body {
     padding: 0;
     background-color: white;
     color: #3C0295;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
 }
-
 header {
     position: relative;
     background-color: #fff;
@@ -14,16 +13,14 @@ header {
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-.container {
+.logos-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 100%; /* Adjust max-width for responsiveness */
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 20px;
 }
-
 .logo img {
     max-width: 150px;
 }
@@ -31,18 +28,16 @@ header {
 nav {
     position: absolute;
     bottom: 10px;
-    left: 50%; /* Position the nav element at the horizontal center */
-    transform: translateX(-50%); /* Center the nav element using translate */
+    left: 50%;
+    transform: translateX(-50%);
 }
-
 nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center; /* Center the list items horizontally */
+    justify-content: center;
 }
-
 nav a {
     text-decoration: none;
     color: #3C0295;
@@ -50,8 +45,6 @@ nav a {
     padding: 15px;
     transition: color 0.3s ease;
 }
-
-
 nav a:hover {
     color: lightskyblue;
 }
@@ -77,25 +70,22 @@ nav a:hover {
     margin: 0 auto;
 }
 
-/* Hover effect for button */
 .account-basket > div:hover {
     transform: scale(1.1);
 }
 
-/* Styling for button text */
 .loginButton a,
 .cartButton a {
     font-size: 14px;
-    color: black !important; /* Ensure black color overrides any other styles */
-    text-decoration: none; /* Remove underline */
-    font-family: "Bubblegum Sans", cursive; /* Apply custom font */
-    transition: color 0.3s ease; /* Smooth color transition on hover */
+    color: black !important;
+    text-decoration: none;
+    font-family: "Bubblegum Sans", cursive;
+    transition: color 0.3s ease;
 }
 
-/* Hover effect for button text */
 .loginButton a:hover,
 .cartButton a:hover {
-    color: purple; /* Change text color on hover */
+    color: #3C0295;
 }
 
 
@@ -126,13 +116,12 @@ nav a:hover {
     background-color: black;
 }
 
-/* Media Query for Responsive Design */
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Stack items vertically on smaller screens */
+        flex-direction: column;
     }
 
     .searchBarButton {
-        top: 160px; /* Adjust position for smaller screens */
+        top: 160px;
     }
 }

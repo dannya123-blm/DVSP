@@ -15,24 +15,41 @@ if (isset($_SESSION['user_id'])) {
         // Fetch user data from the database using Customer class method
         $userData = $customer->getUserDataById($userId);
 
+        // Initialize error message variable
+        $errorMsg = '';
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Handle form submissions for updating user details
             if (isset($_POST['update_username'])) {
                 // Process username update
                 $newUsername = $_POST['new_username'];
-                $customer->updateUsername($userId, $newUsername);
-                // Refresh the page after updating
-                header("Location: dashboard.php");
-                exit();
+
+                // Check if the new username already exists
+                if ($customer->usernameExists($newUsername)) {
+                    $errorMsg = "Username already exists. Please choose a different username.";
+                } else {
+                    // Update the username
+                    $customer->updateUsername($userId, $newUsername);
+                    // Refresh the page after updating
+                    header("Location: dashboard.php");
+                    exit();
+                }
             }
 
             if (isset($_POST['update_email'])) {
                 // Process email update
                 $newEmail = $_POST['new_email'];
-                $customer->updateEmail($userId, $newEmail);
-                // Refresh the page after updating
-                header("Location: dashboard.php");
-                exit();
+
+                // Check if the new email already exists
+                if ($customer->emailExists($newEmail)) {
+                    $errorMsg = "Email already exists. Please choose a different email.";
+                } else {
+                    // Update the email
+                    $customer->updateEmail($userId, $newEmail);
+                    // Refresh the page after updating
+                    header("Location: dashboard.php");
+                    exit();
+                }
             }
 
             if (isset($_POST['update_mobile'])) {
@@ -47,8 +64,7 @@ if (isset($_SESSION['user_id'])) {
                     exit();
                 } else {
                     // Invalid mobile number format
-                    header("Location: dashboard.php?error=InvalidMobileNumber");
-                    exit();
+                    $errorMsg = "Invalid mobile number format. Please enter a 10-digit mobile number.";
                 }
             }
 
@@ -71,6 +87,13 @@ if (isset($_SESSION['user_id'])) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>User Dashboard</title>
             <link rel="stylesheet" href="../css/dashboard.css">
+            <style>
+                /* Style for error messages */
+                .error-message {
+                    color: red;
+                    font-weight: bold;
+                }
+            </style>
         </head>
         <body>
         <div class="container">
@@ -85,9 +108,9 @@ if (isset($_SESSION['user_id'])) {
             <div class="update-form">
                 <h3>Update Details</h3>
                 <?php
-                // Display error message if redirected with error parameter
-                if (isset($_GET['error']) && $_GET['error'] === 'InvalidMobileNumber') {
-                    echo "<p style='color: red;'>Invalid mobile number format. Please enter a 10-digit mobile number.</p>";
+                // Display error message if set
+                if (!empty($errorMsg)) {
+                    echo "<p class='error-message'>" . $errorMsg . "</p>";
                 }
                 ?>
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
@@ -104,7 +127,7 @@ if (isset($_SESSION['user_id'])) {
 
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                     <label for="new_mobile">New Mobile Number (10 digits):</label>
-                    <input type="text" id="new_mobile" name="new_mobile" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required>
+                    <input type="text" id="new_mobile" name="new_mobile" maxlength="20" pattern="[0-9]{10,20}" title="Please enter a valid mobile number (10-20 digits)" required>
                     <button type="submit" name="update_mobile">Update Mobile Number</button>
                 </form>
 
@@ -114,7 +137,7 @@ if (isset($_SESSION['user_id'])) {
                     <button type="submit" name="update_address">Update Address</button>
                 </form>
             </div>
-            <form method="get" action="passwordchanger.php">
+            <form method="get" action="../public/passwordchanger.php">
                 <button type="submit">Change Password</button>
             </form>
         </div>

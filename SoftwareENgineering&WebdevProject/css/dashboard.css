@@ -1,10 +1,6 @@
-
-
 h2 {
     color: #333;
 }
-
-/* User Details Section */
 .user-details {
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
@@ -19,7 +15,6 @@ h2 {
     margin: 8px 0;
 }
 
-/* Update Form Section */
 .update-form {
     padding-top: 20px;
 }

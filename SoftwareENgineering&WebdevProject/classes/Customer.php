@@ -4,6 +4,12 @@ require 'user.php'; // Include base User class definition
 class Customer extends User
 {
     protected $address;
+    protected $pdo;
+
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
 
     public function getAddress()
     {
@@ -15,60 +21,86 @@ class Customer extends User
         $this->address = $address;
     }
 
-    public static function getUserDataById($userId)
+    public function authenticateUser($username, $password)
     {
-        global $pdo; // Assuming $pdo is accessible globally or injected
-
         try {
-            $stmt = $pdo->prepare("SELECT Username, Email, MobileNumber, Address FROM customer WHERE idCustomer = :userId");
-            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            // Retrieve user data from the database based on username
+            $stmt = $this->pdo->prepare("SELECT * FROM customer WHERE Username = :username");
+            $stmt->bindParam(':username', $username);
             $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($stmt->rowCount() > 0) {
-                return $stmt->fetch(PDO::FETCH_ASSOC);
-            } else {
-                return false;
+            if ($user) {
+                // Verify the password
+                if (password_verify($password, $user['Password'])) {
+                    return $user; // Return user data on successful authentication
+                }
             }
         } catch (PDOException $e) {
-            throw new Exception("Error fetching user data: " . $e->getMessage());
+            throw new Exception("Error authenticating user: " . $e->getMessage());
         }
+
+        return false; // Return false if authentication fails
     }
 
-    public function verifyPassword($userId, $password)
+    public function registerUser($username, $password, $email, $mobileNumber, $address)
     {
-        global $pdo; // Assuming $pdo is accessible globally or injected
-
         try {
-            $stmt = $pdo->prepare("SELECT Password FROM customer WHERE idCustomer = :userId");
-            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-            $stmt->execute();
-
-            if ($stmt->rowCount() > 0) {
-                $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-                return password_verify($password, $userData['Password']);
-            } else {
-                return false;
+            // Validate password criteria
+            if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password)) {
+                throw new Exception("Password must be at least 8 characters long and contain at least one uppercase letter");
             }
+
+            // Hash the password
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // Prepare SQL statement to insert user data
+            $sql = "INSERT INTO customer (Username, Password, Email, MobileNumber, Address) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$username, $hashedPassword, $email, $mobileNumber, $address]);
         } catch (PDOException $e) {
-            throw new Exception("Error verifying password: " . $e->getMessage());
+            // Handle database error (duplicate entry)
+            if ($e->getCode() == '23000') {
+                // Determine which field caused the duplicate entry
+                if (strpos($e->getMessage(), 'Email')) {
+                    throw new Exception("Sorry, this email already exists. Please try a different email or <a href='../public/login.php'>login</a>.");
+                } elseif (strpos($e->getMessage(), 'Username')) {
+                    throw new Exception("Sorry, this username already exists. Please choose another username or <a href='../public/login.php'>login</a>.");
+                } else {
+                    throw new Exception("An error occurred. Please try again.");
+                }
+            } else {
+                throw new Exception("Database error: " . $e->getMessage());
+            }
         }
     }
 
-    public function updatePassword($userId, $newPassword)
+    public function updateAddress($userId, $newAddress)
     {
-        global $pdo; // Assuming $pdo is accessible globally or injected
-
         try {
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("UPDATE customer SET Password = :password WHERE idCustomer = :userId");
-            $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
-            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            // Update the address for the specified user in the database
+            $sql = "UPDATE customer SET Address = :newAddress WHERE idCustomer = :userId";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':newAddress', $newAddress);
+            $stmt->bindParam(':userId', $userId);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new Exception("Error updating password: " . $e->getMessage());
+            throw new Exception("Error updating address: " . $e->getMessage());
         }
     }
 
-    // Add other methods for updating user details (username, email, mobile number, etc.)
+    public function updateMobileNumber($userId, $newMobileNumber)
+    {
+        try {
+            // Update the mobile number for the specified user in the database
+            $sql = "UPDATE customer SET MobileNumber = :newMobileNumber WHERE idCustomer = :userId";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':newMobileNumber', $newMobileNumber);
+            $stmt->bindParam(':userId', $userId);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Error updating mobile number: " . $e->getMessage());
+        }
+    }
 }
 ?>

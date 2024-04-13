@@ -8,7 +8,7 @@
 </head>
 <body>
 <footer>
-    <div class="container">
+    <div class="footer-container">
         <div class="social">
             <ul>
                 <li><a href="#"><img src="../images/face.png" alt="Facebook"></a></li>

@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Check if user is logged in
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
 $isLoggedIn = isset($_SESSION['user_id']);
 
@@ -19,7 +18,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 <body>
 <div class="background-banner"></div>
 <header>
-    <div class="logoscontainer">
+    <div class="logos-container">
         <div class="logo">
             <img src="../images/logo.png" alt="DVS Expansion">
         </div>
@@ -27,7 +26,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <ul>
                 <li><a href="../public/index.php">HOME</a></li>
                 <li><a href="../public/productpage.php">PRODUCT</a></li>
-                <li><a href="#">CONTACT US</a></li>
+                <li><a href="../public/contactus.php">CONTACT US</a></li>
                 <li><a href="../public/findus.php">FIND US</a></li>
             </ul>
         </nav>

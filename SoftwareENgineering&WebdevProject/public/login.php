@@ -1,51 +1,35 @@
 <?php
-// Include header and database connection
 global $pdo;
 include '../template/header.php';
 require_once '../src/dbconnect.php';
+require_once '../classes/Customer.php';
 
-// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve username and password from the form
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Validate the credentials against the database
-    $sql = "SELECT * FROM customer WHERE Username = :username";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
 
-    if ($user) {
-        // Verify the password
-        if (password_verify($password, $user['Password'])) {
-            // Check if the user is an admin
-            if ($user['Role'] == 'admin') {
-                // Admin login
-                $_SESSION['user_id'] = $user['idCustomer'];
-                $_SESSION['username'] = $user['Username'];
-                $_SESSION['email'] = $user['Email'];
-                $_SESSION['role'] = 'admin'; // Set user role to 'admin'
+        $customer = new Customer($pdo);
 
-                // Redirect to admin dashboard or any other admin page
+        $authenticatedUser = $customer->authenticateUser($username, $password);
+
+        if ($authenticatedUser) {
+            $_SESSION['user_id'] = $authenticatedUser['idCustomer'];
+            $_SESSION['username'] = $authenticatedUser['Username'];
+            $_SESSION['email'] = $authenticatedUser['Email'];
+
+            if ($authenticatedUser['Role'] == 'admin') {
                 header("Location: ../administrator/adminsadminscrud.php");
-                exit();
             } else {
-                // Regular user login
-                $_SESSION['user_id'] = $user['idCustomer'];
-                $_SESSION['username'] = $user['Username'];
-                $_SESSION['email'] = $user['Email'];
-
-                // Redirect to user dashboard or any other user page
                 header("Location: index.php");
-                exit();
             }
+            exit();
         } else {
             $loginError = "Invalid username or password.";
         }
-    } else {
-        $loginError = "Invalid username or password.";
+    } catch (PDOException $e) {
+        die("Database error: " . $e->getMessage());
     }
 }
 ?>
@@ -64,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form action="login.php" method="POST">
         <h2>User Login</h2>
         <?php
-        // Display login error message if login failed
         if (isset($loginError)) {
             echo '<p style="color: red;">' . $loginError . '</p>';
         }
@@ -81,8 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <?php
-// Include footer
-require "../template/footer.php";
+include "../template/footer.php";
 ?>
 </body>
 </html>

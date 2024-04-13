@@ -94,8 +94,6 @@
 .purchase-btn:active {
     transform: scale(0.95);
 }
-
-/* Cool Animation */
 @keyframes pulse {
     0% {
         transform: scale(1);
