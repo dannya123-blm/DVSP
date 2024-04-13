@@ -18,24 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $paymentName = $_POST['payment_name'];
     $paymentNumber = $_POST['payment_number'];
     $paymentCCV = $_POST['payment_ccv'];
-    $paymentExpiryDate = $_POST['payment_expiry_date'];
+    $paymentExpiryDate = $_POST['payment_expiry_date'] . '-01';
 
     if ($paymentMethod !== "Mastercard" && $paymentMethod !== "Visa") {
         echo "Error: Only Mastercard and Visa are allowed as payment methods.";
         exit;
     }
 
-    // Call the setPaymentDetails method to set the payment details, including the expiry date
     $payment->setPaymentDetails($customerID, $paymentDate, $paymentMethod, $paymentName, $paymentNumber, $paymentExpiryDate);
-
-    // Call the processPayment method of the Payment class
     $result = $payment->processPayment($paymentCCV);
 
     if (is_numeric($result)) {
-        // Payment was successful, display success message
         echo "Card successfully added!";
     } else {
-        // Payment processing failed, display error message
         echo $result;
     }
 }
@@ -53,16 +48,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="payment-container">
     <h2>Enter Payment Details</h2>
     <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
-        Payment Date: <input type="date" name="payment_date"><br><br>
+        Payment Date: <input type="date" name="payment_date" required><br><br>
         Payment Method:
-        <select name="payment_method">
+        <select name="payment_method" required>
             <option value="Mastercard">Mastercard</option>
             <option value="Visa">Visa</option>
         </select><br><br>
-        Payment Name: <input type="text" name="payment_name"><br><br>
-        Payment Number: <input type="text" name="payment_number"><br><br>
-        Payment CCV: <input type="password" name="payment_ccv"><br><br>
-        Payment Expiry Date: <input type="month" name="payment_expiry_date"><br><br>
+        Payment Name: <input type="text" name="payment_name" required><br><br>
+        Payment Number: <input type="text" name="payment_number" required><br><br>
+        Payment CCV: <input type="password" name="payment_ccv" required><br><br>
+        Payment Expiry Date: <input type="month" name="payment_expiry_date" required><br><br>
         <input type="submit" value="Save Payment">
     </form>
 </div>
