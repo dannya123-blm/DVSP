@@ -1,28 +1,42 @@
+/* register.css */
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
 .form-container {
     width: 300px;
-    margin: 0 auto;
-    margin-top: 50px;
+    margin: 50px auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.heading {
+.form-container h2 {
     text-align: center;
-    color: #000000;
+    color: #333;
     margin-bottom: 20px;
 }
 
-.label {
-    display: block;
-    margin-bottom: 8px;
-    color: #000000;
+.form-container p {
+    text-align: center;
+    color: red;
+    margin-bottom: 15px;
 }
 
-.input {
+.form-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"],
+.form-container input[type="email"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -31,7 +45,7 @@
     box-sizing: border-box;
 }
 
-.submit {
+.form-container input[type="submit"] {
     width: 100%;
     padding: 12px;
     border: none;
@@ -42,20 +56,20 @@
     cursor: pointer;
 }
 
-.submit:hover {
+.form-container input[type="submit"]:hover {
     background-color: #6a1b9a;
 }
 
-.message {
+.form-container .message {
     text-align: center;
     margin-top: 10px;
 }
 
-.link {
+.form-container a {
     color: #3C0295;
     text-decoration: none;
 }
 
-.link:hover {
+.form-container a:hover {
     text-decoration: underline;
 }
