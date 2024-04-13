@@ -40,6 +40,8 @@ $isLoggedIn = isset($_SESSION['user_id']);
                     echo '<div class="dropdown-content">';
                     echo '<a href="../public/dashboard.php">Dashboard</a>';
                     echo '<a href="../public/payment.php">Payment</a>';
+                    echo '<a href="../public/paymentedit.php">EditCard</a>';
+                    echo '<a href="../public/Passwordchanger.php">ChangePassword</a>';
                     if ($isAdminLoggedIn) {
                         echo '<a href="../administrator/adminscrud.php">Connections</a>';
                     }
