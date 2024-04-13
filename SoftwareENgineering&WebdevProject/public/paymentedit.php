@@ -1,5 +1,4 @@
 <?php
-
 global $pdo;
 include '../src/dbconnect.php';
 include '../template/header.php';
@@ -11,21 +10,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $customerID = $_SESSION['user_id'];
-
-// Create Payment instance
 $payment = new Payment($pdo);
-
-// Retrieve all credit card information for the logged-in user
 $cards = $payment->getAllCards($customerID);
 
-// Delete payment if requested
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] == 'delete') {
     $paymentId = $_GET['id'];
-
-    // Delete the payment using the Payment class method
     $payment->deletePayment($paymentId);
-
-    // Redirect back to paymentedit.php after deletion
     header("Location: paymentedit.php");
     exit;
 }
@@ -46,9 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     <div class="cards-container">
         <?php foreach ($cards as $card): ?>
             <div class="card">
-                <p><?php echo $card['PaymentName']; ?></p>
-                <p><?php echo $card['PaymentNumber']; ?></p>
-                <a href="paymentediter.php">Edit</a>
+                <p><?php echo htmlspecialchars($card['PaymentName']); ?></p>
+                <p><?php echo htmlspecialchars($card['PaymentNumber']); ?></p>
+                <p>Expiry: <?php echo htmlspecialchars(date("m/Y", strtotime($card['PaymentExpiryDate']))); ?></p>
+                <a href="paymenteditor.php?id=<?php echo $card['idPayment']; ?>">Edit</a>
                 <a href="paymentedit.php?id=<?php echo $card['idPayment']; ?>&action=delete">Delete</a>
             </div>
         <?php endforeach; ?>
