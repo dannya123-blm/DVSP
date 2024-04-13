@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert payment details into the database using PDO prepared statements
-    $sql = "INSERT INTO payments (idCustomer, paymentDate, paymentMethod, paymentName, paymentNumber, paymentCCV) 
+    $sql = "INSERT INTO payment (idCustomer, paymentDate, paymentMethod, paymentName, paymentNumber, paymentCCV) 
             VALUES (:idCustomer, :paymentDate, :paymentMethod, :paymentName, :paymentNumber, :paymentCCV)";
     $stmt = $pdo->prepare($sql); // Fixed the arrow operator
     $stmt->bindParam(':idCustomer', $customerID); // Use the retrieved customer ID
