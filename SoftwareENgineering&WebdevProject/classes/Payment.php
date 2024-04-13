@@ -42,7 +42,7 @@ class Payment {
         $sql = "INSERT INTO payment (idCustomer, paymentMethod, paymentName, paymentNumber, paymentCCV, paymentExpiryDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$this->idCustomer, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV, $this->paymentExpiryDate]);
-        return $this->pdo->lastInsertId();  // Return the ID of the new payment entry
+        return $this->pdo->lastInsertId();
     }
 
     public function getAllCards($customerId) {
@@ -51,5 +51,28 @@ class Payment {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['customerId' => $customerId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPaymentInfo($paymentId) {
+        $sql = "SELECT * FROM payment WHERE idPayment = :paymentId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['paymentId' => $paymentId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);  // fetch the first row that matches
+    }
+
+    public function updatePayment($paymentId, $paymentName, $paymentNumber, $paymentCCV, $paymentExpiryDate) {
+        // Prepare an SQL statement to update payment details
+        $sql = "UPDATE payment SET PaymentName = ?, PaymentNumber = ?, PaymentCCV = ?, PaymentExpiryDate = ? WHERE idPayment = ?";
+        $stmt = $this->pdo->prepare($sql);
+
+        // Execute the SQL statement with the provided parameters
+        $stmt->execute([$paymentName, $paymentNumber, $paymentCCV, $paymentExpiryDate, $paymentId]);
+
+        // Optionally, check if the update was successful
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
