@@ -1,6 +1,6 @@
 <?php
 global $dsn, $username, $password, $options;
-require_once 'config.php';
+include 'config.php';
 try {
     $pdo = new PDO($dsn, $username, $password, $options);
 } catch (\PDOException $e) {

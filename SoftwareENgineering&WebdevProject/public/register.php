@@ -2,9 +2,8 @@
 // Include header and necessary files
 global $pdo;
 include '../template/header.php';
-require_once '../src/dbconnect.php'; // Assuming this includes database connection
-require_once '../classes/User.php';
-require_once '../classes/Customer.php';
+include '../src/dbconnect.php'; // Assuming this includes database connection
+include '../classes/User.php';
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

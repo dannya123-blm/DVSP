@@ -4,7 +4,6 @@ class Payment {
     protected $idPayment;
     protected $idOrder;
     protected $paymentDate;
-    protected $paymentAmount;
     protected $paymentMethod;
 
     public function setOrderID($orderID) {
@@ -13,10 +12,6 @@ class Payment {
 
     public function setPaymentDate($paymentDate) {
         $this->paymentDate = $paymentDate;
-    }
-
-    public function setPaymentAmount($paymentAmount) {
-        $this->paymentAmount = $paymentAmount;
     }
 
     public function setPaymentMethod($paymentMethod) {
@@ -30,7 +25,6 @@ class Payment {
 
             $stmt->bindParam(':idOrder', $this->idOrder, PDO::PARAM_INT);
             $stmt->bindParam(':paymentDate', $this->paymentDate, PDO::PARAM_STR);
-            $stmt->bindParam(':paymentAmount', $this->paymentAmount, PDO::PARAM_STR);
             $stmt->bindParam(':paymentMethod', $this->paymentMethod, PDO::PARAM_STR);
 
             $result = $stmt->execute();

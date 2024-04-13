@@ -1,11 +1,11 @@
 <?php
 
 require 'User.php';
+
 // Customer class inheriting from User
 class Customer extends User
 {
     protected $address;
-
 
     public function getAddress()
     {
@@ -16,13 +16,18 @@ class Customer extends User
     {
         $this->address = $address;
     }
-    protected $twoFactorAuth;
 
-    public function getTwoFactorAuth() {
-        return $this->twoFactorAuth;
-    }
+    // Method to fetch user data by ID from the database
+    public function getUserDataById($userId)
+    {
+        global $pdo; // Assuming $pdo is accessible globally or injected
 
-    public function setTwoFactorAuth($twoFactorAuth) {
-        $this->twoFactorAuth = $twoFactorAuth;
+        $stmt = $pdo->prepare("SELECT Username, Email, MobileNumber, Address FROM customer WHERE idCustomer = :userId");
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Return user data as an associative array
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+?>
