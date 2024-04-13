@@ -108,12 +108,7 @@ $allProducts = $products->getAllProducts();
             </div>
         </div>
 
-        <div class="searchBarButton">
-            <form action="../public/productpage.php" method="GET" class="searchForm">
-                <input type="text" name="search" placeholder="Search products">
-                <button type="submit">Search</button>
-            </form>
-        </div>
+
     </div>
 </header>
 

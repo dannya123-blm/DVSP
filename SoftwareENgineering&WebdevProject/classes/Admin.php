@@ -8,22 +8,24 @@ class Admin extends User {
         return $this->role;
     }
 
-    public function authenticate($adminId, $username, $password) {
+    // Modified to use plain text passwords
+    public function authenticate($username, $password, $admin_id) {
         global $pdo;
 
-        $stmt = $pdo->prepare("SELECT * FROM admin WHERE idAdmin = ?");
-        $stmt->execute([$adminId]);
+        $stmt = $pdo->prepare("SELECT * FROM admin WHERE Username = ? AND idAdmin = ?");
+        $stmt->execute([$username, $admin_id]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($admin && password_verify($password, $admin['Password']) && $admin['Username'] === $username) {
-            $this->setUserID($admin['idAdmin']); // Set correct column name for Admin ID
+        if ($admin && $admin['Password'] === $password) {
+            $this->setUserID($admin['idAdmin']);
             $this->setUsername($admin['Username']);
             $this->setRole($admin['Role']);
-            return true;
+            return $admin; // Return admin data
         } else {
-            return false;
+            return false; // Return false if authentication fails
         }
     }
+
 
     public function setRole($role) {
         $this->role = $role;

@@ -42,29 +42,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>User Login</title>
     <link rel="stylesheet" href="../css/login.css">
 </head>
-<body>
+<body class="login-body">
 
 <div class="login-container">
     <form action="login.php" method="POST">
-        <h2>User Login</h2>
+        <h2 class="login-heading">User Login</h2>
         <?php
         if (isset($loginError)) {
-            echo '<p style="color: red;">' . $loginError . '</p>';
+            echo '<p class="error-message">' . $loginError . '</p>';
         }
         ?>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
+        <label class="login-label" for="username">Username:</label>
+        <input type="text" id="username" name="username" class="login-input" required><br><br>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+        <label class="login-label" for="password">Password:</label>
+        <input type="password" id="password" name="password" class="login-input" required><br><br>
 
-        <input type="submit" value="Login">
-        <p style="text-align: center;">Don't have an account? <a href="../public/register.php">Register here</a></p>
+        <input type="submit" value="Login" class="login-submit">
+        <p class="login-text" style="text-align: center;">Don't have an account? <a href="../public/register.php">Register here</a></p>
     </form>
 </div>
+</body>
+</html>
 
 <?php
 include "../template/footer.php";
 ?>
-</body>
-</html>
+

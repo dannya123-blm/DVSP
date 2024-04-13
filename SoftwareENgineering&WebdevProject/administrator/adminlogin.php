@@ -1,29 +1,34 @@
 <?php
-require_once '../src/dbconnect.php'; // Include your database connection
-require_once '../classes/Admin.php'; // Include Admin class definition
-include '../template/header.php'; // Include header (if needed)
+require_once '../src/dbconnect.php';
+require_once '../template/header.php';
 
-// Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $adminId = $_POST['admin_id'];
+    $admin_id = $_POST['admin_id'];
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Create an instance of Admin class
-    $admin = new Admin();
+    try {
+        $admin = new Admin();
+        $authenticatedAdmin = $admin->authenticate($username, $password, $admin_id);
 
-    // Authenticate admin
-    if ($admin->authenticate($adminId, $username, $password)) {
-        // Credentials are correct, start the session and store admin_id
-        session_start();
-        $_SESSION['admin_id'] = $adminId;
-        $_SESSION['user_role'] = $admin->getRole();
-        header("Location: ../administrator/adminscrud.php"); // Redirect to admin page
-        exit();
-    } else {
-        // Credentials are incorrect, show error message
-        echo "Invalid credentials. Please try again.";
+        if ($authenticatedAdmin) {
+            session_start();
+            $_SESSION['admin_id'] = $authenticatedAdmin['idAdmin'];
+            $_SESSION['username'] = $authenticatedAdmin['Username'];
+            $_SESSION['user_role'] = $authenticatedAdmin['Role'];
+
+            if ($_SESSION['user_role'] == 'admin') {
+                header("Location: ../public/index.php");
+                exit();
+            } else {
+                header("Location: ../administrator/adminscrud.php");
+                exit();
+            }
+        } else {
+            echo "<p>Invalid username, password, or admin ID.</p>";
+        }
+    } catch (PDOException $e) {
+        die("Database error: " . $e->getMessage());
     }
 }
 ?>
@@ -51,4 +56,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
-
