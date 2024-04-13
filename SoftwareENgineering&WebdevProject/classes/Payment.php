@@ -8,6 +8,7 @@ class Payment {
     protected $paymentName;
     protected $paymentNumber;
     protected $paymentCCV;
+    protected $paymentExpiryDate;
 
     // Setter method for payment ID
     public function setPaymentID($paymentID) {
@@ -77,6 +78,14 @@ class Payment {
     // Getter method for payment CCV
     public function getPaymentCCV() {
         return $this->paymentCCV;
+
+    }    public function setPaymentExpiryDate($paymentExpiryDate) {
+        $this->paymentExpiryDate = $paymentExpiryDate;
+    }
+
+    // Getter method for payment CCV
+    public function getPaymentExpiryDate() {
+        return $this->paymentExpiryDate;
     }
 }
 
