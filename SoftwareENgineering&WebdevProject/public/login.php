@@ -1,8 +1,8 @@
 <?php
 global $pdo;
-session_start(); // Start or resume the session
 require_once '../src/dbconnect.php';
 require_once '../classes/Customer.php';
+require_once '../template/header.php';
 
 $loginError = ''; // Initialize login error message
 
@@ -72,3 +72,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
+<?php
+require_once '../template/footer.php';
+?>
