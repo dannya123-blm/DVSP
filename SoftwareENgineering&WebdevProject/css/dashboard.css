@@ -1,0 +1,75 @@
+
+
+h2 {
+    color: #333;
+}
+
+/* User Details Section */
+.user-details {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.user-details h3 {
+    color: #333;
+}
+
+.user-details p {
+    margin: 8px 0;
+}
+
+/* Update Form Section */
+.update-form {
+    padding-top: 20px;
+}
+
+.update-form h3 {
+    color: #333;
+}
+
+form {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: rebeccapurple;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: #ff0000;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.success-message {
+    color: #008000;
+    font-style: italic;
+    margin-top: 5px;
+}

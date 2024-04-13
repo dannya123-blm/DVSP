@@ -1,7 +1,4 @@
 <?php
-
-
-// Base class for User
 class User {
     protected $idUser;
     protected $username;
@@ -30,6 +27,7 @@ class User {
     }
 
     public function setPassword($password) {
+        // You might want to hash the password before setting it
         $this->password = $password;
     }
 
@@ -48,4 +46,53 @@ class User {
     public function setMobileNumber($mobileNumber) {
         $this->mobileNumber = $mobileNumber;
     }
+
+    public function updateUsername($userId, $newUsername) {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->prepare("UPDATE customer SET Username = :username WHERE idCustomer = :userId");
+            $stmt->bindParam(':username', $newUsername, PDO::PARAM_STR);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            // Handle database error
+            throw new Exception("Error updating username: " . $e->getMessage());
+        }
+
+        $this->username = $newUsername;
+    }
+
+    public function updateEmail($userId, $newEmail) {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->prepare("UPDATE customer SET Email = :email WHERE idCustomer = :userId");
+            $stmt->bindParam(':email', $newEmail, PDO::PARAM_STR);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            // Handle database error
+            throw new Exception("Error updating email: " . $e->getMessage());
+        }
+
+        $this->email = $newEmail;
+    }
+
+    public function updateMobileNumber($userId, $newMobileNumber) {
+        global $pdo;
+
+        try {
+            $stmt = $pdo->prepare("UPDATE customer SET MobileNumber = :mobileNumber WHERE idCustomer = :userId");
+            $stmt->bindParam(':mobileNumber', $newMobileNumber, PDO::PARAM_STR);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            // Handle database error
+            throw new Exception("Error updating mobile number: " . $e->getMessage());
+        }
+
+        $this->mobileNumber = $newMobileNumber;
+    }
 }
+?>
