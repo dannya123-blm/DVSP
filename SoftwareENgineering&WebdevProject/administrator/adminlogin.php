@@ -1,5 +1,5 @@
 <?php
-include '../src/dbconnect.php'; // Include your database connection file
+include '../src/dbconnect.php';
 include '../template/header.php';
 
 // Check if form was submitted

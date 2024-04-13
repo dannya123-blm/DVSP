@@ -56,7 +56,6 @@ $isAdminLoggedIn = isset($_SESSION['admin_id']);
 $isLoggedIn = isset($_SESSION['user_id']);
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,8 +63,11 @@ $isLoggedIn = isset($_SESSION['user_id']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DVS Expansion</title>
     <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/dropdown.css">
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
+<div class="background-banner"></div>
 <header>
     <div class="logoscontainer">
         <div class="logo">
@@ -75,61 +77,56 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <ul>
                 <li><a href="../public/index.php">HOME</a></li>
                 <li><a href="../public/productpage.php">PRODUCT</a></li>
-                <?php
-                // Display "CONNECTIONS" link only if user is logged in as admin
-                if ($isAdminLoggedIn) {
-                    echo '<li><a href="../administrator/adminscrud.php">CONNECTIONS</a></li>';
-                }
-                ?>
                 <li><a href="#">CONTACT US</a></li>
-                <li><a href="#">FIND US</a></li>
+                <li><a href="../public/findus.php">FIND US</a></li>
             </ul>
         </nav>
         <br>
 
         <div class="account-basket">
-            <div>
+            <div class="dropdown">
                 <?php
-                if ($isAdminLoggedIn) {
-                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
-                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
-                } elseif ($isLoggedIn) {
-                    echo '<a href="../public/logout.php"><img src="../images/login.png" alt="Logout"></a>';
-                    echo '<div class="loginButton"><a href="../public/logout.php">Logout</a></div>';
+                if ($isAdminLoggedIn || $isLoggedIn) {
+                    echo '<img src="../images/login.png" alt="Dropdown">';
+                    echo '<div class="dropdown-content">';
+                    echo '<a href="#">Dashboard</a>';
+                    echo '<a href="#">Payment</a>';
+                    if ($isAdminLoggedIn) {
+                        echo '<a href="../administrator/adminscrud.php">Connections</a>';
+                    }
+                    echo '<a href="../public/logout.php">Logout</a>';
+                    echo '</div>';
                 } else {
                     echo '<a href="../public/login.php"><img src="../images/login.png" alt="Login"></a>';
-                    echo '<div class="loginButton"><a href="../public/login.php">Login</a></div>';
                 }
                 ?>
+                <div class="loginButton">
+                    <?php
+                    if ($isAdminLoggedIn || $isLoggedIn) {
+                        echo '<a href="../public/logout.php">Logout</a>';
+                    } else {
+                        echo '<a href="../public/login.php">Login</a>';
+                    }
+                    ?>
+                </div>
             </div>
             <div>
-                <a href="cart.php"><img src="../images/cart.png" alt="Basket"></a>
-                <div class="cartButton"><a href="cart.php">Cart</a></div>
+                <a href="../public/cart.php"><img src="../images/cart.png" alt="Basket"></a>
+                <div class="cartButton"><a href="../public/cart.php">Cart</a></div>
             </div>
         </div>
 
         <div class="searchBarButton">
-            <form action="productpage.php" method="GET" class="searchForm">
+            <form action="../public/productpage.php" method="GET" class="searchForm">
                 <input type="text" name="search" placeholder="Search products">
                 <button type="submit">Search</button>
             </form>
-
         </div>
     </div>
 </header>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/admin.css">
-    <title>Add Product</title>
-</head>
-<body>
+
 <?php
-// Output products table
+// Assuming $stmt and other PHP variables are declared/initialized elsewhere
 if ($stmt->rowCount() > 0) {
     echo "<table border='1'>";
     echo "<tr><th>Product ID</th><th>Name</th><th>Description</th><th>Price</th><th>Stock Quantity</th><th>Category</th><th>Action</th></tr>";
@@ -189,3 +186,4 @@ if ($stmt->rowCount() > 0) {
 </form>
 </body>
 </html>
+
