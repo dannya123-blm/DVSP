@@ -1,15 +1,4 @@
 
-.registration-body {
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    color: #3C0295;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    font-family: "Bubblegum Sans", cursive;
-}
 
 .form-container {
     width: 300px;
@@ -21,19 +10,19 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.registration-heading {
+.heading {
     text-align: center;
     color: #000000;
     margin-bottom: 20px;
 }
 
-.registration-label {
+.label {
     display: block;
     margin-bottom: 8px;
     color: #000000;
 }
 
-.registration-input {
+.input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -42,7 +31,7 @@
     box-sizing: border-box;
 }
 
-.registration-submit {
+.submit {
     width: 100%;
     padding: 12px;
     border: none;
@@ -53,20 +42,20 @@
     cursor: pointer;
 }
 
-.registration-submit:hover {
+.submit:hover {
     background-color: #6a1b9a;
 }
 
-.registration-message {
+.message {
     text-align: center;
     margin-top: 10px;
 }
 
-.registration-link {
+.link {
     color: #3C0295;
     text-decoration: none;
 }
 
-.registration-link:hover {
+.link:hover {
     text-decoration: underline;
 }
