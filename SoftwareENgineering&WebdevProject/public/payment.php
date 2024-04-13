@@ -24,6 +24,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Validate payment name
+    if (!preg_match("/^[a-zA-Z\s]+$/", $paymentName)) {
+        echo "Error: Payment name can only contain letters and spaces.";
+        exit;
+    }
+
+    // Validate payment number
+    if (!is_numeric($paymentNumber)) {
+        echo "Error: Payment number can only contain numbers.";
+        exit;
+    }
+
+    // Validate expiry date
+    $currentDate = date('Y-m');
+    if ($paymentExpiryDate < $currentDate) {
+        echo "Error: Expiry date cannot be less than the current month and year.";
+        exit;
+    }
+
     $payment->setPaymentDetails($customerID, $paymentMethod, $paymentName, $paymentNumber, $paymentExpiryDate);
     $result = $payment->processPayment($paymentCCV);
 
@@ -52,10 +71,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <option value="Mastercard">Mastercard</option>
             <option value="Visa">Visa</option>
         </select><br><br>
-        Payment Name: <input type="text" name="payment_name" required><br><br>
-        Payment Number: <input type="text" name="payment_number" required><br><br>
+        Payment Name: <input type="text" name="payment_name" pattern="[a-zA-Z\s]+" title="Payment name can only contain letters and spaces" required><br><br>
+        Payment Number: <input type="text" name="payment_number" pattern="[0-9]+" title="Payment number can only contain numbers" required><br><br>
         Payment CCV: <input type="password" name="payment_ccv" required><br><br>
-        Payment Expiry Date: <input type="month" name="payment_expiry_date" required><br><br>
+        Payment Expiry Date: <input type="month" name="payment_expiry_date" min="<?php echo date('Y-m'); ?>" required><br><br>
         <input type="submit" value="Save Payment">
     </form>
 </div>

@@ -26,6 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $paymentCCV = $_POST['payment_ccv'];
         $paymentExpiryDate = $_POST['payment_expiry_date'] . '-01'; // Normalize the date format to first of the month
 
+        // Check if expiry date is in the future
+        if (strtotime($paymentExpiryDate) < strtotime(date('Y-m'))) {
+            echo "Error: Expiry date must be the current month or a future month.";
+            exit;
+        }
+
         $payment->updatePayment($paymentId, $paymentName, $paymentNumber, $paymentCCV, $paymentExpiryDate);
 
         header("Location: paymentedit.php");
@@ -73,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         </div>
         <div class="form-group">
             <label for="payment_expiry_date">Expiry Date:</label>
-            <input type="month" id="payment_expiry_date" name="payment_expiry_date" value="<?php echo isset($paymentInfo['PaymentExpiryDate']) ? date('Y-m', strtotime($paymentInfo['PaymentExpiryDate'])) : ''; ?>" required>
+            <input type="month" id="payment_expiry_date" name="payment_expiry_date" value="<?php echo isset($paymentInfo['PaymentExpiryDate']) ? date('Y-m', strtotime($paymentInfo['PaymentExpiryDate'])) : ''; ?>" min="<?php echo date('Y-m'); ?>" required>
         </div>
         <button type="submit">Update Payment</button>
     </form>
