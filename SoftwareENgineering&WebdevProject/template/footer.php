@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="../css/footer.css">
 </head>
 <body>
-<footer>
+<footer class="footer">
     <div class="footer-container">
         <div class="social">
-            <ul>
-                <li><a href="#"><img src="../images/face.png" alt="Facebook"></a></li>
-                <li><a href="#"><img src="../images/twitter.png" alt="Twitter"></a></li>
-                <li><a href="#"><img src="../images/instalogo.png" alt="Instagram"></a></li>
+            <ul class="social-list">
+                <li class="social-item"><a href="#"><img src="../images/face.png" alt="Facebook"></a></li>
+                <li class="social-item"><a href="#"><img src="../images/twitter.png" alt="Twitter"></a></li>
+                <li class="social-item"><a href="#"><img src="../images/instalogo.png" alt="Instagram"></a></li>
             </ul>
         </div>
         <div class="footer-links">
