@@ -99,13 +99,15 @@ nav a:hover {
     color: #3C0295;
 }
 
+
 .searchBarButton {
-    position: relative;  /* Remove the absolute position */
+    position: absolute;
     top: 120px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 999;
 }
+
 .searchBarButton input[type="text"],
 .searchBarButton button {
     font-family: "Bubblegum Sans", cursive;
@@ -125,11 +127,13 @@ nav a:hover {
     background-color: black;
 }
 
-footer {
-    background-color: #3C0295;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    margin-top: auto; /* Push footer to the bottom of the page */
-    width: 100%; /* Full width footer */
+/* Media Query for Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+    }
+
+    .searchBarButton {
+        top: 160px; /* Adjust position for smaller screens */
+    }
 }

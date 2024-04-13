@@ -66,10 +66,8 @@ $isLoggedIn = isset($_SESSION['user_id']);
         </div>
 
         <div class="searchBarButton">
-            <form action="../public/productpage.php" method="GET" class="searchForm">
-                <input type="text" name="search" placeholder="Search products">
-                <button type="submit">Search</button>
-            </form>
+            <input type="text" placeholder="Search">
+            <button type="button">Search</button>
         </div>
     </div>
 </header>
