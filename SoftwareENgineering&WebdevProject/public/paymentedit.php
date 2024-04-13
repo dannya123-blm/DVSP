@@ -1,4 +1,5 @@
 <?php
+
 global $pdo;
 include '../src/dbconnect.php';
 include '../template/header.php';
@@ -11,13 +12,23 @@ if (!isset($_SESSION['user_id'])) {
 
 $customerID = $_SESSION['user_id'];
 
+// Create Payment instance
 $payment = new Payment($pdo);
 
 // Retrieve all credit card information for the logged-in user
 $cards = $payment->getAllCards($customerID);
 
-// Retrieve the main credit card information for the logged-in user
-$mainCard = $payment->getMainCard($customerID);
+// Delete payment if requested
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
+    $paymentId = $_GET['id'];
+
+    // Delete the payment using the Payment class method
+    $payment->deletePayment($paymentId);
+
+    // Redirect back to paymentedit.php after deletion
+    header("Location: paymentedit.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,18 +45,18 @@ $mainCard = $payment->getMainCard($customerID);
 
     <div class="cards-container">
         <?php foreach ($cards as $card): ?>
-            <div class="card <?php echo ($card['idPayment'] == $mainCard['idPayment']) ? 'main-card' : ''; ?>">
+            <div class="card">
                 <p><?php echo $card['PaymentName']; ?></p>
                 <p><?php echo $card['PaymentNumber']; ?></p>
-                <p><?php echo ($card['isMain'] == 1) ? 'Main Card' : ''; ?></p>
-                <a href="edit.php?id=<?php echo $card['idPayment']; ?>">Edit</a>
-                <a href="delete.php?id=<?php echo $card['idPayment']; ?>">Delete</a>
+                <a href="paymentediter.php">Edit</a>
+                <a href="paymentedit.php?id=<?php echo $card['idPayment']; ?>&action=delete">Delete</a>
             </div>
         <?php endforeach; ?>
     </div>
 
-    <a href="add.php">Add New Card</a>
+    <a href="../public/payment.php">Add New Card</a>
 </div>
+
 </body>
 </html>
 
