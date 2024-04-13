@@ -1,18 +1,11 @@
 <?php
-// Include header and database connection
 include '../template/header.php';
 include '../src/dbconnect.php';
 require '../classes/Customer.php';
-
-// Check if user is logged in
 if (isset($_SESSION['user_id'])) {
     try {
         $userId = $_SESSION['user_id'];
-
-        // Create a new Customer object
         $customer = new Customer();
-
-        // Fetch user data from the database
         $userData = Customer::getUserDataById($userId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,11 +13,8 @@ if (isset($_SESSION['user_id'])) {
                 $oldPassword = $_POST['old_password'];
                 $newPassword = $_POST['new_password'];
 
-                // Verify old password before changing
                 if ($customer->verifyPassword($userId, $oldPassword)) {
-                    // Password verification successful, check new password strength
                     if (validatePasswordStrength($newPassword)) {
-                        // Update the password
                         $customer->updatePassword($userId, $newPassword);
                         echo "Password updated successfully.";
                     } else {
@@ -35,8 +25,6 @@ if (isset($_SESSION['user_id'])) {
                 }
             }
         }
-
-        // Display password change form
         ?>
         <!DOCTYPE html>
         <html lang="en">
@@ -51,9 +39,9 @@ if (isset($_SESSION['user_id'])) {
                     var newPassword = document.getElementById('new_password').value;
                     if (newPassword.length < 8 || !/[A-Z]/.test(newPassword)) {
                         alert('New password must be at least 8 characters long and contain at least one uppercase letter.');
-                        return false; // Prevent form submission
+                        return false;
                     }
-                    return true; // Allow form submission
+                    return true;
                 }
             </script>
         </head>
@@ -75,8 +63,6 @@ if (isset($_SESSION['user_id'])) {
 } else {
     echo "User not logged in";
 }
-
-// Function to validate password strength
 function validatePasswordStrength($password) {
     return strlen($password) >= 8 && preg_match('/[A-Z]/', $password);
 }
