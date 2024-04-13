@@ -1,11 +1,20 @@
 <?php
+// Start the session
+session_start();
+
+// Check if user is logged in as admin, if not, redirect to login page
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: adminlogin.php");
+    exit();
+}
+
+// Set the variable for admin login status
+$isAdminLoggedIn = true;
+
 // Include the necessary class definitions
 include '../classes/User.php';
 include '../classes/Admin.php';
 include '../classes/Products.php';
-
-// Start the session
-session_start();
 
 // Instantiate an Admin object
 $admin = new Admin();
@@ -37,10 +46,6 @@ if(isset($_POST['add_product'])) {
 
 // Fetch all products
 $allProducts = $products->getAllProducts();
-
-// Check if user is logged in
-$isAdminLoggedIn = isset($_SESSION['admin_id']);
-$isLoggedIn = isset($_SESSION['user_id']);
 
 ?>
 <!DOCTYPE html>

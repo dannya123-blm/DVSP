@@ -163,4 +163,8 @@ class Products
         $stmt = $this->pdo->prepare("INSERT INTO Products (idAdmin, idProducts, Name, Description, Price, StockQuantity, Category) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$idAdmin, $idProducts, $name, $description, $price, $stockQuantity, $category]);
     }
+    public function deleteProduct($productId) {
+        $stmt = $this->pdo->prepare("DELETE FROM Products WHERE idProducts = ?");
+        $stmt->execute([$productId]);
+    }
 }
