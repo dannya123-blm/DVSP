@@ -1,41 +1,42 @@
-h2 {
+
+
+.dashboard-heading {
     color: #333;
 }
-.user-details {
+
+.dashboard-details {
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
 
-.user-details h3 {
+.dashboard-details h3 {
     color: #333;
 }
 
-.user-details p {
+.dashboard-details p {
     margin: 8px 0;
 }
 
-.update-form {
+.dashboard-update {
     padding-top: 20px;
 }
 
-.update-form h3 {
+.dashboard-update h3 {
     color: #333;
 }
 
-form {
+.dashboard-form {
     margin-bottom: 15px;
 }
 
-label {
+.dashboard-label {
     display: block;
     margin-bottom: 8px;
     color: #333;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+.dashboard-input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -44,7 +45,7 @@ input[type="email"] {
     margin-bottom: 10px;
 }
 
-button {
+.dashboard-button {
     padding: 10px 20px;
     background-color: rebeccapurple;
     color: #fff;
@@ -53,17 +54,17 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.dashboard-button:hover {
     background-color: #0056b3;
 }
 
-.error-message {
+.dashboard-error {
     color: #ff0000;
     font-style: italic;
     margin-top: 5px;
 }
 
-.success-message {
+.dashboard-success {
     color: #008000;
     font-style: italic;
     margin-top: 5px;

@@ -1,3 +1,10 @@
+/* Reset default margin and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: "Bubblegum Sans", cursive;
     margin: 0;
@@ -5,7 +12,11 @@ body {
     background-color: white;
     color: #3C0295;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
 header {
     position: relative;
     background-color: #fff;
@@ -13,6 +24,7 @@ header {
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 .logos-container {
     display: flex;
     justify-content: space-between;
@@ -21,6 +33,7 @@ header {
     margin: 0 auto;
     padding: 0 20px;
 }
+
 .logo img {
     max-width: 150px;
 }
@@ -31,6 +44,7 @@ nav {
     left: 50%;
     transform: translateX(-50%);
 }
+
 nav ul {
     list-style: none;
     padding: 0;
@@ -38,6 +52,7 @@ nav ul {
     display: flex;
     justify-content: center;
 }
+
 nav a {
     text-decoration: none;
     color: #3C0295;
@@ -45,6 +60,7 @@ nav a {
     padding: 15px;
     transition: color 0.3s ease;
 }
+
 nav a:hover {
     color: lightskyblue;
 }
@@ -88,15 +104,13 @@ nav a:hover {
     color: #3C0295;
 }
 
-
 .searchBarButton {
-    position: absolute;
+    position: relative;  /* Remove the absolute position */
     top: 120px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 999;
 }
-
 .searchBarButton input[type="text"],
 .searchBarButton button {
     font-family: "Bubblegum Sans", cursive;
@@ -116,12 +130,11 @@ nav a:hover {
     background-color: black;
 }
 
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .searchBarButton {
-        top: 160px;
-    }
+footer {
+    background-color: #3C0295;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: auto; /* Push footer to the bottom of the page */
+    width: 100%; /* Full width footer */
 }

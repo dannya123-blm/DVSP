@@ -20,13 +20,16 @@ if (isset($_SESSION['user_id'])) {
     <div class="contact-container">
         <h2>Contact Us</h2>
         <p>Feel free to reach out to us for any inquiries or feedback!</p>
-        <form method="post" action="index.php">
-            <label for="subject">Subject:</label>
-            <input type="text" id="subject" name="subject" required><br><br>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="6" required></textarea><br><br>
-            <button type="submit" name="submit">Submit</button>
+        <form method="post" action=index.php" class="custom-form">
+            <label for="subject" class="form-label">Subject:</label>
+            <input type="text" id="subject" name="subject" class="form-input" required><br><br>
+
+            <label for="message" class="form-label">Message:</label><br>
+            <textarea id="message" name="message" rows="6" class="form-textarea" required></textarea><br><br>
+
+            <button type="submit" name="submit" class="form-button">Submit</button>
         </form>
+
     </div>
     </body>
     </html>

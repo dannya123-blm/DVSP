@@ -78,17 +78,10 @@ if (isset($_SESSION['user_id'])) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>User Dashboard</title>
             <link rel="stylesheet" href="../css/dashboard.css">
-            <style>
-                /* Style for error messages */
-                .error-message {
-                    color: red;
-                    font-weight: bold;
-                }
-            </style>
         </head>
         <body>
         <div class="container">
-            <div class="user-details">
+            <div class="dashboard-details">
                 <h3>User Information</h3>
                 <p><strong>Username:</strong> <?php echo htmlspecialchars($userData['Username']); ?></p>
                 <p><strong>Email:</strong> <?php echo htmlspecialchars($userData['Email']); ?></p>
@@ -96,44 +89,45 @@ if (isset($_SESSION['user_id'])) {
                 <p><strong>Address:</strong> <?php echo htmlspecialchars($userData['Address']); ?></p>
             </div>
 
-            <div class="update-form">
+            <div class="dashboard-update">
                 <h3>Update Details</h3>
                 <?php
                 // Display error message if set
                 if (!empty($errorMsg)) {
-                    echo "<p class='error-message'>" . $errorMsg . "</p>";
+                    echo "<p class='dashboard-error'>" . $errorMsg . "</p>";
                 }
                 ?>
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                    <label for="new_username">New Username:</label>
-                    <input type="text" id="new_username" name="new_username" required>
-                    <button type="submit" name="update_username">Update Username</button>
+                <form class="dashboard-form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                    <label for="new_username" class="dashboard-label">New Username:</label>
+                    <input type="text" id="new_username" name="new_username" class="dashboard-input" required>
+                    <button type="submit" name="update_username" class="dashboard-button">Update Username</button>
                 </form>
 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                    <label for="new_email">New Email:</label>
-                    <input type="email" id="new_email" name="new_email" required>
-                    <button type="submit" name="update_email">Update Email</button>
+                <form class="dashboard-form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                    <label for="new_email" class="dashboard-label">New Email:</label>
+                    <input type="email" id="new_email" name="new_email" class="dashboard-input" required>
+                    <button type="submit" name="update_email" class="dashboard-button">Update Email</button>
                 </form>
 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                    <label for="new_mobile">New Mobile Number (10 digits):</label>
-                    <input type="text" id="new_mobile" name="new_mobile" maxlength="20" pattern="[0-9]{10,20}" title="Please enter a valid mobile number (10-20 digits)" required>
-                    <button type="submit" name="update_mobile">Update Mobile Number</button>
+                <form class="dashboard-form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                    <label for="new_mobile" class="dashboard-label">New Mobile Number (10 digits):</label>
+                    <input type="text" id="new_mobile" name="new_mobile" class="dashboard-input" maxlength="20" pattern="[0-9]{10,20}" title="Please enter a valid mobile number (10-20 digits)" required>
+                    <button type="submit" name="update_mobile" class="dashboard-button">Update Mobile Number</button>
                 </form>
 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                    <label for="new_address">New Address:</label>
-                    <input type="text" id="new_address" name="new_address" required>
-                    <button type="submit" name="update_address">Update Address</button>
+                <form class="dashboard-form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                    <label for="new_address" class="dashboard-label">New Address:</label>
+                    <input type="text" id="new_address" name="new_address" class="dashboard-input" required>
+                    <button type="submit" name="update_address" class="dashboard-button">Update Address</button>
                 </form>
             </div>
-            <form method="get" action="../public/passwordchanger.php">
-                <button type="submit">Change Password</button>
+            <form class="dashboard-form" method="get" action="../public/passwordchanger.php">
+                <button type="submit" class="dashboard-button">Change Password</button>
             </form>
         </div>
         </body>
         </html>
+
         <?php
     } catch (PDOException $e) {
         die("Error: " . $e->getMessage());

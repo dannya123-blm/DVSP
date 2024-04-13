@@ -1,9 +1,10 @@
 <?php
 require '../template/header.php';
 require '../classes/Customer.php'; // Update the path to Customer.php
+require '../src/dbconnect.php'; // Include your database connection
 
-// Create an instance of the Customer class
-$customer = new Customer();
+// Assuming $pdo is your database connection instance
+$customer = new Customer($pdo); // Pass $pdo to the Customer constructor
 
 // Set a new address using the setAddress method
 $newAddress = "Half&Half, Unit 42a Coolmine Industrial Estate, Blanchardstown, Dublin, Ireland Dublin 15";
