@@ -3,12 +3,16 @@ include '../template/header.php';
 include '../src/dbconnect.php';
 require '../classes/Customer.php';
 
+// Define the validatePasswordStrength function here
+function validatePasswordStrength($password) {
+    return strlen($password) >= 8 && preg_match('/[A-Z]/', $password);
+}
+
 if (isset($_SESSION['user_id'])) {
     try {
         $userId = $_SESSION['user_id'];
         $customer = new Customer($pdo);
 
-        // Correctly calling the non-static method on the instance of Customer
         $userData = $customer->getUserDataById($userId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
@@ -33,6 +37,7 @@ if (isset($_SESSION['user_id'])) {
     echo "User not logged in";
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
