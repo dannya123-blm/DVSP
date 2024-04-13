@@ -51,5 +51,23 @@ public function getAllCards($customerId) {
     $stmt->execute([$customerId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+    public function deletePayment($paymentId) {
+        $sql = "DELETE FROM payment WHERE idPayment = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$paymentId]);
+    }
+    // Inside the Payment class
+    public function updatePayment($paymentId, $paymentName, $paymentNumber, $paymentCCV) {
+        $sql = "UPDATE payment SET PaymentName = ?, PaymentNumber = ?, PaymentCCV = ? WHERE idPayment = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$paymentName, $paymentNumber, $paymentCCV, $paymentId]);
+    }
+
+    public function getPaymentInfo($paymentId) {
+        $sql = "SELECT * FROM payment WHERE idPayment = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$paymentId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>
