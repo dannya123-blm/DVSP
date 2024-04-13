@@ -1,25 +1,24 @@
 <?php
-include '../src/dbconnect.php';
-include '../template/header.php';
+require_once '../src/dbconnect.php'; // Include your database connection
+require_once '../classes/Admin.php'; // Include Admin class definition
+include '../template/header.php'; // Include header (if needed)
 
 // Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
-    $admin_id = $_POST['admin_id'];
+    $adminId = $_POST['admin_id'];
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Validate the credentials using prepared statements with PDO
-    $sql = "SELECT * FROM admin WHERE idAdmin = ? AND Username = ? AND Password = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$admin_id, $username, $password]);
-    $result = $stmt->fetch();
+    // Create an instance of Admin class
+    $admin = new Admin();
 
-    if ($result) {
+    // Authenticate admin
+    if ($admin->authenticate($adminId, $username, $password)) {
         // Credentials are correct, start the session and store admin_id
         session_start();
-        $_SESSION['admin_id'] = $admin_id;
-        $_SESSION['user_role'] = 'admin'; // Set user role as admin
+        $_SESSION['admin_id'] = $adminId;
+        $_SESSION['user_role'] = $admin->getRole();
         header("Location: ../administrator/adminscrud.php"); // Redirect to admin page
         exit();
     } else {
@@ -50,6 +49,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="submit" value="Login">
     </form>
 </div>
-
 </body>
 </html>

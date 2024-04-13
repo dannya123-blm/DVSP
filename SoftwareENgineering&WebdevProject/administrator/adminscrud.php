@@ -12,8 +12,8 @@ if (!isset($_SESSION['admin_id'])) {
 $isAdminLoggedIn = true;
 
 // Include the necessary class definitions
-include '../classes/User.php';
-include '../classes/Admin.php';
+require_once '../classes/User.php';
+require_once '../classes/Admin.php';
 include '../classes/Products.php';
 
 // Instantiate an Admin object
