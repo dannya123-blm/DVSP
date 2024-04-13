@@ -1,5 +1,5 @@
 <?php
-require 'user.php'; // Include base User class definition
+require 'user.php';
 
 class Customer extends User
 {
@@ -24,11 +24,7 @@ class Customer extends User
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
-            if ($stmt->rowCount() > 0) {
-                return $stmt->fetch(PDO::FETCH_ASSOC);
-            } else {
-                return false;
-            }
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             throw new Exception("Error fetching user data: " . $e->getMessage());
         }
@@ -43,8 +39,8 @@ class Customer extends User
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
-            if ($stmt->rowCount() > 0) {
-                $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+            $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($userData) {
                 return password_verify($password, $userData['Password']);
             } else {
                 return false;
