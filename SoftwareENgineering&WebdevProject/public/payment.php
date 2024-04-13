@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $payment = new Payment($pdo);
 
     $customerID = $_SESSION['user_id'];
-    $paymentDate = $_POST['payment_date'];
     $paymentMethod = $_POST['payment_method'];
     $paymentName = $_POST['payment_name'];
     $paymentNumber = $_POST['payment_number'];
@@ -25,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $payment->setPaymentDetails($customerID, $paymentDate, $paymentMethod, $paymentName, $paymentNumber, $paymentExpiryDate);
+    $payment->setPaymentDetails($customerID, $paymentMethod, $paymentName, $paymentNumber, $paymentExpiryDate);
     $result = $payment->processPayment($paymentCCV);
 
     if (is_numeric($result)) {
@@ -48,7 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="payment-container">
     <h2>Enter Payment Details</h2>
     <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
-        Payment Date: <input type="date" name="payment_date" required><br><br>
         Payment Method:
         <select name="payment_method" required>
             <option value="Mastercard">Mastercard</option>
@@ -63,5 +61,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
-
 <?php include '../template/footer.php'; ?>

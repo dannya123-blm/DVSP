@@ -3,7 +3,6 @@
 class Payment {
     private $pdo;
     private $idCustomer;
-    private $paymentDate;
     private $paymentMethod;
     private $paymentName;
     private $paymentNumber;
@@ -17,7 +16,6 @@ class Payment {
     // Set the payment details for a payment transaction
     public function setPaymentDetails($idCustomer, $paymentDate, $paymentMethod, $paymentName, $paymentNumber, $paymentExpiryDate) {
         $this->idCustomer = $idCustomer;
-        $this->paymentDate = $paymentDate;
         $this->paymentMethod = $paymentMethod;
         $this->paymentName = $paymentName;
         $this->paymentNumber = $paymentNumber;
@@ -41,9 +39,9 @@ class Payment {
             return "Error: Invalid CCV.";
         }
 
-        $sql = "INSERT INTO payment (idCustomer, paymentDate, paymentMethod, paymentName, paymentNumber, paymentCCV, paymentExpiryDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO payment (idCustomer, paymentMethod, paymentName, paymentNumber, paymentCCV, paymentExpiryDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$this->idCustomer, $this->paymentDate, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV, $this->paymentExpiryDate]);
+        $stmt->execute([$this->idCustomer, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV, $this->paymentExpiryDate]);
         return $this->pdo->lastInsertId();  // Return the ID of the new payment entry
     }
 
