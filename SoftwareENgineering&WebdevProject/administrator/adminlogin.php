@@ -1,6 +1,7 @@
 <?php
 require_once '../src/dbconnect.php';
 require_once '../template/header.php';
+require_once '../classes/Admin.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin_id = $_POST['admin_id'];
