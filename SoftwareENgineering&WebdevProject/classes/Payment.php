@@ -44,7 +44,6 @@ class Payment {
         $sql = "INSERT INTO payment (idCustomer, paymentDate, paymentMethod, paymentName, paymentNumber, paymentCCV, paymentExpiryDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$this->idCustomer, $this->paymentDate, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV, $this->paymentExpiryDate]);
-        return $this->pdo->lastInsertId();  // Return the ID of the new payment entry
+        return $this->pdo->lastInsertId();
     }
 }
-?>
