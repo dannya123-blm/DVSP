@@ -127,8 +127,10 @@ nav a:hover {
     background-color: black;
 }
 
-/* Media Query for Responsive Design */
 @media (max-width: 768px) {
+    .searchBarButton {
+        top: 160px; /* Adjust position for smaller screens */
+    }
     .container {
         flex-direction: column; /* Stack items vertically on smaller screens */
     }

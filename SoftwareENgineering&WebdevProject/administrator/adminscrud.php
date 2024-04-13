@@ -107,8 +107,10 @@ $allProducts = $products->getAllProducts();
                 <div class="cartButton"><a href="../public/cart.php">Cart</a></div>
             </div>
         </div>
-
-
+        <div class="searchBarButton">
+            <input type="text" placeholder="Search">
+            <button type="button">Search</button>
+        </div>
     </div>
 </header>
 
