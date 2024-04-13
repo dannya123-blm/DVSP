@@ -6,7 +6,7 @@ class Order {
     private $orderDate;
     private $totalAmount;
     private $idPayment;
-    private $idOrder; // Property to store the auto-generated order ID
+    private $idOrder;
 
     public function __construct($idCustomer, $idAdmin, $orderDate, $totalAmount, $idPayment) {
         $this->idCustomer = $idCustomer;
