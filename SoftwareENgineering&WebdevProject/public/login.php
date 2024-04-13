@@ -1,24 +1,33 @@
 <?php
 global $pdo;
-include '../template/header.php';
+session_start(); // Start or resume the session
 require_once '../src/dbconnect.php';
 require_once '../classes/Customer.php';
+
+$loginError = ''; // Initialize login error message
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
     try {
-
         $customer = new Customer($pdo);
-
         $authenticatedUser = $customer->authenticateUser($username, $password);
 
         if ($authenticatedUser) {
+            // Set session variables
             $_SESSION['user_id'] = $authenticatedUser['idCustomer'];
             $_SESSION['username'] = $authenticatedUser['Username'];
             $_SESSION['email'] = $authenticatedUser['Email'];
 
+            // Set the 'user' cookie
+            if (setcookie('user', $username, time() + 3600, '/')) {
+                echo "Cookie 'user' set successfully.";
+            } else {
+                echo "Error setting cookie 'user'.";
+            }
+
+            // Redirect based on user role
             if ($authenticatedUser['Role'] == 'admin') {
                 header("Location: ../administrator/adminsadminscrud.php");
             } else {
@@ -47,11 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="login-container">
     <form action="login.php" method="POST">
         <h2 class="login-heading">User Login</h2>
-        <?php
-        if (isset($loginError)) {
-            echo '<p class="error-message">' . $loginError . '</p>';
-        }
-        ?>
+        <?php if ($loginError) : ?>
+            <p class="error-message"><?php echo $loginError; ?></p>
+        <?php endif; ?>
         <label class="login-label" for="username">Username:</label>
         <input type="text" id="username" name="username" class="login-input" required><br><br>
 
@@ -62,10 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p class="login-text" style="text-align: center;">Don't have an account? <a href="../public/register.php">Register here</a></p>
     </form>
 </div>
+
 </body>
 </html>
-
-<?php
-include "../template/footer.php";
-?>
-

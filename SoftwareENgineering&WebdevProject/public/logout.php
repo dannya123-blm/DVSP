@@ -1,7 +1,7 @@
 <?php
 session_start();
-$_SESSION = [];
-session_destroy();
+$_SESSION = []; // Clear all session variables
+session_destroy(); // Destroy the session
 header("Location: ../public/index.php");
 exit();
-
+?>
