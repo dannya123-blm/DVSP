@@ -1,64 +1,47 @@
 <?php
-// Include the database connection file
-include '../src/dbconnect.php'; // Adjust the filename as per your setup
-include '../template/header.php'; // Adjust the filename as per your setup
 
-// Include the Payment class
-include '../classes/Payment.php'; // Assuming the Payment class is in Payment.php file
+global $pdo;
+include '../src/dbconnect.php';
+include '../template/header.php';
+include '../classes/Payment.php';
+
 
 if (!isset($_SESSION['user_id'])) {
-    // Redirect to login page if user is not logged in
-    header("Location: login.php"); // Adjust the filename and path as per your setup
+    header("Location: login.php");
     exit;
 }
-
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Create a new Payment object
-    $payment = new Payment();
+    $payment = new Payment($pdo);
 
-    // Get customer ID from session
     $customerID = $_SESSION['user_id'];
-
-    // Set customer ID
-    $payment->setCustomerID($customerID);
-
-    // Set payment details from form inputs
     $paymentDate = $_POST['payment_date'];
     $paymentMethod = $_POST['payment_method'];
     $paymentName = $_POST['payment_name'];
     $paymentNumber = $_POST['payment_number'];
+    $paymentCCV = $_POST['payment_ccv'];
 
-    // Hash the CVV
-    $paymentCCV = password_hash($_POST['payment_ccv'], PASSWORD_DEFAULT);
-
-    // Validate payment method (only Mastercard or Visa allowed)
     if ($paymentMethod !== "Mastercard" && $paymentMethod !== "Visa") {
         echo "Error: Only Mastercard and Visa are allowed as payment methods.";
         exit;
     }
 
-    // Insert payment details into the database using PDO prepared statements
-    $sql = "INSERT INTO payment (idCustomer, paymentDate, paymentMethod, paymentName, paymentNumber, paymentCCV) 
-            VALUES (:idCustomer, :paymentDate, :paymentMethod, :paymentName, :paymentNumber, :paymentCCV)";
-    $stmt = $pdo->prepare($sql); // Fixed the arrow operator
-    $stmt->bindParam(':idCustomer', $customerID); // Use the retrieved customer ID
-    $stmt->bindParam(':paymentDate', $paymentDate);
-    $stmt->bindParam(':paymentMethod', $paymentMethod);
-    $stmt->bindParam(':paymentName', $paymentName);
-    $stmt->bindParam(':paymentNumber', $paymentNumber);
-    $stmt->bindParam(':paymentCCV', $paymentCCV);
+    // Call the setPaymentDetails method to set the payment details
+    $payment->setPaymentDetails($customerID, $paymentDate, $paymentMethod, $paymentName, $paymentNumber);
 
-    if ($stmt->execute()) {
-        echo "Payment details saved successfully.";
+    // Call the processPayment method of the Payment class
+    $result = $payment->processPayment($paymentCCV);
+
+    if (is_numeric($result)) {
+        // Payment was successful, display success message
+        echo "Card successfully added!";
     } else {
-        echo "Error: " . $stmt->errorInfo()[2];
+        // Payment processing failed, display error message
+        echo $result;
     }
-
-    // Close statement
-    $stmt->closeCursor(); // Optional for PDO, closes the cursor
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

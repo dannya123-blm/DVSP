@@ -7,8 +7,11 @@ class Order {
     private $totalAmount;
     private $idPayment;
     private $idOrder;
+    private $pdo;
 
-    public function __construct($idCustomer, $idAdmin, $orderDate, $totalAmount, $idPayment) {
+    // Single constructor to initialize the database connection and optionally initialize order properties
+    public function __construct($pdo, $idCustomer = null, $idAdmin = null, $orderDate = null, $totalAmount = null, $idPayment = null) {
+        $this->pdo = $pdo;
         $this->idCustomer = $idCustomer;
         $this->idAdmin = $idAdmin;
         $this->orderDate = $orderDate;
@@ -16,26 +19,32 @@ class Order {
         $this->idPayment = $idPayment;
     }
 
-    public function saveOrderToDatabase($pdo) {
+    // Retrieve order details
+    public function getOrderDetails($orderId) {
+        $stmt = $this->pdo->prepare("SELECT product_id, quantity FROM orders WHERE id = :orderId");
+        $stmt->execute(['orderId' => $orderId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Save order to database
+    public function saveOrderToDatabase() {
         try {
-            $stmt = $pdo->prepare("INSERT INTO orders (idCustomer, idAdmin, orderDate, totalAmount, idPayment) VALUES (?, ?, ?, ?, ?)");
+            $stmt = $this->pdo->prepare("INSERT INTO orders (idCustomer, idAdmin, orderDate, totalAmount, idPayment) VALUES (?, ?, ?, ?, ?)");
             $result = $stmt->execute([$this->idCustomer, $this->idAdmin, $this->orderDate, $this->totalAmount, $this->idPayment]);
 
             if ($result) {
-                // Order successfully inserted
-                $this->idOrder = $pdo->lastInsertId(); // Retrieve the auto-generated order ID
+                $this->idOrder = $this->pdo->lastInsertId(); // Retrieve the auto-generated order ID
                 return true;
             } else {
-                // Error inserting order
                 return false;
             }
         } catch (PDOException $e) {
-            // Handle any database errors here
             echo 'Error saving order: ' . $e->getMessage();
             return false;
         }
     }
 
+    // Get the ID of the order
     public function getIdOrder() {
         return $this->idOrder;
     }

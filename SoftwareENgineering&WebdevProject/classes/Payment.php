@@ -1,82 +1,48 @@
 <?php
 
 class Payment {
-    protected $idPayment;
-    protected $idCustomer;
-    protected $paymentDate;
-    protected $paymentMethod;
-    protected $paymentName;
-    protected $paymentNumber;
-    protected $paymentCCV;
+private $pdo;
+private $idCustomer;
+private $paymentDate;
+private $paymentMethod;
+private $paymentName;
+private $paymentNumber;
 
-    // Setter method for payment ID
-    public function setPaymentID($paymentID) {
-        $this->idPayment = $paymentID;
-    }
-
-    // Getter method for payment ID
-    public function getPaymentID() {
-        return $this->idPayment;
-    }
-
-    // Setter method for customer ID
-    public function setCustomerID($customerID) {
-        $this->idCustomer = $customerID;
-    }
-
-    // Getter method for customer ID
-    public function getCustomerID() {
-        return $this->idCustomer;
-    }
-
-    // Setter method for payment date
-    public function setPaymentDate($paymentDate) {
-        $this->paymentDate = $paymentDate;
-    }
-
-    // Getter method for payment date
-    public function getPaymentDate() {
-        return $this->paymentDate;
-    }
-
-    // Setter method for payment method
-    public function setPaymentMethod($paymentMethod) {
-        $this->paymentMethod = $paymentMethod;
-    }
-
-    // Getter method for payment method
-    public function getPaymentMethod() {
-        return $this->paymentMethod;
-    }
-
-    // Setter method for payment name
-    public function setPaymentName($paymentName) {
-        $this->paymentName = $paymentName;
-    }
-
-    // Getter method for payment name
-    public function getPaymentName() {
-        return $this->paymentName;
-    }
-
-    // Setter method for payment number
-    public function setPaymentNumber($paymentNumber) {
-        $this->paymentNumber = $paymentNumber;
-    }
-
-    // Getter method for payment number
-    public function getPaymentNumber() {
-        return $this->paymentNumber;
-    }
-
-    // Setter method for payment CCV
-    public function setPaymentCCV($paymentCCV) {
-        $this->paymentCCV = $paymentCCV;
-    }
-
-    // Getter method for payment CCV
-    public function getPaymentCCV() {
-        return $this->paymentCCV;
-    }
+// Constructor to initialize the PDO object required for database operations
+public function __construct($pdo) {
+$this->pdo = $pdo;
 }
 
+// Set the payment details for a payment transaction
+public function setPaymentDetails($idCustomer, $paymentDate, $paymentMethod, $paymentName, $paymentNumber) {
+$this->idCustomer = $idCustomer;
+$this->paymentDate = $paymentDate;
+$this->paymentMethod = $paymentMethod;
+$this->paymentName = $paymentName;
+$this->paymentNumber = $paymentNumber;
+}
+
+// Validate the payment CCV
+public function validatePaymentCCV($paymentCCV) {
+// You can add your validation logic here, for example, checking the length or format of the CCV
+// For simplicity, let's assume CCV must be a numeric value of length 3 or 4
+if (!is_numeric($paymentCCV) || (strlen($paymentCCV) !== 3 && strlen($paymentCCV) !== 4)) {
+return false; // CCV is invalid
+}
+return true; // CCV is valid
+}
+
+// Process the payment: insert the payment details into the database
+public function processPayment($paymentCCV) {
+// Validate the payment CCV
+if (!$this->validatePaymentCCV($paymentCCV)) {
+return "Error: Invalid CCV.";
+}
+
+$sql = "INSERT INTO payment (idCustomer, paymentDate, paymentMethod, paymentName, paymentNumber, paymentCCV) VALUES (?, ?, ?, ?, ?, ?)";
+$stmt = $this->pdo->prepare($sql);
+$stmt->execute([$this->idCustomer, $this->paymentDate, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV]);
+return $this->pdo->lastInsertId();  // Return the ID of the new payment entry
+}
+}
+?>
