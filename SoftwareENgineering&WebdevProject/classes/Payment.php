@@ -47,3 +47,4 @@ class Payment {
         return $this->pdo->lastInsertId();  // Return the ID of the new payment entry
     }
 }
+?>
