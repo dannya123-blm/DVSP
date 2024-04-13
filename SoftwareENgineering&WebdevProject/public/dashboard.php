@@ -114,6 +114,9 @@ if (isset($_SESSION['user_id'])) {
                     <button type="submit" name="update_address">Update Address</button>
                 </form>
             </div>
+            <form method="get" action="passwordchanger.php">
+                <button type="submit">Change Password</button>
+            </form>
         </div>
         </body>
         </html>

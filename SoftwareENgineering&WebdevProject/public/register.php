@@ -9,34 +9,43 @@ include '../classes/User.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Collect form data
     $username = htmlspecialchars($_POST['username']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
+    $password = $_POST['password']; // Store the plain password for hashing
     $email = htmlspecialchars($_POST['email']); // Sanitize email input
     $mobileNumber = htmlspecialchars($_POST['mobileNumber']); // Sanitize mobile number input
     $address = htmlspecialchars($_POST['address']); // Sanitize address input
 
-    // Prepare SQL statement to insert user data into database
-    $sql = "INSERT INTO customer (username, password, email, mobileNumber, address) VALUES (?, ?, ?, ?, ?)";
+    // Password validation criteria (at least 8 characters with at least one uppercase letter)
+    if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password)) {
+        // Display error message and prevent form submission
+        echo "<script>alert('Password must be at least 8 characters long and contain at least one uppercase letter');</script>";
+    } else {
+        // Hash the password for security
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    try {
-        // Create a PDO statement
-        $stmt = $pdo->prepare($sql);
+        // Prepare SQL statement to insert user data into database
+        $sql = "INSERT INTO customer (username, password, email, mobileNumber, address) VALUES (?, ?, ?, ?, ?)";
 
-        // Bind parameters
-        $stmt->bindParam(1, $username);
-        $stmt->bindParam(2, $password);
-        $stmt->bindParam(3, $email);
-        $stmt->bindParam(4, $mobileNumber);
-        $stmt->bindParam(5, $address);
+        try {
+            // Create a PDO statement
+            $stmt = $pdo->prepare($sql);
 
-        // Execute the statement
-        $stmt->execute();
+            // Bind parameters
+            $stmt->bindParam(1, $username);
+            $stmt->bindParam(2, $hashedPassword);
+            $stmt->bindParam(3, $email);
+            $stmt->bindParam(4, $mobileNumber);
+            $stmt->bindParam(5, $address);
 
-        // Redirect to login page after successful registration
-        header("Location: ../public/login.php");
-        exit;
-    } catch (PDOException $e) {
-        // Handle database error
-        die("Error: " . $e->getMessage());
+            // Execute the statement
+            $stmt->execute();
+
+            // Redirect to login page after successful registration
+            header("Location: ../public/login.php");
+            exit;
+        } catch (PDOException $e) {
+            // Handle database error
+            die("Error: " . $e->getMessage());
+        }
     }
 }
 ?>
@@ -48,10 +57,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
     <link rel="stylesheet" href="../css/register.css">
+    <script>
+        // Client-side password validation
+        function validatePassword() {
+            var password = document.getElementById('password').value;
+            if (password.length < 8 || !/[A-Z]/.test(password)) {
+                alert('Password must be at least 8 characters long and contain at least one uppercase letter');
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+    </script>
 </head>
 <body>
 <div class="form-container">
-    <form action="../public/register.php" method="POST">
+    <form action="../public/register.php" method="POST" onsubmit="return validatePassword()">
         <h2>User Registration</h2>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
