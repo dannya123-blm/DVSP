@@ -102,5 +102,97 @@ class Customer extends User
             throw new Exception("Error updating mobile number: " . $e->getMessage());
         }
     }
+
+    public function getUserDataById($userId)
+    {
+        try {
+            $stmt = $this->pdo->prepare("SELECT Username, Email, MobileNumber, Address FROM customer WHERE idCustomer = :userId");
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error fetching user data: " . $e->getMessage());
+        }
+    }
+
+    public function updateUsername($userId, $newUsername)
+    {
+        try {
+            // Update the username for the specified user in the database
+            $sql = "UPDATE customer SET Username = :newUsername WHERE idCustomer = :userId";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':newUsername', $newUsername);
+            $stmt->bindParam(':userId', $userId);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Error updating username: " . $e->getMessage());
+        }
+    }
+
+    public function updateEmail($userId, $newEmail)
+    {
+        try {
+            // Update the email for the specified user in the database
+            $sql = "UPDATE customer SET Email = :newEmail WHERE idCustomer = :userId";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':newEmail', $newEmail);
+            $stmt->bindParam(':userId', $userId);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Error updating email: " . $e->getMessage());
+        }
+    }
+
+    public function updatePassword($userId, $newPassword)
+    {
+        try {
+            // Hash the new password
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            // Update the password for the specified user in the database
+            $sql = "UPDATE customer SET Password = :newPassword WHERE idCustomer = :userId";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':newPassword', $hashedPassword);
+            $stmt->bindParam(':userId', $userId);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Error updating password: " . $e->getMessage());
+        }
+    }
+
+    public function emailExists($email)
+    {
+        try {
+            // Check if the given email already exists in the database
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer WHERE Email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+
+            return $count > 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error checking email existence: " . $e->getMessage());
+        }
+    }
+
+    public function usernameExists($username)
+    {
+        try {
+            // Check if the given username already exists in the database
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer WHERE Username = :username");
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+
+            return $count > 0;
+        } catch (PDOException $e) {
+            throw new Exception("Error checking username existence: " . $e->getMessage());
+        }
+    }
 }
 ?>

@@ -9,8 +9,8 @@ if (isset($_SESSION['user_id'])) {
     try {
         $userId = $_SESSION['user_id']; // Assuming the logged-in user's ID is stored in $_SESSION['user_id']
 
-        // Create a new Customer object
-        $customer = new Customer();
+        // Create a new Customer object with PDO instance
+        $customer = new Customer($pdo); // Pass $pdo object to the constructor
 
         // Fetch user data from the database using Customer class method
         $userData = $customer->getUserDataById($userId);
@@ -36,43 +36,34 @@ if (isset($_SESSION['user_id'])) {
                 }
             }
 
+            // Handle email update
             if (isset($_POST['update_email'])) {
-                // Process email update
                 $newEmail = $_POST['new_email'];
-
-                // Check if the new email already exists
                 if ($customer->emailExists($newEmail)) {
                     $errorMsg = "Email already exists. Please choose a different email.";
                 } else {
-                    // Update the email
                     $customer->updateEmail($userId, $newEmail);
-                    // Refresh the page after updating
                     header("Location: dashboard.php");
                     exit();
                 }
             }
 
+            // Handle mobile number update
             if (isset($_POST['update_mobile'])) {
-                // Process mobile number update
                 $newMobile = $_POST['new_mobile'];
-
-                // Validate mobile number format (10 digits)
-                if (preg_match('/^[0-9]{10}$/', $newMobile)) {
+                if (preg_match('/^[0-9]{10,20}$/', $newMobile)) {
                     $customer->updateMobileNumber($userId, $newMobile);
-                    // Refresh the page after updating
                     header("Location: dashboard.php");
                     exit();
                 } else {
-                    // Invalid mobile number format
-                    $errorMsg = "Invalid mobile number format. Please enter a 10-digit mobile number.";
+                    $errorMsg = "Invalid mobile number format. Please enter a valid mobile number (10-20 digits).";
                 }
             }
 
+            // Handle address update
             if (isset($_POST['update_address'])) {
-                // Process address update
                 $newAddress = $_POST['new_address'];
                 $customer->updateAddress($userId, $newAddress);
-                // Refresh the page after updating
                 header("Location: dashboard.php");
                 exit();
             }
