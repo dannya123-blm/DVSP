@@ -1,55 +1,42 @@
 <?php
+// Include the necessary class definitions
+include '../classes/User.php';
+include '../classes/Admin.php';
+include '../classes/Products.php';
+
 // Start the session
 session_start();
 
-// Check if the user is not logged in or not an admin
-if (!isset($_SESSION['admin_id']) || $_SESSION['user_role'] !== 'admin') {
-    // Redirect the user to the login page
-    header("Location: adminlogin.php");
-    exit(); // Stop further execution of the script
-}
+// Instantiate an Admin object
+$admin = new Admin();
+$admin->setUserID($_SESSION['admin_id']);
 
 // Continue with the rest of your code
 include "../src/dbconnect.php";
 
+// Instantiate a Products object
+$products = new Products($pdo);
+
 // Handle product deletion
 if(isset($_POST['delete_product'])) {
-    // Sanitize input
     $productId = $_POST['product_id'];
-    // Delete product query
-    $deleteSql = "DELETE FROM Products WHERE idProducts = :productId";
-    $stmt = $pdo->prepare($deleteSql);
-    $stmt->execute(['productId' => $productId]);
+    $products->deleteProduct($productId);
 }
 
 // Handle product addition
 if(isset($_POST['add_product'])) {
-    // Sanitize inputs
-    $idAdmin = 1; // Set idAdmin value to 1
+    $idAdmin = $_SESSION['admin_id'];
     $idProducts = $_POST['product_id'];
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
     $stockQuantity = $_POST['stock_quantity'];
     $category = $_POST['category'];
-
-    // Insert product query
-    $insertSql = "INSERT INTO Products (idAdmin, idProducts, Name, Description, Price, StockQuantity, Category) VALUES (:idAdmin, :idProducts, :name, :description, :price, :stockQuantity, :category)";
-    $stmt = $pdo->prepare($insertSql);
-    $stmt->execute([
-        'idAdmin' => $idAdmin,
-        'idProducts' => $idProducts,
-        'name' => $name,
-        'description' => $description,
-        'price' => $price,
-        'stockQuantity' => $stockQuantity,
-        'category' => $category
-    ]);
+    $products->addProduct($idAdmin, $idProducts, $name, $description, $price, $stockQuantity, $category);
 }
 
-// Select all products
-$sql = "SELECT * FROM Products";
-$stmt = $pdo->query($sql);
+// Fetch all products
+$allProducts = $products->getAllProducts();
 
 // Check if user is logged in
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
@@ -126,25 +113,25 @@ $isLoggedIn = isset($_SESSION['user_id']);
 </header>
 
 <?php
-// Assuming $stmt and other PHP variables are declared/initialized elsewhere
-if ($stmt->rowCount() > 0) {
+// Display products
+if (!empty($allProducts)) {
     echo "<table border='1'>";
     echo "<tr><th>Product ID</th><th>Name</th><th>Description</th><th>Price</th><th>Stock Quantity</th><th>Category</th><th>Action</th></tr>";
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    foreach ($allProducts as $product) {
         echo "<tr>";
-        echo "<td>" . $row["idProducts"] . "</td>";
-        echo "<td>" . $row["Name"] . "</td>";
-        echo "<td>" . $row["Description"] . "</td>";
-        echo "<td>" . $row["Price"] . "</td>";
-        echo "<td>" . $row["StockQuantity"] . "</td>";
-        echo "<td>" . $row["Category"] . "</td>";
+        echo "<td>" . $product->getProductID() . "</td>";
+        echo "<td>" . $product->getName() . "</td>";
+        echo "<td>" . $product->getDescription() . "</td>";
+        echo "<td>" . $product->getPrice() . "</td>";
+        echo "<td>" . $product->getStockQuantity() . "</td>";
+        echo "<td>" . $product->getCategory() . "</td>";
         echo "<td>
                 <form class='product-form' method='post' style='display: inline;'>
-                    <input type='hidden' name='product_id' value='" . $row["idProducts"] . "'>
+                    <input type='hidden' name='product_id' value='" . $product->getProductID() . "'>
                     <input type='submit' name='delete_product' value='Delete'>
                 </form>
                 <form class='product-form' method='get' action='adminedit.php' style='display: inline;'>
-                    <input type='hidden' name='product_id' value='" . $row["idProducts"] . "'>
+                    <input type='hidden' name='product_id' value='" . $product->getProductID() . "'>
                     <input type='submit' value='Edit'>
                 </form>
               </td>";

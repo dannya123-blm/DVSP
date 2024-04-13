@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.payment-container {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payment-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payment-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-container label {
+    margin-bottom: 10px;
+}
+
+.payment-container input[type="date"],
+.payment-container input[type="text"],
+.payment-container input[type="password"],
+.payment-container select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 90%;
+}
+
+.payment-container input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #3C0295;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.payment-container input[type="submit"]:hover {
+    color: #3C0295;
+    background-color: white;
+}
+
+.error-message {
+    color: #ff0000;
+    margin-top: 10px;
+    text-align: center;
+}
