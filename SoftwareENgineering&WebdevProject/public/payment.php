@@ -1,15 +1,14 @@
 <?php
-
 global $pdo;
 include '../src/dbconnect.php';
 include '../template/header.php';
 include '../classes/Payment.php';
 
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $payment = new Payment($pdo);
 
@@ -19,14 +18,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $paymentName = $_POST['payment_name'];
     $paymentNumber = $_POST['payment_number'];
     $paymentCCV = $_POST['payment_ccv'];
+    $paymentExpiryDate = $_POST['payment_expiry_date'];
 
     if ($paymentMethod !== "Mastercard" && $paymentMethod !== "Visa") {
         echo "Error: Only Mastercard and Visa are allowed as payment methods.";
         exit;
     }
 
-    // Call the setPaymentDetails method to set the payment details
-    $payment->setPaymentDetails($customerID, $paymentDate, $paymentMethod, $paymentName, $paymentNumber);
+    // Call the setPaymentDetails method to set the payment details, including the expiry date
+    $payment->setPaymentDetails($customerID, $paymentDate, $paymentMethod, $paymentName, $paymentNumber, $paymentExpiryDate);
 
     // Call the processPayment method of the Payment class
     $result = $payment->processPayment($paymentCCV);
@@ -39,9 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo $result;
     }
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,11 +61,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select><br><br>
         Payment Name: <input type="text" name="payment_name"><br><br>
         Payment Number: <input type="text" name="payment_number"><br><br>
-        Payment CCV: <input type="password" name="payment_ccv"><br><br> <!-- Use type="password" for secure input -->
+        Payment CCV: <input type="password" name="payment_ccv"><br><br>
+        Payment Expiry Date: <input type="month" name="payment_expiry_date"><br><br>
         <input type="submit" value="Save Payment">
     </form>
 </div>
 </body>
 </html>
 
-<?php include '../template/footer.php';?>
+<?php include '../template/footer.php'; ?>
