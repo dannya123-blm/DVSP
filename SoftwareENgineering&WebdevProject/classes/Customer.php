@@ -193,6 +193,39 @@ class Customer extends User
         } catch (PDOException $e) {
             throw new Exception("Error checking username existence: " . $e->getMessage());
         }
+
     }
+
+    public function verifyPassword($userId, $password)
+    {
+        // Retrieve the stored password for the user with the given $userId from the database
+        $storedPassword = $this->getStoredPassword($userId);
+
+        // Compare the provided password with the stored password
+        if (password_verify($password, $storedPassword)) {
+            return true; // Passwords match
+        } else {
+            return false;
+        }
+    }
+    public function getStoredPassword($userId)
+    {
+        try {
+            $stmt = $this->pdo->prepare("SELECT Password FROM customer WHERE idCustomer = :userId");
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($userData) {
+                return $userData['Password'];
+            } else {
+                throw new Exception("User with ID {$userId} not found.");
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Error fetching stored password: " . $e->getMessage());
+        }
+    }
+
 }
 ?>

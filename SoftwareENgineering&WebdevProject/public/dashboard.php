@@ -124,6 +124,9 @@ if (isset($_SESSION['user_id'])) {
             <form class="dashboard-form" method="get" action="../public/passwordchanger.php">
                 <button type="submit" class="dashboard-button">Change Password</button>
             </form>
+            <form class="dashboard-form" method="get" action="../public/paymentedit.php">
+                <button type="submit" class="dashboard-button">All Your Cards</button>
+            </form>
         </div>
         </body>
         </html>
