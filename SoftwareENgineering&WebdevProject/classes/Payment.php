@@ -46,4 +46,12 @@ class Payment {
         $stmt->execute([$this->idCustomer, $this->paymentDate, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV, $this->paymentExpiryDate]);
         return $this->pdo->lastInsertId();  // Return the ID of the new payment entry
     }
+
+    public function getAllCards($customerId) {
+        // Assuming $pdo is your database connection and it's a property of this class
+        $sql = "SELECT * FROM payment WHERE idCustomer = :customerId";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['customerId' => $customerId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
