@@ -75,4 +75,20 @@ class Payment {
             return false;
         }
     }
+
+    public function deletePayment($paymentId) {
+        // Prepare an SQL statement to delete a payment entry
+        $sql = "DELETE FROM payment WHERE idPayment = ?";
+        $stmt = $this->pdo->prepare($sql);
+
+        // Execute the SQL statement with the provided payment ID
+        $stmt->execute([$paymentId]);
+
+        // Optionally, check if the deletion was successful
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
