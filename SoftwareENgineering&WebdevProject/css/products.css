@@ -3,15 +3,16 @@
     margin: 0 auto;
     padding: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Changed from 'row' to 'column' */
 }
 
 /* Styling for the filters */
 .filters {
-    margin-right: 20px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-self: flex-start;
+    flex: 0 0 auto;
 }
 
 .filters h2 {
@@ -37,7 +38,6 @@
     background-color: #3C0295;
     color: white;
 }
-
 
 .sort-by {
     margin-top: 20px;
@@ -110,6 +110,7 @@
 @media (max-width: 768px) {
     .product-container {
         align-items: center;
+        flex-direction: row; /* Changed from 'column' to 'row' */
     }
 
     .filters {
@@ -125,4 +126,18 @@
     .product-card {
         flex: 1 0 calc(50% - 20px); /* Flexible width */
     }
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.filters {
+    flex: 0 0 auto; /* Allow filters to shrink */
+    margin-left: auto; /* Move filters to the right */
+}
+
+.categories {
+    flex: 1; /* Allow product container to grow */
 }
