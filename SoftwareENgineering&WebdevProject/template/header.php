@@ -39,8 +39,8 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 if ($isAdminLoggedIn || $isLoggedIn) {
                     echo '<img src="../images/login.png" alt="Dropdown">';
                     echo '<div class="dropdown-content">';
-                    echo '<a href="#">Dashboard</a>';
-                    echo '<a href="#">Payment</a>';
+                    echo '<a href="../public/dashboard.php">Dashboard</a>';
+                    echo '<a href="../public/payment.php">Payment</a>';
                     if ($isAdminLoggedIn) {
                         echo '<a href="../administrator/adminscrud.php">Connections</a>';
                     }
