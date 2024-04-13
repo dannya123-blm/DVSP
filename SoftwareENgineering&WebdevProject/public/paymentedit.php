@@ -8,16 +8,12 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
-
 $customerID = $_SESSION['user_id'];
 
 $payment = new Payment($pdo);
 
 // Retrieve all credit card information for the logged-in user
 $cards = $payment->getAllCards($customerID);
-
-// Retrieve the main credit card information for the logged-in user
-$mainCard = $payment->getMainCard($customerID);
 ?>
 
 <!DOCTYPE html>
@@ -34,17 +30,16 @@ $mainCard = $payment->getMainCard($customerID);
 
     <div class="cards-container">
         <?php foreach ($cards as $card): ?>
-            <div class="card <?php echo ($card['idPayment'] == $mainCard['idPayment']) ? 'main-card' : ''; ?>">
+            <div class="card">
                 <p><?php echo $card['PaymentName']; ?></p>
                 <p><?php echo $card['PaymentNumber']; ?></p>
-                <p><?php echo ($card['isMain'] == 1) ? 'Main Card' : ''; ?></p>
                 <a href="edit.php?id=<?php echo $card['idPayment']; ?>">Edit</a>
                 <a href="delete.php?id=<?php echo $card['idPayment']; ?>">Delete</a>
             </div>
         <?php endforeach; ?>
     </div>
 
-    <a href="add.php">Add New Card</a>
+    <a href="../public/payment.php">Add New Card</a>
 </div>
 </body>
 </html>

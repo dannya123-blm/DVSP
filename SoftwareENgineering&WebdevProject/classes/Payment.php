@@ -51,13 +51,5 @@ public function getAllCards($customerId) {
     $stmt->execute([$customerId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-// Retrieve the main credit card information for a specific customer
-public function getMainCard($customerId) {
-    $sql = "SELECT * FROM payment WHERE idCustomer = ? AND isMain = 1";
-    $stmt = $this->pdo->prepare($sql);
-    $stmt->execute([$customerId]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
 }
 ?>
