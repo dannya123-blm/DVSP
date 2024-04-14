@@ -48,7 +48,4 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id']) && isset($_GET['ac
     <a href="../public/payment.php">Add New Card</a>
 </div>
 
-</body>
-</html>
-
 <?php include '../template/footer.php'; ?>

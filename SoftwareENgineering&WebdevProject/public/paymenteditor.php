@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Payment</title>
-    <link rel="stylesheet" href="../css/paymentedit.css">
+    <link rel="stylesheet" href="../css/paymenteditor.css">
 </head>
 <body>
 <div class="payment-edit-container">

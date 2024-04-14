@@ -1,0 +1,56 @@
+.payment-edit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-top: -100px;
+}
+
+.payment-edit-container h2 {
+    color: #3C0295;
+    margin-bottom: 20px;
+}
+
+.payment-edit-container form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.payment-edit-container .form-group {
+    margin-bottom: 20px;
+}
+
+.payment-edit-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #3C0295;
+}
+
+.payment-edit-container input[type="text"],
+.payment-edit-container input[type="password"],
+.payment-edit-container input[type="month"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.payment-edit-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3C0295;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.payment-edit-container button[type="submit"]:hover {
+    background-color: #6a1b9a;
+}
