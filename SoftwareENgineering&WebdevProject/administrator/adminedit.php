@@ -2,42 +2,31 @@
 global $pdo;
 include '../template/header.php';
 include "../src/dbconnect.php";
-include "../classes/Products.php"; // Include the Product class file
+include "../classes/Products.php";
 
-// Check if product ID is provided
 if(isset($_GET['product_id'])) {
     $productId = $_GET['product_id'];
-
-    // Initialize Product class with database connection
     $productObj = new Products($pdo);
-
-    // Retrieve product details
     $product = $productObj->getProductById($productId);
 
     if(!$product) {
         echo "Product not found!";
-        exit; // Stop further execution
+        exit;
     }
 } else {
     echo "Product ID is missing!";
-    exit; // Stop further execution
+    exit;
 }
 
-// Check if form is submitted for updating product details
 if(isset($_POST['update_product'])) {
-    // Retrieve updated product details from the form
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
     $stockQuantity = $_POST['stock_quantity'];
     $category = $_POST['category'];
-
-    // Update product details in the database
     $productObj->updateProduct($productId, $name, $description, $price, $stockQuantity, $category);
-
-    // Redirect to the product list page after updating
     header("Location: adminscrud.php");
-    exit; // Stop further execution
+    exit;
 }
 ?>
 

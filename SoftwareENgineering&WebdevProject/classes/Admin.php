@@ -1,6 +1,5 @@
 <?php
 require_once 'User.php';
-
 class Admin extends User {
     protected $role;
 
@@ -8,7 +7,6 @@ class Admin extends User {
         return $this->role;
     }
 
-    // Modified to use plain text passwords
     public function authenticate($username, $password, $admin_id) {
         global $pdo;
 
@@ -20,12 +18,11 @@ class Admin extends User {
             $this->setUserID($admin['idAdmin']);
             $this->setUsername($admin['Username']);
             $this->setRole($admin['Role']);
-            return $admin; // Return admin data
+            return $admin;
         } else {
-            return false; // Return false if authentication fails
+            return false;
         }
     }
-
 
     public function setRole($role) {
         $this->role = $role;

@@ -1,11 +1,11 @@
-
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Bubblegum Sans", cursive;
     background-color: #ffffff;
     color: #3C0295;
     margin: 0;
     padding: 20px;
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -25,7 +25,6 @@ th {
 form {
     margin-bottom: 20px;
     border-radius: 10px;
-
 }
 
 label {
@@ -33,6 +32,7 @@ label {
     margin-bottom: 8px;
     color: #000000;
 }
+
 input[type="text"],
 input[type="number"],
 textarea,
@@ -64,6 +64,7 @@ input[type="button"]:hover,
 button:hover {
     background-color: #7a3dbc;
 }
+
 .product-form input[type="submit"],
 .product-form input[type="button"],
 .product-form button {

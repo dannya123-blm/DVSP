@@ -1,38 +1,29 @@
 <?php
-// Start the session
 session_start();
 
-// Check if user is logged in as admin, if not, redirect to login page
 if (!isset($_SESSION['admin_id'])) {
     header("Location: adminlogin.php");
     exit();
 }
 
-// Set the variable for admin login status
 $isAdminLoggedIn = true;
 
-// Include the necessary class definitions
 require_once '../classes/User.php';
 require_once '../classes/Admin.php';
 include '../classes/Products.php';
 
-// Instantiate an Admin object
 $admin = new Admin();
 $admin->setUserID($_SESSION['admin_id']);
 
-// Continue with the rest of your code
 include "../src/dbconnect.php";
 
-// Instantiate a Products object
 $products = new Products($pdo);
 
-// Handle product deletion
 if(isset($_POST['delete_product'])) {
     $productId = $_POST['product_id'];
     $products->deleteProduct($productId);
 }
 
-// Handle product addition
 if(isset($_POST['add_product'])) {
     $idAdmin = $_SESSION['admin_id'];
     $idProducts = $_POST['product_id'];
@@ -44,9 +35,7 @@ if(isset($_POST['add_product'])) {
     $products->addProduct($idAdmin, $idProducts, $name, $description, $price, $stockQuantity, $category);
 }
 
-// Fetch all products
 $allProducts = $products->getAllProducts();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +104,6 @@ $allProducts = $products->getAllProducts();
 </header>
 
 <?php
-// Display products
 if (!empty($allProducts)) {
     echo "<table border='1'>";
     echo "<tr><th>Product ID</th><th>Name</th><th>Description</th><th>Price</th><th>Stock Quantity</th><th>Category</th><th>Action</th></tr>";
@@ -175,4 +163,3 @@ if (!empty($allProducts)) {
 </form>
 </body>
 </html>
-

@@ -61,8 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Page</title>
-    <link rel="stylesheet" href="../css/products.css"> <!-- Linked CSS file -->
-    <script src="../js/filter.js"></script>
+    <link rel="stylesheet" href="../css/products.css">
 </head>
 
 <body>

@@ -72,6 +72,7 @@
     background-color: #fff;
     color: #3C0295;
 }
+
 .purchase-btn {
     background-color: #3C0295;
     color: #fff;
@@ -94,6 +95,7 @@
 .purchase-btn:active {
     transform: scale(0.95);
 }
+
 @keyframes pulse {
     0% {
         transform: scale(1);
@@ -113,11 +115,9 @@
     animation: pulse 1.5s infinite;
 }
 
-/* Responsive Design */
 @media screen and (max-width: 768px) {
     .purchase-btn {
         padding: 10px 20px;
         font-size: 1rem;
     }
 }
-

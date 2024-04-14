@@ -1,5 +1,4 @@
 <?php
-// Delivery class
 class Delivery {
     protected $idDelivery;
     protected $idOrders;

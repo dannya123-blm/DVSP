@@ -1,5 +1,3 @@
-
-
 body {
     font-family: "Bubblegum Sans", cursive;
     margin: 0;
@@ -99,7 +97,6 @@ nav a:hover {
     color: #3C0295;
 }
 
-
 .searchBarButton {
     position: absolute;
     top: 120px;
@@ -129,13 +126,13 @@ nav a:hover {
 
 @media (max-width: 768px) {
     .searchBarButton {
-        top: 160px; /* Adjust position for smaller screens */
+        top: 160px;
     }
     .container {
-        flex-direction: column; /* Stack items vertically on smaller screens */
+        flex-direction: column;
     }
 
     .searchBarButton {
-        top: 160px; /* Adjust position for smaller screens */
+        top: 160px;
     }
 }

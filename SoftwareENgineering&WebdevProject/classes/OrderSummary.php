@@ -1,7 +1,4 @@
 <?php
-
-
-// OrderSummary class
 class OrderSummary {
     protected $idOrderSummary;
     protected $idOrder;
