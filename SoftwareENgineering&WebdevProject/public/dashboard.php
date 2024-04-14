@@ -1,5 +1,6 @@
 <?php
 // Include header and database connection
+global $pdo;
 include '../template/header.php';
 include '../src/dbconnect.php';
 require '../classes/Customer.php'; // Include Customer class file
