@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 require '../template/header.php';
 require '../classes/Customer.php'; // Update the path to Customer.php
 require '../src/dbconnect.php'; // Include your database connection
