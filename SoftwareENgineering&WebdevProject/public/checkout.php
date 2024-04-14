@@ -39,21 +39,27 @@ $cards = $payment->getAllCards($userId);
 
 <div class="payment-info">
     <h2>Payment Methods</h2>
-    <?php if (!empty($cards)): ?>
-        <div class="cards-container">
-            <?php foreach ($cards as $card): ?>
-                <div class="card">
-                    <p><?= htmlspecialchars($card['PaymentName']); ?></p>
-                    <p>Number: <?= isset($card['PaymentNumber']) ? htmlspecialchars(substr($card['PaymentNumber'], -4)) : 'N/A' ?> (last 4 digits)</p>
-                    <p>Expiry: <?= htmlspecialchars(date("m/Y", strtotime($card['PaymentExpiryDate']))); ?></p>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <p>No payment method added.</p>
-    <?php endif; ?>
-    <a href="../public/payment.php" class="add-btn">Add Payment Method</a>
-    <a href="../public/paymentedit.php" class="add-btn">Edit Payment Method</a>
+    <form action="processpayment.php" method="post">
+        <?php if (!empty($cards)): ?>
+            <div class="cards-container">
+                <?php foreach ($cards as $card): ?>
+                    <div class="card">
+                        <input type="radio" id="card_<?= htmlspecialchars($card['PaymentId'] ?? '') ?>" name="payment_method" value="<?= htmlspecialchars($card['PaymentId'] ?? '') ?>">
+                        <label for="card_<?= htmlspecialchars($card['PaymentId'] ?? '') ?>">
+                            <p><?= htmlspecialchars($card['PaymentName'] ?? 'N/A'); ?></p>
+                            <p>Number: <?= isset($card['PaymentNumber']) ? htmlspecialchars(substr($card['PaymentNumber'], -4)) : 'N/A' ?> (last 4 digits)</p>
+                            <p>Expiry: <?= isset($card['PaymentExpiryDate']) ? htmlspecialchars(date("m/Y", strtotime($card['PaymentExpiryDate']))) : 'N/A'; ?></p>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p>No payment method added.</p>
+        <?php endif; ?>
+        <button type="submit" class="add-btn">Use Selected Payment Method</button>
+        <a href="../public/payment.php" class="add-btn">Add Payment Method</a>
+        <a href="../public/paymentedit.php" class="add-btn">Edit Payment Method</a>
+    </form>
 </div>
 
 <?php include '../template/footer.php'; ?>
