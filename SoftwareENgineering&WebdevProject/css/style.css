@@ -71,7 +71,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 200px;
+    margin-right: 150px;
     transition: transform 0.2s ease;
 }
 
