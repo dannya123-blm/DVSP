@@ -9,86 +9,80 @@ class Payment {
     private $paymentExpiryDate;
 
     // Constructor to initialize the PDO object required for database operations
-    public function __construct($pdo) {
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
     // Set the payment details for a payment transaction
-    public function setPaymentDetails($idCustomer, $paymentMethod, $paymentName, $paymentNumber, $paymentExpiryDate) {
+    public function setPaymentDetails(int $idCustomer, string $paymentMethod, string $paymentName, string $paymentNumber, string $paymentExpiryDate): void {
         $this->idCustomer = $idCustomer;
         $this->paymentMethod = $paymentMethod;
         $this->paymentName = $paymentName;
         $this->paymentNumber = $paymentNumber;
-        $this->paymentExpiryDate = $paymentExpiryDate;  // Set the expiry date
+        $this->paymentExpiryDate = $paymentExpiryDate;
     }
 
     // Validate the payment CCV
-    public function validatePaymentCCV($paymentCCV) {
+    public function validatePaymentCCV(string $paymentCCV): bool {
         // Add your validation logic here, for example, checking the length or format of the CCV
         // For simplicity, let's assume CCV must be a numeric value of length 3 or 4
-        if (!is_numeric($paymentCCV) || (strlen($paymentCCV) !== 3 && strlen($paymentCCV) !== 4)) {
-            return false;
-        }
-        return true;
+        return is_numeric($paymentCCV) && (strlen($paymentCCV) === 3 || strlen($paymentCCV) === 4);
     }
 
     // Process the payment: insert the payment details into the database
-    public function processPayment($paymentCCV) {
-        // Validate the payment CCV
-        if (!$this->validatePaymentCCV($paymentCCV)) {
-            return "Error: Invalid CCV.";
-        }
+// Process the payment: insert the payment details into the database
+    public function processPayment(string $paymentCCV): string {
+        try {
+            if (!$this->validatePaymentCCV($paymentCCV)) {
+                throw new Exception("Invalid CCV provided.");
+            }
 
-        $sql = "INSERT INTO payment (idCustomer, paymentMethod, paymentName, paymentNumber, paymentCCV, paymentExpiryDate) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$this->idCustomer, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV, $this->paymentExpiryDate]);
-        return $this->pdo->lastInsertId();
+            $sql = "INSERT INTO payment (idCustomer, paymentMethod, paymentName, paymentNumber, paymentCCV, paymentExpiryDate) VALUES (?, ?, ?, ?, ?, ?)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$this->idCustomer, $this->paymentMethod, $this->paymentName, $this->paymentNumber, $paymentCCV, $this->paymentExpiryDate]);
+            return (string)$this->pdo->lastInsertId();
+        } catch (PDOException $e) {
+            // Log the detailed error message to a log file or error management system
+            error_log("Error processing payment: " . $e->getMessage());
+            return "Error processing payment. Please try again later.";
+        }
     }
 
-    public function getAllCards($customerId) {
-        // Assuming $pdo is your database connection and it's a property of this class
+
+    public function getAllCards(int $customerId): array {
         $sql = "SELECT * FROM payment WHERE idCustomer = :customerId";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['customerId' => $customerId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getPaymentInfo($paymentId) {
+    public function getPaymentInfo(int $paymentId): ?array {
         $sql = "SELECT * FROM payment WHERE idPayment = :paymentId";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['paymentId' => $paymentId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);  // fetch the first row that matches
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updatePayment($paymentId, $paymentName, $paymentNumber, $paymentCCV, $paymentExpiryDate) {
-        // Prepare an SQL statement to update payment details
-        $sql = "UPDATE payment SET PaymentName = ?, PaymentNumber = ?, PaymentCCV = ?, PaymentExpiryDate = ? WHERE idPayment = ?";
-        $stmt = $this->pdo->prepare($sql);
-
-        // Execute the SQL statement with the provided parameters
-        $stmt->execute([$paymentName, $paymentNumber, $paymentCCV, $paymentExpiryDate, $paymentId]);
-
-        // Optionally, check if the update was successful
-        if ($stmt->rowCount() > 0) {
-            return true;
-        } else {
+    public function updatePayment(int $paymentId, string $paymentName, string $paymentNumber, string $paymentCCV, string $paymentExpiryDate): bool {
+        try {
+            $sql = "UPDATE payment SET PaymentName = ?, PaymentNumber = ?, PaymentCCV = ?, PaymentExpiryDate = ? WHERE idPayment = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$paymentName, $paymentNumber, $paymentCCV, $paymentExpiryDate, $paymentId]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
             return false;
         }
     }
 
-    public function deletePayment($paymentId) {
-        // Prepare an SQL statement to delete a payment entry
-        $sql = "DELETE FROM payment WHERE idPayment = ?";
-        $stmt = $this->pdo->prepare($sql);
-
-        // Execute the SQL statement with the provided payment ID
-        $stmt->execute([$paymentId]);
-
-        // Optionally, check if the deletion was successful
-        if ($stmt->rowCount() > 0) {
-            return true;
-        } else {
+    public function deletePayment(int $paymentId): bool {
+        try {
+            $sql = "DELETE FROM payment WHERE idPayment = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$paymentId]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
             return false;
         }
     }
 }
+
