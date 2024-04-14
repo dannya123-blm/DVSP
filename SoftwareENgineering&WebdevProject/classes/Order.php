@@ -11,12 +11,13 @@ class Order {
     /**
      * Constructor to initialize the Order object.
      */
-    public function __construct($pdo, $idCustomer = null, $orderDate = null, $totalAmount = null, $idPayment = null) {
+    public function __construct($pdo, $idCustomer = null, $orderDate = null, $totalAmount = null, $idPayment = null, $idOrder = null) {
         $this->pdo = $pdo;
         $this->idCustomer = $idCustomer;
         $this->orderDate = $orderDate;
         $this->totalAmount = $totalAmount;
         $this->idPayment = $idPayment;
+        $this->idOrder = $idOrder;
     }
 
     /**
