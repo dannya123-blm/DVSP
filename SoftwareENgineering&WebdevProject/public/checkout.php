@@ -28,7 +28,7 @@ try {
 // Fetch all cards using the Payment class method
 $cards = $payment->getAllCards($userId);
 ?>
-
+<link rel="stylesheet" href="../css/checkout.css">
 <div class="user-details">
     <h2>User Information</h2>
     <p><strong>Username:</strong> <?= htmlspecialchars($userData['Username'] ?? 'N/A') ?></p>
