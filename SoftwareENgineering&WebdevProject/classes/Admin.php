@@ -1,11 +1,7 @@
 <?php
 require_once 'User.php';
 class Admin extends User {
-    protected $role;
 
-    public function getRole() {
-        return $this->role;
-    }
 
     public function authenticate($username, $password, $admin_id) {
         global $pdo;
