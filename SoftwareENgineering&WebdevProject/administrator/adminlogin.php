@@ -2,6 +2,7 @@
 require_once '../src/dbconnect.php';
 require_once '../template/header.php';
 require_once '../classes/Admin.php';
+require_once '../classes/User.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin_id = $_POST['admin_id'];
@@ -9,8 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     try {
-        $admin = new Admin();
-        $authenticatedAdmin = $admin->authenticate($username, $password, $admin_id);
+        $authenticatedAdmin = Admin::authenticate($username, $password, $admin_id, $pdo);
 
         if ($authenticatedAdmin) {
             session_start();
@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
