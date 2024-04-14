@@ -1,43 +1,37 @@
 <?php
-// Include header and database connection
 global $pdo;
 include '../template/header.php';
 include '../src/dbconnect.php';
-require '../classes/Customer.php'; // Include Customer class file
+require '../classes/Customer.php';
 
 // Check if user is logged in
 if (isset($_SESSION['user_id'])) {
     try {
-        $userId = $_SESSION['user_id']; // Assuming the logged-in user's ID is stored in $_SESSION['user_id']
+        $userId = $_SESSION['user_id'];
 
-        // Create a new Customer object with PDO instance
-        $customer = new Customer($pdo); // Pass $pdo object to the constructor
+        $customer = new Customer($pdo);
 
-        // Fetch user data from the database using Customer class method
         $userData = $customer->getUserDataById($userId);
 
-        // Initialize error message variable
         $errorMsg = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Handle form submissions for updating user details
+
             if (isset($_POST['update_username'])) {
-                // Process username update
+
                 $newUsername = $_POST['new_username'];
 
-                // Check if the new username already exists
                 if ($customer->usernameExists($newUsername)) {
                     $errorMsg = "Username already exists. Please choose a different username.";
                 } else {
-                    // Update the username
+
                     $customer->updateUsername($userId, $newUsername);
-                    // Refresh the page after updating
+
                     header("Location: dashboard.php");
                     exit();
                 }
             }
 
-            // Handle email update
             if (isset($_POST['update_email'])) {
                 $newEmail = $_POST['new_email'];
                 if ($customer->emailExists($newEmail)) {
@@ -49,7 +43,6 @@ if (isset($_SESSION['user_id'])) {
                 }
             }
 
-            // Handle mobile number update
             if (isset($_POST['update_mobile'])) {
                 $newMobile = $_POST['new_mobile'];
                 if (preg_match('/^[0-9]{10,20}$/', $newMobile)) {
@@ -61,7 +54,6 @@ if (isset($_SESSION['user_id'])) {
                 }
             }
 
-            // Handle address update
             if (isset($_POST['update_address'])) {
                 $newAddress = $_POST['new_address'];
                 $customer->updateAddress($userId, $newAddress);
@@ -70,7 +62,6 @@ if (isset($_SESSION['user_id'])) {
             }
         }
 
-        // Display dashboard UI with user details and update forms
         ?>
         <!DOCTYPE html>
         <html lang="en">
@@ -93,7 +84,6 @@ if (isset($_SESSION['user_id'])) {
             <div class="dashboard-update">
                 <h3>Update Details</h3>
                 <?php
-                // Display error message if set
                 if (!empty($errorMsg)) {
                     echo "<p class='dashboard-error'>" . $errorMsg . "</p>";
                 }
@@ -137,9 +127,7 @@ if (isset($_SESSION['user_id'])) {
         die("Error: " . $e->getMessage());
     }
 } else {
-    echo "User not logged in"; // Handle case where user is not logged in
+    echo "User not logged in";
 }
-
-// Include footer
 include '../template/footer.php';
 ?>
