@@ -3,7 +3,7 @@ require 'user.php';
 class Customer extends User
 {
     protected $address;
-    protected $pdo;
+    public $pdo;
 
     public function __construct(PDO $pdo)
     {
