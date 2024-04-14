@@ -60,9 +60,10 @@ h2 {
     display: flex;
     justify-content: center;
     overflow: hidden;
-    padding:20px;
-
+    padding: 20px;
+    width: 100%; /* Ensures the .categories element takes up the full width */
 }
+
 
 .category-list {
     display: flex;
