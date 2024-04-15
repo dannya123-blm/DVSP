@@ -9,7 +9,7 @@ class Order {
     private $pdo;
 
     /**
-     * Constructor to initialize the Order object.
+     * Constructor to initialize the Order object with a PDO connection and optional order details.
      */
     public function __construct($pdo, $idCustomer = null, $orderDate = null, $totalAmount = null, $idPayment = null, $idOrder = null) {
         $this->pdo = $pdo;
@@ -30,18 +30,19 @@ class Order {
     }
 
     /**
-     * Save order to the database.
+     * Create and save a new order to the database.
      */
-    public function saveOrderToDatabase() {
+    public function createOrder($customerId, $orderDate, $totalAmount, $paymentId) {
         try {
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare("INSERT INTO orders (idCustomer, orderDate, totalAmount, idPayment) VALUES (?, ?, ?, ?)");
-            if ($stmt->execute([$this->idCustomer, $this->orderDate, $this->totalAmount, $this->idPayment])) {
-                $this->idOrder = $this->pdo->lastInsertId();
-                return true;
-            }
-            return false;
+            $stmt->execute([$customerId, $orderDate, $totalAmount, $paymentId]);
+            $this->idOrder = $this->pdo->lastInsertId();
+            $this->pdo->commit();
+            return true;
         } catch (PDOException $e) {
-            error_log('Error saving order: ' . $e->getMessage());
+            $this->pdo->rollBack();
+            error_log('Error creating order: ' . $e->getMessage());
             return false;
         }
     }
@@ -49,10 +50,10 @@ class Order {
     /**
      * Update existing order details.
      */
-    public function updateOrder($orderId, $newDetails) {
+    public function updateOrder($orderId, $orderDate, $totalAmount, $paymentId) {
         try {
             $stmt = $this->pdo->prepare("UPDATE orders SET orderDate = ?, totalAmount = ?, idPayment = ? WHERE idOrder = ?");
-            return $stmt->execute([$newDetails['orderDate'], $newDetails['totalAmount'], $newDetails['idPayment'], $orderId]);
+            return $stmt->execute([$orderDate, $totalAmount, $paymentId, $orderId]);
         } catch (PDOException $e) {
             error_log('Error updating order: ' . $e->getMessage());
             return false;
