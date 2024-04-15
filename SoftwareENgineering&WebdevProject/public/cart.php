@@ -1,9 +1,9 @@
 <?php
-
+// Include necessary files and configurations
 global $pdo;
 require '../template/header.php';
 include '../src/dbconnect.php';
-require_once '../classes/Products.php'; // Include the Products class file
+require_once '../classes/Products.php';
 
 // Initialize Products class with database connection
 try {
@@ -13,15 +13,9 @@ try {
     echo "Database connection failed: " . $e->getMessage();
     exit(); // Terminate script execution
 }
-?>
-<html>
-<head>
-    <link rel="stylesheet" href="../css/cart.css">
-</head>
-<body>
-<?php
-// Function to remove a product from the cart
-function removeFromCart($productId) {
+
+// Function to remove a product from the cart and increment stock quantity
+function removeFromCart($productId, $pdo) {
     // Check if the product ID exists in the cart session
     if (isset($_SESSION['cart']) && in_array($productId, $_SESSION['cart'])) {
         // Find the index of the product in the cart session
@@ -30,11 +24,21 @@ function removeFromCart($productId) {
         unset($_SESSION['cart'][$index]);
         // Reindex the cart session array
         $_SESSION['cart'] = array_values($_SESSION['cart']);
-        // Optionally, you can update other cart-related variables or data
-        // For example, decrement the quantity of the product in the cart, update subtotal, etc.
+        // Increment the stock quantity in the database
+        $updateStockStmt = $pdo->prepare("UPDATE products SET StockQuantity = StockQuantity + 1 WHERE idProducts = :product_id");
+        $updateStockStmt->bindParam(':product_id', $productId);
+        $updateStockStmt->execute();
     }
 }
 
+?>
+
+<html>
+<head>
+    <link rel="stylesheet" href="../css/cart.css">
+</head>
+<body>
+<?php
 // Check if the cart session variable is set and not empty
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     // Array to store cart items and their quantities
@@ -102,7 +106,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 // Check if the "Remove" button is clicked
 if (isset($_POST['remove_from_cart']) && isset($_POST['remove_product_id'])) {
     // Call the removeFromCart function to remove the product from the cart
-    removeFromCart($_POST['remove_product_id']);
+    removeFromCart($_POST['remove_product_id'], $pdo);
     // Optionally, you can redirect the user to the cart page or refresh the current page
     // header('Location: cart.php');
     // exit;
