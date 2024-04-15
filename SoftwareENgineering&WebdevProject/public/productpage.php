@@ -1,5 +1,4 @@
 <?php
-
 // Include necessary files and configurations
 global $pdo;
 include '../template/header.php';
@@ -51,6 +50,12 @@ $stmt->execute();
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
     // Store the product ID in the session
     $_SESSION['cart'][] = $_POST['product_id'];
+
+    // Decrease the stock quantity by 1
+    $productId = $_POST['product_id'];
+    $updateStockStmt = $pdo->prepare("UPDATE products SET StockQuantity = StockQuantity - 1 WHERE idProducts = :product_id");
+    $updateStockStmt->bindParam(':product_id', $productId);
+    $updateStockStmt->execute();
 }
 ?>
 
@@ -108,6 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
                                 <h3><?php echo $product->getName(); ?></h3>
                                 <p><?php echo $product->getDescription(); ?></p>
                                 <p class="price">€<?php echo $product->getPrice(); ?></p>
+                                <p class="stock">Stock: <?php echo $product->getStockQuantity(); ?></p>
                                 <!-- Modified the form to include a hidden input for product ID -->
                                 <form action="" method="post">
                                     <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
