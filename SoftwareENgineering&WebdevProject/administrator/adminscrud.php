@@ -1,6 +1,12 @@
 <?php
 session_start();
+require_once '../src/dbconnect.php';
+require_once '../classes/User.php';
+require_once '../classes/Admin.php';
+require_once '../classes/Products.php';
 
+
+// Redirect if not logged in as an admin.
 if (!isset($_SESSION['admin_id'])) {
     header("Location: adminlogin.php");
     exit();
@@ -8,33 +14,29 @@ if (!isset($_SESSION['admin_id'])) {
 
 $isAdminLoggedIn = true;
 
-require_once '../classes/User.php';
-require_once '../classes/Admin.php';
-include '../classes/Products.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $admin = new Admin($pdo);
+    $admin->setUserID($_SESSION['admin_id']);
+    $products = new Products($pdo);
 
-$admin = new Admin();
-$admin->setUserID($_SESSION['admin_id']);
+    if(isset($_POST['delete_product'])) {
+        $productId = $_POST['product_id'];
+        $products->deleteProduct($productId);
+    }
 
-include "../src/dbconnect.php";
+    if(isset($_POST['add_product'])) {
+        $idAdmin = $_SESSION['admin_id'];
+        $idProducts = $_POST['product_id'];
+        $name = $_POST['name'];
+        $description = $_POST['description'];
+        $price = $_POST['price'];
+        $stockQuantity = $_POST['stock_quantity'];
+        $category = $_POST['category'];
+        $products->addProduct($idAdmin, $idProducts, $name, $description, $price, $stockQuantity, $category);
+    }
+}
 
 $products = new Products($pdo);
-
-if(isset($_POST['delete_product'])) {
-    $productId = $_POST['product_id'];
-    $products->deleteProduct($productId);
-}
-
-if(isset($_POST['add_product'])) {
-    $idAdmin = $_SESSION['admin_id'];
-    $idProducts = $_POST['product_id'];
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $price = $_POST['price'];
-    $stockQuantity = $_POST['stock_quantity'];
-    $category = $_POST['category'];
-    $products->addProduct($idAdmin, $idProducts, $name, $description, $price, $stockQuantity, $category);
-}
-
 $allProducts = $products->getAllProducts();
 ?>
 <!DOCTYPE html>

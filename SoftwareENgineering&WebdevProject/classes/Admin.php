@@ -1,23 +1,15 @@
 <?php
 require_once 'User.php';
 class Admin extends User {
+    protected $role;
 
-
-    public function authenticate($username, $password, $admin_id) {
-        global $pdo;
-
-        $stmt = $pdo->prepare("SELECT * FROM admin WHERE Username = ? AND idAdmin = ?");
-        $stmt->execute([$username, $admin_id]);
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($admin && $admin['Password'] === $password) {
-            $this->setUserID($admin['idAdmin']);
-            $this->setUsername($admin['Username']);
-            $this->setRole($admin['Role']);
-            return $admin;
-        } else {
-            return false;
-        }
+    public function getRole() {
+        return $this->role;
+    }
+    public static function authenticate($username, $password, $admin_id, $pdo) {
+        $stmt = $pdo->prepare("SELECT * FROM admin WHERE username = ? AND password = ? AND idAdmin = ?");
+        $stmt->execute([$username, $password, $admin_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);  // Assuming fetching as associative array
     }
 
     public function setRole($role) {
