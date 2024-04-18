@@ -46,6 +46,7 @@ class Payment {
         $stmt->execute(['customerId' => $customerId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public function getPaymentInfo(int $paymentId): array {
         $sql = "SELECT * FROM payment WHERE idPayment = :paymentId";
         $stmt = $this->pdo->prepare($sql);

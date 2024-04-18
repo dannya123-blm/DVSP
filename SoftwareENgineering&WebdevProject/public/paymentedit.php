@@ -22,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['id']) && !empty($_GET['
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,8 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['id']) && !empty($_GET['
     <div class="cards-container">
         <?php foreach ($cards as $card): ?>
             <div class="card">
+                <!-- Display the payment name and the last four digits of the payment number -->
                 <p><?php echo htmlspecialchars($card['PaymentName'] ?? 'No Name'); ?></p>
-                <p><?php echo htmlspecialchars($card['PaymentNumber'] ?? 'No Number'); ?></p>
+                <p>Card ending in: <?php echo htmlspecialchars($card['lastFourDigits'] ?? 'XXXX'); ?></p>
                 <p>Expiry: <?php
                     // Check if PaymentExpiryDate is not null before calling strtotime
                     $expiryDate = $card['PaymentExpiryDate'] ?? 'today';
@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['id']) && !empty($_GET['
                     ?></p>
                 <a href="paymenteditor.php?id=<?php echo $card['idPayment']; ?>">Edit</a>
                 <a href="paymentedit.php?id=<?php echo $card['idPayment']; ?>&action=delete">Delete</a>
+
             </div>
         <?php endforeach; ?>
     </div>
