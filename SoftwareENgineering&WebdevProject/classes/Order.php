@@ -32,11 +32,12 @@ class Order {
     /**
      * Create and save a new order to the database.
      */
-    public function createOrder($customerId, $orderDate, $totalAmount, $paymentId) {
+    public function createOrder($customerId, $totalAmount, $paymentId) {
         try {
             $this->pdo->beginTransaction();
+            $this->orderDate = date('Y-m-d H:i:s'); // Current date and time
             $stmt = $this->pdo->prepare("INSERT INTO orders (idCustomer, orderDate, totalAmount, idPayment) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$customerId, $orderDate, $totalAmount, $paymentId]);
+            $stmt->execute([$customerId, $this->orderDate, $totalAmount, $paymentId]);
             $this->idOrder = $this->pdo->lastInsertId();
             $this->pdo->commit();
             return true;

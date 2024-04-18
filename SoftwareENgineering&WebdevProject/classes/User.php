@@ -1,4 +1,5 @@
 <?php
+
 class User {
     protected $idUser;
     protected $username;
@@ -7,10 +8,12 @@ class User {
     protected $mobileNumber;
     public $pdo;
 
+    // Constructor with PDO dependency injection
     public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
+    // Getters and setters for user properties
     public function getUserID() {
         return $this->idUser;
     }
@@ -23,6 +26,7 @@ class User {
         return $this->username;
     }
 
+    // Set username after checking for uniqueness
     public function setUsername($username) {
         if ($this->isUsernameUnique($username)) {
             $this->username = $username;
@@ -43,6 +47,7 @@ class User {
         return $this->email;
     }
 
+    // Set email after checking for uniqueness
     public function setEmail($email) {
         if ($this->isEmailUnique($email)) {
             $this->email = $email;
@@ -59,18 +64,21 @@ class User {
         $this->mobileNumber = $mobileNumber;
     }
 
+    // Check if the username is unique in the database
     protected function isUsernameUnique($username) {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer WHERE username = ?");
         $stmt->execute([$username]);
         return $stmt->fetchColumn() == 0;
     }
 
+    // Check if the email is unique in the database
     protected function isEmailUnique($email) {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer WHERE email = ?");
         $stmt->execute([$email]);
         return $stmt->fetchColumn() == 0;
     }
 
+    // Update username in the database
     public function updateUsername($userId, $newUsername) {
         if ($this->isUsernameUnique($newUsername)) {
             $stmt = $this->pdo->prepare("UPDATE customer SET username = :username WHERE id = :userId");
@@ -83,6 +91,7 @@ class User {
         }
     }
 
+    // Update email in the database
     public function updateEmail($userId, $newEmail) {
         if ($this->isEmailUnique($newEmail)) {
             $stmt = $this->pdo->prepare("UPDATE customer SET email = :email WHERE id = :userId");
@@ -95,6 +104,7 @@ class User {
         }
     }
 
+    // Update mobile number in the database
     public function updateMobileNumber($userId, $newMobileNumber) {
         $stmt = $this->pdo->prepare("UPDATE customer SET mobileNumber = :mobileNumber WHERE id = :userId");
         $stmt->bindParam(':mobileNumber', $newMobileNumber, PDO::PARAM_STR);

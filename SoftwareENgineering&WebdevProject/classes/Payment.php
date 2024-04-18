@@ -40,14 +40,12 @@ class Payment {
             return "Error processing payment. Please try again later.";
         }
     }
-
     public function getAllCards(int $customerId): array {
-        $sql = "SELECT * FROM payment WHERE idCustomer = :customerId";
+        $sql = "SELECT idPayment, paymentMethod, paymentName, paymentExpiryDate, RIGHT(paymentNumber, 4) as lastFourDigits FROM payment WHERE idCustomer = :customerId";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['customerId' => $customerId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
     public function getPaymentInfo(int $paymentId): array {
         $sql = "SELECT * FROM payment WHERE idPayment = :paymentId";
         $stmt = $this->pdo->prepare($sql);

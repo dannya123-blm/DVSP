@@ -1,56 +1,66 @@
 <?php
 global $pdo;
-require '../template/header.php';
+include '../template/header.php';
 require '../src/dbconnect.php';
 require '../classes/Customer.php';
 require '../classes/Payment.php';
 require '../classes/Products.php';
-require '../classes/Order.php';  // Ensure the Order class is included
-
-
-$customer = new Customer($pdo);
-$payment = new Payment($pdo);
-$products = new Products($pdo);
-$order = new Order($pdo); // Initialize Order class
-
+require '../classes/Order.php';
 $userId = $_SESSION['user_id'] ?? null;
 if (!$userId) {
     header("Location: ../public/login.php");
     exit;
 }
 
-try {
-    $userData = $customer->getUserDataById($userId);
-    if (!$userData) {
-        throw new Exception("User not found.");
-    }
-} catch (Exception $e) {
-    echo "An error occurred: " . $e->getMessage();
+$products = new Products($pdo);
+$payment = new Payment($pdo);
+$order = new Order($pdo);
+$customer = new Customer($pdo);
+
+$userData = $customer->getUserDataById($userId);
+if (!$userData) {
+    echo "User not found.";
     exit;
 }
 
-// Fetch all cards using the Payment class method
 $cards = $payment->getAllCards($userId);
+$cartItems = [];
+$totalAmount = 0;
 
-// Check if form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($_POST['payment_method'])) {
-        $message = "Please select a payment method or add a card to continue.";
-    } else {
-        $paymentId = $_POST['payment_method'];
-        $totalAmount = 100; // This should be dynamically calculated based on cart contents or passed securely
-
-        $orderCreated = $order->createOrder($userId, date('Y-m-d H:i:s'), $totalAmount, $paymentId);
-        if ($orderCreated) {
-            header("Location: ../public/ordersummary.php"); // Redirect to a confirmation page
-            exit;
-        } else {
-            $message = "Failed to create order. Please try again.";
+if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $productId => $quantity) {
+        $product = $products->getProductById($productId);
+        if ($product) {
+            $cartItems[$productId] = [
+                'name' => $product->getName(),
+                'price' => $product->getPrice(),
+                'quantity' => $quantity,
+                'subtotal' => $product->getPrice() * $quantity
+            ];
+            $totalAmount += $cartItems[$productId]['subtotal'];
         }
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
+    $paymentId = $_POST['payment_method'];
+    $orderCreated = $order->createOrder($userId, $totalAmount, $paymentId);
+    if ($orderCreated) {
+        header("Location: ../public/ordersummary.php");
+        exit;
+    } else {
+        $message = "Failed to create order. Please try again.";
+    }
+}
 ?>
-<link rel="stylesheet" href="../css/checkout.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/checkout.css">
+    <title>Checkout</title>
+</head>
+<body>
 <div class="user-details">
     <h2>User Information</h2>
     <p><strong>Username:</strong> <?= htmlspecialchars($userData['Username'] ?? 'N/A') ?></p>
@@ -58,7 +68,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p><strong>Address:</strong> <?= htmlspecialchars($userData['Address'] ?? 'N/A') ?></p>
     <a href="../public/dashboard.php" class="edit-btn">Edit User Info</a>
 </div>
-
+<div class="cart-details">
+    <h2>Your Order</h2>
+    <ul>
+        <?php foreach ($cartItems as $item): ?>
+            <li><?= htmlspecialchars($item['name']) ?> - $<?= number_format($item['price'], 2) ?>
+                x <?= $item['quantity'] ?> = $<?= number_format($item['subtotal'], 2) ?></li>
+        <?php endforeach; ?>
+        <li><strong>Total: $<?= number_format($totalAmount, 2) ?></strong></li>
+    </ul>
+</div>
 <div class="payment-info">
     <h2>Payment Methods</h2>
     <form action="checkout.php" method="post">
@@ -66,12 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="cards-container">
                 <?php foreach ($cards as $card): ?>
                     <div class="card">
-                        <input type="radio" id="card_<?= htmlspecialchars($card['PaymentId'] ?? '') ?>" name="payment_method" value="<?= htmlspecialchars($card['PaymentId'] ?? '') ?>" required>
-                        <label for="card_<?= htmlspecialchars($card['PaymentId'] ?? '') ?>">
-                            <p><?= htmlspecialchars($card['PaymentName'] ?? 'N/A'); ?></p>
-                            <p>Number: <?= isset($card['PaymentNumber']) ? htmlspecialchars(substr($card['PaymentNumber'], -4)) : 'N/A' ?> (last 4 digits)</p>
-                            <p>Expiry: <?= isset($card['PaymentExpiryDate']) ? htmlspecialchars(date("m/Y", strtotime($card['PaymentExpiryDate']))) : 'N/A'; ?></p>
-                        </label>
+                        <input type="radio" id="card_<?= $card['idPayment'] ?>" name="payment_method" value="<?= $card['idPayment'] ?>" required>
+                        <label for="card_<?= $card['idPayment'] ?>"><?= htmlspecialchars($card['paymentName'] ?? 'Unknown Payment Method') ?></label>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -81,5 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="add-btn">Complete Checkout</button>
     </form>
 </div>
-<?php if (!empty($message)) echo "<p>$message</p>"; ?>
+<?php if (isset($message)) echo "<p>$message</p>"; ?>
 <?php include '../template/footer.php'; ?>
+</body>
+</html>

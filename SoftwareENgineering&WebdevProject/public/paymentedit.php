@@ -1,10 +1,11 @@
 <?php
 global $pdo;
-include '../src/dbconnect.php';
-include '../template/header.php';
-include '../classes/Payment.php';
+require '../src/dbconnect.php';
+require '../template/header.php';
+require '../classes/Payment.php';
 
-if (!isset($_SESSION['user_id'])) {
+// Redirect if user not logged in
+if (empty($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
@@ -13,7 +14,8 @@ $customerID = $_SESSION['user_id'];
 $payment = new Payment($pdo);
 $cards = $payment->getAllCards($customerID);
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id']) && isset($_GET['action']) && $_GET['action'] == 'delete') {
+// Handle delete request
+if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['id']) && !empty($_GET['action']) && $_GET['action'] == 'delete') {
     $paymentId = $_GET['id'];
     $payment->deletePayment($paymentId);
     header("Location: paymentedit.php");
@@ -32,20 +34,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id']) && isset($_GET['ac
 <body>
 <div class="payment-edit-container">
     <h2>Your Credit Cards</h2>
-
     <div class="cards-container">
         <?php foreach ($cards as $card): ?>
             <div class="card">
-                <p><?php echo htmlspecialchars($card['PaymentName']); ?></p>
-                <p><?php echo htmlspecialchars($card['PaymentNumber']); ?></p>
-                <p>Expiry: <?php echo htmlspecialchars(date("m/Y", strtotime($card['PaymentExpiryDate']))); ?></p>
+                <p><?php echo htmlspecialchars($card['PaymentName'] ?? 'No Name'); ?></p>
+                <p><?php echo htmlspecialchars($card['PaymentNumber'] ?? 'No Number'); ?></p>
+                <p>Expiry: <?php
+                    // Check if PaymentExpiryDate is not null before calling strtotime
+                    $expiryDate = $card['PaymentExpiryDate'] ?? 'today';
+                    echo htmlspecialchars(date("m/Y", strtotime($expiryDate)));
+                    ?></p>
                 <a href="paymenteditor.php?id=<?php echo $card['idPayment']; ?>">Edit</a>
                 <a href="paymentedit.php?id=<?php echo $card['idPayment']; ?>&action=delete">Delete</a>
             </div>
         <?php endforeach; ?>
     </div>
-
     <a href="../public/payment.php">Add New Card</a>
 </div>
 
 <?php include '../template/footer.php'; ?>
+</body>
+</html>
