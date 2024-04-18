@@ -37,10 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['id']) && !empty($_GET['
         <?php foreach ($cards as $card): ?>
             <div class="card">
                 <!-- Display the payment name and the last four digits of the payment number -->
-                <p><?php echo htmlspecialchars($card['PaymentName'] ?? 'No Name'); ?></p>
+                <p><?php echo htmlspecialchars($card['paymentName'] ?? 'Name'); ?></p>
                 <p>Card ending in: <?php echo htmlspecialchars($card['lastFourDigits'] ?? 'XXXX'); ?></p>
                 <p>Expiry: <?php
-                    // Check if PaymentExpiryDate is not null before calling strtotime
+                    // Check if PaymentExpiryDate is not null
                     $expiryDate = $card['PaymentExpiryDate'] ?? 'today';
                     echo htmlspecialchars(date("m/Y", strtotime($expiryDate)));
                     ?></p>
