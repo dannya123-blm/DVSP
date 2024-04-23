@@ -1,66 +1,71 @@
 <?php
-// Include your database connection and autoload your classes
-include '../src/dbconnect.php';
-include '../classes/Order.php';
-include '../classes/OrderSummary.php';
-include '../classes/User.php';
-include '../template/header.php';
+global $pdo;
+session_start();
+include '../src/dbconnect.php'; // Ensures $pdo is properly initialized.
+require '../classes/Customer.php';
+require '../classes/Payment.php';
+require '../classes/Products.php';
+require '../classes/Order.php';
 
-// Simulating fetching an order ID, e.g., from a GET request
-$orderId = filter_input(INPUT_GET, 'orderId', FILTER_SANITIZE_NUMBER_INT);
-if (!$orderId) {
-    echo "Invalid order ID.";
-    include '../template/footer.php';
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../public/login.php");
     exit;
 }
 
-// Initialize the Order object
+$products = new Products($pdo);
+$payment = new Payment($pdo);
 $order = new Order($pdo);
-$orderDetails = $order->getOrderDetails($orderId);
-if (!$orderDetails) {
-    echo "Order not found.";
-    include '../template/footer.php';
+$customer = new Customer($pdo);
+$userData = $customer->getUserDataById($_SESSION['user_id']);
+
+if (!$userData) {
+    echo "User not found.";
     exit;
 }
 
-// Initialize the OrderSummary object
-$orderSummary = new OrderSummary();
-$orderSummary->loadFromDatabase($pdo, $orderId);
+$cards = $payment->getAllCards($_SESSION['user_id']);
+$cartItems = [];
+$totalAmount = 0;
 
-// Fetch user ID from order details
-$userId = $orderDetails['idCustomer'];
-
-// Initialize the User object
-$user = new User($pdo);
-$user->setUserID($userId);
-
-// Fetch User Details
-$userAddress = $user->getAddress();
-if (!$userAddress) {
-    $userAddress = "Address not available";
+if (!empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $productId => $quantity) {
+        $product = $products->getProductById($productId);
+        if ($product) {
+            $cartItems[$productId] = [
+                'name' => $product['name'],
+                'price' => $product['price'],
+                'quantity' => $quantity,
+                'subtotal' => $product['price'] * $quantity
+            ];
+            $totalAmount += $cartItems[$productId]['subtotal'];
+        }
+    }
 }
 
-// Calculate delivery date
-$deliveryDate = date('d M Y', strtotime($orderDetails['orderDate'] . ' + 2 weeks'));
-
-// Generate Tracking Code
-$trackingCode = 'DVS' . substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 9);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
+    $paymentId = $_POST['payment_method'];
+    $orderCreated = $order->createOrder($_SESSION['user_id'], $totalAmount, $paymentId);
+    if ($orderCreated) {
+        header("Location: ../public/ordersummary.php?orderId=" . $order->getIdOrder()); // Assuming getIdOrder returns the last order ID.
+        exit;
+    } else {
+        $message = "Failed to create order. Please try again.";
+    }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order Summary</title></head>
+    <link rel="stylesheet" href="../css/checkout.css">
+    <title>Checkout</title>
+</head>
 <body>
 <h1>Order Summary</h1>
-<p><strong>Order ID:</strong> <?php echo htmlspecialchars($orderId); ?></p>
-<p><strong>Total Amount:</strong> $<?php echo htmlspecialchars($orderSummary->getSubtotal()); ?></p>
-<p><strong>Delivery Address:</strong> <?php echo htmlspecialchars($userAddress); ?></p>
-<p><strong>Delivery Date:</strong> <?php echo $deliveryDate; ?></p>
-<p><strong>Tracking Code:</strong> <?php echo $trackingCode; ?></p>
+<p><strong>Order ID:</strong> <?= htmlspecialchars($orderId) ?></p>
+<p><strong>Total Amount:</strong> $<?= htmlspecialchars($orderDetails['totalAmount']) ?></p>
+<p><strong>Delivery Address:</strong> <?= htmlspecialchars($userDetails['Address']) ?></p>
+<p><strong>Delivery Date:</strong> <?= $deliveryDate ?></p>
+<?php include '../template/footer.php'; ?>
 </body>
 </html>
-<?php
-include '../template/footer.php';
-?>

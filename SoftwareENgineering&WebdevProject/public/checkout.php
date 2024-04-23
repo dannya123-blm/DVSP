@@ -7,6 +7,7 @@ require '../classes/Payment.php';
 require '../classes/Products.php';
 require '../classes/Order.php';
 $userId = $_SESSION['user_id'] ?? null;
+
 if (!$userId) {
     header("Location: ../public/login.php");
     exit;
@@ -16,7 +17,7 @@ $products = new Products($pdo);
 $payment = new Payment($pdo);
 $order = new Order($pdo);
 $customer = new Customer($pdo);
-
+$orderID = new Customer($pdo);
 $userData = $customer->getUserDataById($userId);
 if (!$userData) {
     echo "User not found.";
@@ -73,11 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
     <ul>
         <?php foreach ($cartItems as $item): ?>
             <li><?= htmlspecialchars($item['name']) ?> - $<?= number_format($item['price'], 2) ?>
-                x <?= $item['quantity'] ?> = $<?= number_format($item['subtotal'], 2) ?></li>
+                 <?= $item['quantity'] ?> = $<?= number_format($item['subtotal'], 2) ?></li>
         <?php endforeach; ?>
         <li><strong>Total: $<?= number_format($totalAmount, 2) ?></strong></li>
     </ul>
 </div>
+
 <div class="payment-info">
     <h2>Payment Methods</h2>
     <form action="checkout.php" method="post">

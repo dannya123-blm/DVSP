@@ -13,65 +13,32 @@ class User {
         $this->pdo = $pdo;
     }
 
-    // Getters and setters for user properties
-    public function getUserID() {
-        return $this->idUser;
-    }
-
-    public function setUserID($userID) {
-        $this->idUser = $userID;
-    }
-
-    public function getUsername() {
-        return $this->username;
-    }
-
-    // Set username after checking for uniqueness
-    public function setUsername($username) {
-        if ($this->isUsernameUnique($username)) {
-            $this->username = $username;
-        } else {
+    // Register a new user with unique username and email
+    public function registerUser($username, $password, $email, $mobileNumber, $address) {
+        // Check for unique username and email before proceeding
+        if (!$this->isUsernameUnique($username)) {
             throw new Exception("Username '$username' already exists. Please choose a different username.");
         }
-    }
-
-    public function getPassword() {
-        return $this->password;
-    }
-
-    public function setPassword($password) {
-        $this->password = $password;
-    }
-
-    public function getEmail() {
-        return $this->email;
-    }
-
-    // Set email after checking for uniqueness
-    public function setEmail($email) {
-        if ($this->isEmailUnique($email)) {
-            $this->email = $email;
-        } else {
+        if (!$this->isEmailUnique($email)) {
             throw new Exception("Email '$email' already exists. Please choose a different email.");
         }
+
+        // Hash the password for security
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // Prepare the SQL statement for inserting new user
+        $stmt = $this->pdo->prepare("INSERT INTO customer (username, password, email, mobileNumber, address) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$username, $hashedPassword, $email, $mobileNumber, $address]);
     }
 
-    public function getMobileNumber() {
-        return $this->mobileNumber;
-    }
-
-    public function setMobileNumber($mobileNumber) {
-        $this->mobileNumber = $mobileNumber;
-    }
-
-    // Check if the username is unique in the database
+    // Method to check if username is unique
     protected function isUsernameUnique($username) {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer WHERE username = ?");
         $stmt->execute([$username]);
         return $stmt->fetchColumn() == 0;
     }
 
-    // Check if the email is unique in the database
+    // Method to check if email is unique
     protected function isEmailUnique($email) {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM customer WHERE email = ?");
         $stmt->execute([$email]);
@@ -106,10 +73,17 @@ class User {
 
     // Update mobile number in the database
     public function updateMobileNumber($userId, $newMobileNumber) {
-        $stmt = $this->pdo->prepare("UPDATE customer SET mobileNumber = :mobileNumber WHERE id = :userId");
-        $stmt->bindParam(':mobileNumber', $newMobileNumber, PDO::PARAM_STR);
-        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        $this->mobileNumber = $newMobileNumber;
+        try {
+            $stmt = $this->pdo->prepare("UPDATE customer SET mobileNumber = :mobileNumber WHERE id = :userId");
+            $stmt->bindParam(':mobileNumber', $newMobileNumber, PDO::PARAM_STR);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            $this->mobileNumber = $newMobileNumber;
+        } catch (PDOException $e) {
+            throw new Exception("Error updating mobile number: " . $e->getMessage());
+        }
     }
+
 }
+
+?>

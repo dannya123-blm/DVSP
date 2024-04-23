@@ -70,10 +70,13 @@ class Payment {
             $sql = "DELETE FROM payment WHERE idPayment = ?";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([$paymentId]);
+            error_log("Deleted: " . $stmt->rowCount());
             return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
+            error_log("Delete error: " . $e->getMessage());
             return false;
         }
+
     }
 }
 

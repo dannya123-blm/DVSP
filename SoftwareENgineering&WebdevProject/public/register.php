@@ -1,8 +1,7 @@
 <?php
-global $pdo;
 include '../template/header.php';
 include '../src/dbconnect.php';
-require '../classes/Customer.php';
+require '../classes/User.php';
 
 $errorMsg = '';
 
@@ -14,13 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = htmlspecialchars($_POST['address']);
 
     try {
-        // Create Customer object with PDO instance
-        $customer = new Customer($pdo);
-
-        // Register user using Customer class method
+        $customer = new User($pdo);
         $customer->registerUser($username, $password, $email, $mobileNumber, $address);
-
-        // Redirect after successful registration
         header("Location: ../public/login.php");
         exit;
     } catch (Exception $e) {
@@ -43,25 +37,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php if (!empty($errorMsg)) : ?>
         <p style="color: red;"><?php echo $errorMsg; ?></p>
     <?php endif; ?>
-    <form action="../public/register.php" method="POST">
+    <form action="register.php" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
-
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
-
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
-
         <label for="mobileNumber">Mobile Number:</label>
         <input type="text" id="mobileNumber" name="mobileNumber" required><br><br>
-
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" required><br><br>
-
         <input type="submit" value="Register">
     </form>
-
     <p style="text-align: center;">Already have an account? <a href="../public/login.php">Log in here</a></p>
 </div>
 </body>

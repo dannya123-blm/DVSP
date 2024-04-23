@@ -1,11 +1,8 @@
 <?php
 session_start();
-
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
 $isLoggedIn = isset($_SESSION['user_id']);
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +28,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
             </ul>
         </nav>
         <br>
-
         <div class="account-basket">
             <div class="dropdown">
                 <?php
@@ -66,7 +62,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 <div class="cartButton"><a href="../public/cart.php">Cart</a></div>
             </div>
         </div>
-
         <div class="searchBarButton">
             <input type="text" placeholder="Search">
             <button type="button">Search</button>
