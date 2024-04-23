@@ -29,6 +29,7 @@ class Order {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+
     /**
      * Create and save a new order to the database.
      */
@@ -83,4 +84,3 @@ class Order {
 }
 
 ?>
-q
