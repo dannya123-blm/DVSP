@@ -42,6 +42,7 @@ class Order {
             $this->idOrder = $this->pdo->lastInsertId();
             $this->pdo->commit();
             return true;
+
         } catch (PDOException $e) {
             $this->pdo->rollBack();
             error_log('Error creating order: ' . $e->getMessage());
