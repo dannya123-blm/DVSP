@@ -1,10 +1,11 @@
 <?php
+// Ensure session is started at the top if you are using session variables
 include '../template/header.php';
 require '../src/dbconnect.php';
 require '../classes/Customer.php';
 require '../classes/Payment.php';
 require '../classes/Order.php';
-require '../classes/Delivery.php'; // Ensure you include the Delivery class
+require '../classes/Products.php';
 
 global $pdo;
 $userId = $_SESSION['user_id'] ?? null;
@@ -14,7 +15,9 @@ if (!$userId) {
     exit;
 }
 
-$order = new Order($pdo);
+// Instantiate the Order object here after including its class file
+$order = new Order($pdo); // Make sure $pdo is correctly initialized and connected
+
 $customer = new Customer($pdo);
 $userData = $customer->getUserDataById($userId);
 if (!$userData) {
@@ -24,30 +27,42 @@ if (!$userData) {
 
 $payment = new Payment($pdo);
 $cards = $payment->getAllCards($userId);
-$totalAmount = $_SESSION['cart_total'] ?? 0;
+
+// Ensure that the cart total is retrieved before the POST request processing
+$TotalAmount = $_SESSION['cart'] ?? 0; // Fetch the total amount from the session
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
     $paymentId = $_POST['payment_method'];
-    $newOrderId = $order->createOrder($userId, $totalAmount, $paymentId);
+    $newOrderId = $order->createOrder($userId, $TotalAmount, $paymentId);
     if ($newOrderId) {
-        $delivery = new Delivery($pdo); // Assuming Delivery also needs $pdo
-        $deliveryStatus = 'Pending'; // Default delivery status
-        $deliveryAddress = $userData['Address']; // Using user's address as delivery address
-        $deliveryDate = date('Y-m-d H:i:s', strtotime('+3 days')); // Setting a future delivery date
-
-        $deliveryId = $delivery->createDelivery($newOrderId, $deliveryDate, $deliveryAddress, $deliveryStatus);
-        if ($deliveryId) {
-            header("Location: ../public/ordersummary.php?orderId=" . $newOrderId);
-            exit;
-        } else {
-            $message = "Failed to create delivery status. Please try again.";
-        }
+        header("Location: ../public/ordersummary.php?orderId=" . $newOrderId);
+        exit;
     } else {
         $message = "Failed to create order. Please try again.";
     }
 }
-?>
+// Correct the initial assignment of $totalAmount
+// This should be a sum of the product prices times their quantity, not the cart array itself.
+// ... Other initializations ...
 
+$productObj = new Products($pdo);
+$cartItems = $productObj->getCartItems();
+
+$TotalAmount = 0;
+foreach ($cartItems as $item) {
+    $TotalAmount += $item['price'] * $item['quantity'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
+    $paymentId = $_POST['payment_method'];
+    $newOrderId = $order->createOrder($userId, $TotalAmount, $paymentId);
+}
+$TotalAmount = 0;
+foreach ($cartItems as $item) {
+    $TotalAmount += $item['price'] * $item['quantity'];
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,6 +78,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
     <p><strong>Address:</strong> <?= htmlspecialchars($userData['Address'] ?? 'N/A') ?></p>
     <a href="../public/dashboard.php" class="edit-btn">Edit User Info</a>
 </div>
+<div class="cart-items">
+    <h2>Cart Summary</h2>
+    <ul>
+        <?php foreach ($cartItems as $item): ?>
+            <li>
+                <span><?= htmlspecialchars($item['name']) ?></span>
+                <span><?= htmlspecialchars($item['quantity']) ?> x €<?= htmlspecialchars($item['price']) ?></span>
+                <span>Total: €<?= htmlspecialchars($item['quantity'] * $item['price']) ?></span>
+            </li>
+        <?php endforeach; ?>
+        <li class="cart-total">
+            Cart Total: €<?= htmlspecialchars($TotalAmount) ?>
+        </li>
+    </ul>
+</div>
+
 <div class="payment-info">
     <h2>Payment Methods</h2>
     <form action="checkout.php" method="post">

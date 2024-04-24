@@ -3,16 +3,16 @@
 class Order {
     private $idCustomer;
     private $orderDate;
-    private $totalAmount;
+    private $TotalAmount;
     private $idPayment;
     private $idOrder;
     private $pdo;
 
-    public function __construct($pdo, $idCustomer = null, $orderDate = null, $totalAmount = null, $idPayment = null, $idOrder = null) {
+    public function __construct($pdo, $idCustomer = null, $orderDate = null, $TotalAmount = null, $idPayment = null, $idOrder = null) {
         $this->pdo = $pdo;
         $this->idCustomer = $idCustomer;
         $this->orderDate = $orderDate;
-        $this->totalAmount = $totalAmount;
+        $this->TotalAmount = $TotalAmount;
         $this->idPayment = $idPayment;
         $this->idOrder = $idOrder;
     }
@@ -24,12 +24,25 @@ class Order {
     }
 
 
-    public function createOrder($customerId, $totalAmount, $paymentId) {
+    public function createOrder($customerId, $TotalAmount, $paymentId) {
         try {
             $this->pdo->beginTransaction();
             $this->orderDate = date('Y-m-d H:i:s'); // Current timestamp
-            $stmt = $this->pdo->prepare("INSERT INTO orders (idCustomer, orderDate, totalAmount, idPayment) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$customerId, $this->orderDate, $totalAmount, $paymentId]);
+
+            // Check and log the types of the parameters
+            error_log("Creating order with customer ID: $customerId, TotalAmount: $TotalAmount, paymentId: $paymentId");
+
+            // Prepare the statement
+            $stmt = $this->pdo->prepare("INSERT INTO orders (idCustomer, orderDate, TotalAmount, idPayment) VALUES (?, ?, ?, ?)");
+
+            // Ensure all parameters are the correct type. Adjust casting as necessary.
+            $stmt->execute([
+                (int)$customerId, // Cast to integer
+                $this->orderDate, // Should be a string
+                (float)$TotalAmount, // Cast to float to ensure it's not an array or any other type
+                (int)$paymentId // Cast to integer
+            ]);
+
             $newOrderId = $this->pdo->lastInsertId(); // Get the newly created order ID
             $this->pdo->commit();
             return $newOrderId; // Return the new order ID
@@ -41,9 +54,9 @@ class Order {
     }
 
 
-    public function updateOrder($orderId, $orderDate, $totalAmount, $paymentId) {
-        $stmt = $this->pdo->prepare("UPDATE orders SET orderDate = ?, totalAmount = ?, idPayment = ? WHERE idOrders = ?"); // Updated column name here
-        return $stmt->execute([$orderDate, $totalAmount, $paymentId, $orderId]);
+    public function updateOrder($orderId, $orderDate, $TotalAmount, $paymentId) {
+        $stmt = $this->pdo->prepare("UPDATE orders SET orderDate = ?, TotalAmount = ?, idPayment = ? WHERE idOrders = ?"); // Updated column name here
+        return $stmt->execute([$orderDate, $TotalAmount, $paymentId, $orderId]);
     }
 
     public function deleteOrder($orderId) {
@@ -55,6 +68,4 @@ class Order {
         return $this->idOrder;
     }
 }
-
-
 ?>

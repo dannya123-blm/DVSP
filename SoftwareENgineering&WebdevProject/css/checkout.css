@@ -75,17 +75,21 @@ p {
     font-size: 16px;
     color: #666;
 }
-button {
+
+.add-btn {
     display: block;
-    width: 100%;
+    max-width: 200px; /* Adjust this value to suit the desired width */
     padding: 10px;
-    margin-top: 20px;
-    background-color: #0056b3;
+    margin: 20px auto; /* Centers the button in the container */
+    background-color: #3C0295;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-family: 'Bubble Gum Sans', cursive;
+    text-decoration: none;
 }
-button:hover {
-    background-color: #004494;
+
+.add-btn:hover {
+    background-color: black;
 }
