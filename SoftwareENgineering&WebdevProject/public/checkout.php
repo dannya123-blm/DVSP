@@ -1,10 +1,10 @@
 <?php
-// Ensure session is started at the top if you are using session variables
 include '../template/header.php';
 require '../src/dbconnect.php';
 require '../classes/Customer.php';
 require '../classes/Payment.php';
 require '../classes/Order.php';
+require '../classes/Delivery.php'; // Ensure you include the Delivery class
 
 global $pdo;
 $userId = $_SESSION['user_id'] ?? null;
@@ -14,9 +14,7 @@ if (!$userId) {
     exit;
 }
 
-// Instantiate the Order object here after including its class file
-$order = new Order($pdo); // Make sure $pdo is correctly initialized and connected
-
+$order = new Order($pdo);
 $customer = new Customer($pdo);
 $userData = $customer->getUserDataById($userId);
 if (!$userData) {
@@ -26,21 +24,30 @@ if (!$userData) {
 
 $payment = new Payment($pdo);
 $cards = $payment->getAllCards($userId);
-
-// Ensure that the cart total is retrieved before the POST request processing
-$totalAmount = $_SESSION['cart_total'] ?? 0; // Fetch the total amount from the session
+$totalAmount = $_SESSION['cart_total'] ?? 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
     $paymentId = $_POST['payment_method'];
     $newOrderId = $order->createOrder($userId, $totalAmount, $paymentId);
     if ($newOrderId) {
-        header("Location: ../public/ordersummary.php?orderId=" . $newOrderId);
-        exit;
+        $delivery = new Delivery($pdo); // Assuming Delivery also needs $pdo
+        $deliveryStatus = 'Pending'; // Default delivery status
+        $deliveryAddress = $userData['Address']; // Using user's address as delivery address
+        $deliveryDate = date('Y-m-d H:i:s', strtotime('+3 days')); // Setting a future delivery date
+
+        $deliveryId = $delivery->createDelivery($newOrderId, $deliveryDate, $deliveryAddress, $deliveryStatus);
+        if ($deliveryId) {
+            header("Location: ../public/ordersummary.php?orderId=" . $newOrderId);
+            exit;
+        } else {
+            $message = "Failed to create delivery status. Please try again.";
+        }
     } else {
         $message = "Failed to create order. Please try again.";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

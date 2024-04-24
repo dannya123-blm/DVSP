@@ -1,0 +1,65 @@
+/* delivery.css */
+
+.container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.footer-body {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: #3C0295;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Bubblegum Sans", cursive;
+}
+
+.footer {
+    background-color: #3C0295;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: auto;
+    width: 100%;
+}
+
+.social-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.social-item {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.social-item img {
+    width: 40px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.social-item img:hover {
+    transform: scale(1.1);
+}
+
+.footer-links {
+    text-align: center;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: black;
+}
