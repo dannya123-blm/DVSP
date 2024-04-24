@@ -5,6 +5,7 @@ require '../src/dbconnect.php';
 require '../classes/Customer.php';
 require '../classes/Payment.php';
 require '../classes/Order.php';
+require '../classes/Products.php';
 
 global $pdo;
 $userId = $_SESSION['user_id'] ?? null;
@@ -28,11 +29,11 @@ $payment = new Payment($pdo);
 $cards = $payment->getAllCards($userId);
 
 // Ensure that the cart total is retrieved before the POST request processing
-$totalAmount = $_SESSION['cart_total'] ?? 0; // Fetch the total amount from the session
+$TotalAmount = $_SESSION['cart'] ?? 0; // Fetch the total amount from the session
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
     $paymentId = $_POST['payment_method'];
-    $newOrderId = $order->createOrder($userId, $totalAmount, $paymentId);
+    $newOrderId = $order->createOrder($userId, $TotalAmount, $paymentId);
     if ($newOrderId) {
         header("Location: ../public/ordersummary.php?orderId=" . $newOrderId);
         exit;
@@ -40,6 +41,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
         $message = "Failed to create order. Please try again.";
     }
 }
+// Correct the initial assignment of $totalAmount
+// This should be a sum of the product prices times their quantity, not the cart array itself.
+// ... Other initializations ...
+
+$productObj = new Products($pdo);
+$cartItems = $productObj->getCartItems();
+
+$TotalAmount = 0;
+foreach ($cartItems as $item) {
+    $TotalAmount += $item['price'] * $item['quantity'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
+    $paymentId = $_POST['payment_method'];
+    $newOrderId = $order->createOrder($userId, $TotalAmount, $paymentId);
+}
+$TotalAmount = 0;
+foreach ($cartItems as $item) {
+    $TotalAmount += $item['price'] * $item['quantity'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,6 +78,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
     <p><strong>Address:</strong> <?= htmlspecialchars($userData['Address'] ?? 'N/A') ?></p>
     <a href="../public/dashboard.php" class="edit-btn">Edit User Info</a>
 </div>
+<div class="cart-items">
+    <h2>Cart Summary</h2>
+    <ul>
+        <?php foreach ($cartItems as $item): ?>
+            <li>
+                <span><?= htmlspecialchars($item['name']) ?></span>
+                <span><?= htmlspecialchars($item['quantity']) ?> x €<?= htmlspecialchars($item['price']) ?></span>
+                <span>Total: €<?= htmlspecialchars($item['quantity'] * $item['price']) ?></span>
+            </li>
+        <?php endforeach; ?>
+        <li class="cart-total">
+            Cart Total: €<?= htmlspecialchars($TotalAmount) ?>
+        </li>
+    </ul>
+</div>
+
 <div class="payment-info">
     <h2>Payment Methods</h2>
     <form action="checkout.php" method="post">

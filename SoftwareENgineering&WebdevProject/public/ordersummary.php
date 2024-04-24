@@ -1,9 +1,9 @@
 <?php
-
 global $pdo;
 include '../template/header.php';
 include '../src/dbconnect.php';
 require '../classes/Order.php';
+require '../classes/Products.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../public/login.php");
@@ -25,8 +25,8 @@ if (!$orderDetails) {
     exit;
 }
 
-// Safely handle potentially null values
-$totalAmount = isset($orderDetails['TotalAmount']) ? "$" . number_format($orderDetails['TotalAmount'], 2) : "Amount not available";
+// Safely handle potentially null values for TotalAmount
+$totalAmount = isset($orderDetails['TotalAmount']) ? "€" . number_format($orderDetails['TotalAmount'], 2) : "Amount not available";
 
 // Automatically generate purchase date as current date and time
 $purchaseDate = date('d M Y, H:i:s');
@@ -44,7 +44,7 @@ $purchaseDate = date('d M Y, H:i:s');
     <h1>Order Summary</h1>
     <p><strong>Order ID:</strong> <?= htmlspecialchars($orderId) ?></p>
     <p><strong>Total Amount:</strong> <?= htmlspecialchars($totalAmount) ?></p>
-    <p><strong>Purchase Date:</strong> <?= $purchaseDate ?></p>
+    <p><strong>Purchase Date:</strong> <?= htmlspecialchars($purchaseDate) ?></p>
     <button onclick="window.location.href='deliveryStatus.php?orderId=<?= htmlspecialchars($orderId) ?>';">Check Delivery Status</button>
 </div>
 <?php include '../template/footer.php'; ?>

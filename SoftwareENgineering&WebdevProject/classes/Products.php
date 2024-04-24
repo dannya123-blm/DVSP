@@ -14,8 +14,43 @@ class Products {
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
+    public function removeFromCart($productId) {
+        if (isset($_SESSION['cart']) && in_array($productId, $_SESSION['cart'])) {
+            $index = array_search($productId, $_SESSION['cart']);
+            unset($_SESSION['cart'][$index]);
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
 
-    // Fetches a product by ID and can either populate this object or return a new one
+            $stmt = $this->pdo->prepare("UPDATE Products SET StockQuantity = StockQuantity + 1 WHERE idProducts = :product_id");
+            $stmt->bindParam(':product_id', $productId);
+            $stmt->execute();
+        }
+    }
+    public function getCartItems() {
+        $items = [];
+        if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+            return $items;
+        }
+
+        foreach ($_SESSION['cart'] as $productId) {
+            $stmt = $this->pdo->prepare("SELECT * FROM Products WHERE idProducts = :productId");
+            $stmt->execute(['productId' => $productId]);
+            $productData = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($productData) {
+                if (!isset($items[$productId])) {
+                    // Make sure the array keys match your database column names
+                    $items[$productId] = [
+                        'name' => $productData['Name'], // Adjust 'Name' if necessary
+                        'price' => $productData['Price'], // Adjust 'Price' if necessary
+                        'quantity' => 1
+                    ];
+                } else {
+                    $items[$productId]['quantity']++;
+                }
+            }
+        }
+        return $items;
+    }
+
     public function getProductById($productId, $newInstance = false) {
         $stmt = $this->pdo->prepare("SELECT * FROM Products WHERE idProducts = :productId");
         $stmt->execute(['productId' => $productId]);
@@ -147,14 +182,10 @@ class Products {
         }
         return $products;
     }
-
-    // Adds a new product to the database
     public function addProduct($idAdmin, $idProducts, $name, $description, $price, $stockQuantity, $category) {
         $stmt = $this->pdo->prepare("INSERT INTO Products (idAdmin, idProducts, Name, Description, Price, StockQuantity, Category) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$idAdmin, $idProducts, $name, $description, $price, $stockQuantity, $category]);
     }
-
-    // Deletes a product from the database
     public function deleteProduct($productId) {
         $stmt = $this->pdo->prepare("DELETE FROM Products WHERE idProducts = ?");
         $stmt->execute([$productId]);
