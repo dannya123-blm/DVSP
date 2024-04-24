@@ -8,9 +8,6 @@ class Order {
     private $idOrder;
     private $pdo;
 
-    /**
-     * Constructor to initialize the Order object with a PDO connection and optional order details.
-     */
     public function __construct($pdo, $idCustomer = null, $orderDate = null, $totalAmount = null, $idPayment = null, $idOrder = null) {
         $this->pdo = $pdo;
         $this->idCustomer = $idCustomer;
@@ -20,68 +17,44 @@ class Order {
         $this->idOrder = $idOrder;
     }
 
-    /**
-     * Fetch order details by order ID.
-     */
     public function getOrderDetails($orderId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE idOrder = :orderId");
+        $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE idOrders = :orderId");
         $stmt->execute(['orderId' => $orderId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Returns false if no record is found
     }
 
 
-    /**
-     * Create and save a new order to the database.
-     */
     public function createOrder($customerId, $totalAmount, $paymentId) {
         try {
             $this->pdo->beginTransaction();
-            $this->orderDate = date('Y-m-d H:i:s'); // Current date and time
+            $this->orderDate = date('Y-m-d H:i:s'); // Current timestamp
             $stmt = $this->pdo->prepare("INSERT INTO orders (idCustomer, orderDate, totalAmount, idPayment) VALUES (?, ?, ?, ?)");
             $stmt->execute([$customerId, $this->orderDate, $totalAmount, $paymentId]);
-            $this->idOrder = $this->pdo->lastInsertId();
+            $newOrderId = $this->pdo->lastInsertId(); // Get the newly created order ID
             $this->pdo->commit();
-            return true;
-
+            return $newOrderId; // Return the new order ID
         } catch (PDOException $e) {
             $this->pdo->rollBack();
             error_log('Error creating order: ' . $e->getMessage());
-            return false;
+            return false; // Return false on failure
         }
     }
 
-    /**
-     * Update existing order details.
-     */
+
     public function updateOrder($orderId, $orderDate, $totalAmount, $paymentId) {
-        try {
-            $stmt = $this->pdo->prepare("UPDATE orders SET orderDate = ?, totalAmount = ?, idPayment = ? WHERE idOrder = ?");
-            return $stmt->execute([$orderDate, $totalAmount, $paymentId, $orderId]);
-        } catch (PDOException $e) {
-            error_log('Error updating order: ' . $e->getMessage());
-            return false;
-        }
+        $stmt = $this->pdo->prepare("UPDATE orders SET orderDate = ?, totalAmount = ?, idPayment = ? WHERE idOrders = ?"); // Updated column name here
+        return $stmt->execute([$orderDate, $totalAmount, $paymentId, $orderId]);
     }
 
-    /**
-     * Delete an order from the database.
-     */
     public function deleteOrder($orderId) {
-        try {
-            $stmt = $this->pdo->prepare("DELETE FROM orders WHERE idOrder = ?");
-            return $stmt->execute([$orderId]);
-        } catch (PDOException $e) {
-            error_log('Error deleting order: ' . $e->getMessage());
-            return false;
-        }
+        $stmt = $this->pdo->prepare("DELETE FROM orders WHERE idOrders = ?"); // Updated column name here
+        return $stmt->execute([$orderId]);
     }
 
-    /**
-     * Get the ID of the last inserted order.
-     */
     public function getIdOrder() {
         return $this->idOrder;
     }
 }
+
 
 ?>

@@ -58,3 +58,34 @@ p {
         flex-direction: column;
     }
 }
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+h1 {
+    color: #333;
+    text-align: center;
+}
+p {
+    font-size: 16px;
+    color: #666;
+}
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #004494;
+}
