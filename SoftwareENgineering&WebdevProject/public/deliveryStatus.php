@@ -18,11 +18,9 @@ if (empty($deliveries)) {
 } else {
     echo "<h2>Your Deliveries</h2>";
     foreach ($deliveries as $deliveryDetail) {
-        // Make sure that 'DeliveryDate' is the correct column name in your SQL database
-        $deliveryDate = isset($deliveryDetail['DeliveryDate']) ? date('Y M d', strtotime($deliveryDetail['DeliveryDate'])) : "Date not available";
-        echo "<p>Delivery ID: {$deliveryDetail['idDelivery']} - Status: {$deliveryDetail['Status']} - Delivery Date: {$deliveryDate}</p>";
-        echo date('d M Y H:i:s', strtotime($setDeliveryData['DeliveryDate']));
-
+        // Format the DeliveryDate with date and time
+        $formattedDate = isset($deliveryDetail['DeliveryDate']) ? date('d M Y H:i:s', strtotime($deliveryDetail['DeliveryDate'])) : "Date not available";
+        echo "<p>Delivery ID: {$deliveryDetail['idDelivery']} - Status: {$deliveryDetail['Status']} - Delivery Date: {$formattedDate}</p>";
     }
 }
 include '../template/footer.php';
