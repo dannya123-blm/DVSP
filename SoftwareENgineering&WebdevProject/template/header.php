@@ -38,6 +38,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                     echo '<a href="../public/payment.php">Payment</a>';
                     echo '<a href="../public/paymentedit.php">EditCard</a>';
                     echo '<a href="../public/Passwordchanger.php">ChangePassword</a>';
+                    echo '<a href="../public/deliveryStatus.php">CheckOrder</a>';
                     if ($isAdminLoggedIn) {
                         echo '<a href="../administrator/adminscrud.php">Connections</a>';
                     }

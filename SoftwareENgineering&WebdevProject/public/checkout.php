@@ -1,68 +1,51 @@
 <?php
-// Ensure session is started at the top if you are using session variables
+
 include '../template/header.php';
 require '../src/dbconnect.php';
 require '../classes/Customer.php';
 require '../classes/Payment.php';
 require '../classes/Order.php';
 require '../classes/Products.php';
+require '../classes/Delivery.php';
 
 global $pdo;
 $userId = $_SESSION['user_id'] ?? null;
 
 if (!$userId) {
-    header("Location: ../public/login.php");
+    header("Location: ../public/login.php"); // Redirect if not logged in
     exit;
 }
-
-// Instantiate the Order object here after including its class file
-$order = new Order($pdo); // Make sure $pdo is correctly initialized and connected
 
 $customer = new Customer($pdo);
 $userData = $customer->getUserDataById($userId);
-if (!$userData) {
-    echo "User not found.";
-    exit;
-}
-
 $payment = new Payment($pdo);
 $cards = $payment->getAllCards($userId);
 
-// Ensure that the cart total is retrieved before the POST request processing
-$TotalAmount = $_SESSION['cart'] ?? 0; // Fetch the total amount from the session
+$productObj = new Products($pdo);
+$cartItems = $productObj->getCartItems(); // Presuming this method gets cart items with quantity and price
+$totalAmount = $_SESSION['totalAmount'] ?? 0; // Retrieve the total amount from session
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
+    session_regenerate_id(); // Security measure to prevent session fixation
     $paymentId = $_POST['payment_method'];
-    $newOrderId = $order->createOrder($userId, $TotalAmount, $paymentId);
+    $order = new Order($pdo);
+    $newOrderId = $order->createOrder($userId, $totalAmount, $paymentId);
+
     if ($newOrderId) {
+        $delivery = new Delivery($pdo);
+        $delivery->createDelivery($newOrderId, $userData['Address']); // Assuming address from user data
+
+        unset($_SESSION['cart']); // Clear the cart after the order is successfully placed
+        unset($_SESSION['totalAmount']); // Clear the total amount from session
         header("Location: ../public/ordersummary.php?orderId=" . $newOrderId);
         exit;
     } else {
         $message = "Failed to create order. Please try again.";
     }
 }
-// Correct the initial assignment of $totalAmount
-// This should be a sum of the product prices times their quantity, not the cart array itself.
-// ... Other initializations ...
-
-$productObj = new Products($pdo);
-$cartItems = $productObj->getCartItems();
-
-$TotalAmount = 0;
-foreach ($cartItems as $item) {
-    $TotalAmount += $item['price'] * $item['quantity'];
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
-    $paymentId = $_POST['payment_method'];
-    $newOrderId = $order->createOrder($userId, $TotalAmount, $paymentId);
-}
-$TotalAmount = 0;
-foreach ($cartItems as $item) {
-    $TotalAmount += $item['price'] * $item['quantity'];
-}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,11 +68,10 @@ foreach ($cartItems as $item) {
             <li>
                 <span><?= htmlspecialchars($item['name']) ?></span>
                 <span><?= htmlspecialchars($item['quantity']) ?> x €<?= htmlspecialchars($item['price']) ?></span>
-                <span>Total: €<?= htmlspecialchars($item['quantity'] * $item['price']) ?></span>
             </li>
         <?php endforeach; ?>
         <li class="cart-total">
-            Cart Total: €<?= htmlspecialchars($TotalAmount) ?>
+            Cart Total: €<?= htmlspecialchars($totalAmount) ?>
         </li>
     </ul>
 </div>

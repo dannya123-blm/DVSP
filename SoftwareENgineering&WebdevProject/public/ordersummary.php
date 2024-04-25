@@ -1,17 +1,13 @@
 <?php
-global $pdo;
 include '../template/header.php';
-include '../src/dbconnect.php';
+require '../src/dbconnect.php';
 require '../classes/Order.php';
-require '../classes/Products.php';
+require '../classes/Delivery.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../public/login.php");
-    exit;
-}
-
+global $pdo;
 $order = new Order($pdo);
-$orderId = isset($_GET['orderId']) ? $_GET['orderId'] : null;
+$delivery = new Delivery($pdo);
+$orderId = $_GET['orderId'] ?? null;
 
 if (!$orderId) {
     echo "No order ID provided.";
@@ -19,19 +15,18 @@ if (!$orderId) {
 }
 
 $orderDetails = $order->getOrderDetails($orderId);
+$deliveryDetails = $delivery->getDeliveryDetailsByOrderID($orderId);
 
 if (!$orderDetails) {
     echo "Order not found.";
     exit;
 }
 
-// Safely handle potentially null values for TotalAmount
 $totalAmount = isset($orderDetails['TotalAmount']) ? "€" . number_format($orderDetails['TotalAmount'], 2) : "Amount not available";
-
-// Automatically generate purchase date as current date and time
-$purchaseDate = date('d M Y, H:i:s');
+$purchaseDate = isset($orderDetails['purchaseDate']) ? date('d M Y', strtotime($orderDetails['purchaseDate'])) : "Purchase date not available"; // Format the fetched purchase date
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,8 +39,7 @@ $purchaseDate = date('d M Y, H:i:s');
     <h1>Order Summary</h1>
     <p><strong>Order ID:</strong> <?= htmlspecialchars($orderId) ?></p>
     <p><strong>Total Amount:</strong> <?= htmlspecialchars($totalAmount) ?></p>
-    <p><strong>Purchase Date:</strong> <?= htmlspecialchars($purchaseDate) ?></p>
-    <button onclick="window.location.href='deliveryStatus.php?orderId=<?= htmlspecialchars($orderId) ?>';">Check Delivery Status</button>
+    <p><strong>Day of Purchase Date:</strong> <?= htmlspecialchars($purchaseDate) ?></p> <!-- Changed label to "Day of Purchase Date" -->
 </div>
 <?php include '../template/footer.php'; ?>
 </body>

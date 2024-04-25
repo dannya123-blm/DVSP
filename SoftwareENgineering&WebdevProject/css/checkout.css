@@ -75,7 +75,22 @@ p {
     font-size: 16px;
     color: #666;
 }
-
+.deliverybtn{
+    display: block;
+    max-width: 200px; /* Adjust this value to suit the desired width */
+    padding: 10px;
+    margin: 20px auto; /* Centers the button in the container */
+    background-color: #3C0295;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bubble Gum Sans', cursive;
+    text-decoration: none;
+}
+.deliverybtn:hover {
+    background-color: black;
+}
 .add-btn {
     display: block;
     max-width: 200px; /* Adjust this value to suit the desired width */
