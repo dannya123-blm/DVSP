@@ -30,7 +30,7 @@ input[type="email"] {
     box-sizing: border-box;
 }
 .submit-button {
-    width: 50%;
+    width: 100%;
     padding: 15px;
     border: none;
     border-radius: 5px;
@@ -41,7 +41,7 @@ input[type="email"] {
 }
 
 .submit-button:hover {
-    background-color: #29066b;  /* Adjusted to a darker shade for hover effect */
+    background-color: #29066b;  
 }
 
 p {
