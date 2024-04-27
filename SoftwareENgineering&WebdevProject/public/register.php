@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" id="mobileNumber" name="mobileNumber" required><br><br>
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" required><br><br>
-        <input type="submit" value="Register">
+        <input type="submit" value="Register" class="submit-button">
     </form>
     <p style="text-align: center;">Already have an account? <a href="../public/login.php">Log in here</a></p>
 </div>

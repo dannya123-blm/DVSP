@@ -23,16 +23,15 @@ input[type="text"],
 input[type="password"],
 input[type="email"] {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
 }
-
-input[type="submit"] {
-    width: 100%;
-    padding: 12px;
+.submit-button {
+    width: 50%;
+    padding: 15px;
     border: none;
     border-radius: 5px;
     background-color: #3C0295;
@@ -41,8 +40,8 @@ input[type="submit"] {
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
-    background-color: #3C0295;
+.submit-button:hover {
+    background-color: #29066b;  /* Adjusted to a darker shade for hover effect */
 }
 
 p {
