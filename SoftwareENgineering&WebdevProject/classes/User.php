@@ -13,6 +13,10 @@ class User {
         $this->pdo = $pdo;
     }
 
+    public function setUserID($id) {
+        $this->idUser = $id;
+    }
+
     // Register a new user with unique username and email
     public function registerUser($username, $password, $email, $mobileNumber, $address) {
         // Check for unique username and email before proceeding
@@ -85,5 +89,3 @@ class User {
     }
 
 }
-
-?>
