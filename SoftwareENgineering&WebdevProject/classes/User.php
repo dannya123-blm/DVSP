@@ -8,6 +8,9 @@ class User {
     protected $mobileNumber;
     public $pdo;
 
+    public function setUserID($id) {
+        $this->idUser = $id;
+    }
     // Constructor with PDO dependency injection
     public function __construct(PDO $pdo) {
         $this->pdo = $pdo;

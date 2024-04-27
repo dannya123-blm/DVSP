@@ -1,5 +1,4 @@
 <?php
-// Include necessary files and configurations
 global $pdo;
 include '../template/header.php';
 require_once '../src/dbconnect.php';
@@ -8,52 +7,56 @@ require_once '../classes/Products.php';
 // Initialize Products class with database connection
 $productObj = new Products($pdo);
 
-// Check if a category filter is applied
+// Initialize sort and filter variables
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : '';
-
-// Check if a search term is provided
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
 
-// SQL query to fetch products from the database
-$sql = "SELECT * FROM products";
+// Build SQL query dynamically based on filters and search term
+$sql = "SELECT * FROM Products";
+$conditions = [];
+$params = [];
 
-// If a category filter is applied, add a WHERE clause to filter products by category
 if (!empty($categoryFilter)) {
-    $sql .= " WHERE Category = :category";
+    $conditions[] = "Category = :category";
+    $params[':category'] = $categoryFilter;
 }
 
-// If both category filter and search term are applied, combine them with AND
-if (!empty($categoryFilter) && !empty($searchTerm)) {
-    $sql .= " AND Name LIKE :searchTerm";
+if (!empty($searchTerm)) {
+    $conditions[] = "Name LIKE :searchTerm";
+    $params[':searchTerm'] = "%$searchTerm%";
 }
-// If only search term is applied, add a WHERE clause to filter products by name
-elseif (!empty($searchTerm)) {
-    $sql .= " WHERE Name LIKE :searchTerm";
+
+if ($conditions) {
+    $sql .= " WHERE " . implode(" AND ", $conditions);
+}
+
+switch ($sort) {
+    case 'price-high-low':
+        $sql .= " ORDER BY Price DESC";
+        break;
+    case 'price-low-high':
+        $sql .= " ORDER BY Price ASC";
+        break;
+    case 'name-a-z':
+        $sql .= " ORDER BY Name ASC";
+        break;
+    case 'name-z-a':
+        $sql .= " ORDER BY Name DESC";
+        break;
 }
 
 $stmt = $pdo->prepare($sql);
-
-// Bind category parameter if filter applied
-if (!empty($categoryFilter)) {
-    $stmt->bindParam(':category', $categoryFilter);
+foreach ($params as $key => &$val) {
+    $stmt->bindParam($key, $val);
 }
-
-// Bind search term parameter if provided
-if (!empty($searchTerm)) {
-    $searchParam = "%$searchTerm%"; // Adjusted the search term to include wildcard characters (%)
-    $stmt->bindParam(':searchTerm', $searchParam);
-}
-
 $stmt->execute();
 
-// Check if the product is added to the cart
+// Handle product addition to the cart
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
-    // Store the product ID in the session
     $_SESSION['cart'][] = $_POST['product_id'];
-
-    // Decrease the stock quantity by 1
     $productId = $_POST['product_id'];
-    $updateStockStmt = $pdo->prepare("UPDATE products SET StockQuantity = StockQuantity - 1 WHERE idProducts = :product_id");
+    $updateStockStmt = $pdo->prepare("UPDATE Products SET StockQuantity = StockQuantity - 1 WHERE idProducts = :product_id");
     $updateStockStmt->bindParam(':product_id', $productId);
     $updateStockStmt->execute();
 }
@@ -61,14 +64,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Page</title>
     <link rel="stylesheet" href="../css/products.css">
 </head>
-
 <body>
 <main class="container">
     <div class="filters">
@@ -78,26 +79,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
         <a href="?category=Mice" class="filter-btn">Mice</a>
         <a href="?category=PC" class="filter-btn">PC</a>
         <a href="?category=Headphone" class="filter-btn">Headphones</a>
-        <a href="?category=Controllers" class="filter-btn">Controllers</a>
+        <a href="?category=Controller" class="filter-btn">Controllers</a>
 
+        <form method="GET">
+            <div class="sort-by">
+                <label for="sort-by">Sort by:</label>
+                <select id="sort-by" name="sort" onchange="this.form.submit()">
+                    <option value="price-low-high" <?= $sort == 'price-low-high' ? 'selected' : '' ?>>Price: Low to High</option>
+                    <option value="price-high-low" <?= $sort == 'price-high-low' ? 'selected' : '' ?>>Price: High to Low</option>
+                    <option value="name-a-z" <?= $sort == 'name-a-z' ? 'selected' : '' ?>>Name: A to Z</option>
+                    <option value="name-z-a" <?= $sort == 'name-z-a' ? 'selected' : '' ?>>Name: Z to A</option>
+                </select>
+            </div>
+            <!-- Preserve other filter states -->
+            <input type="hidden" name="category" value="<?= htmlspecialchars($categoryFilter) ?>">
+            <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm) ?>">
+        </form>
 
-        <div class="sort-by">
-            <label for="sort-by">Sort by:</label>
-            <select id="sort-by">
-                <option value="price-low-high">Price: Low to High</option>
-                <option value="price-high-low">Price: High to Low</option>
-                <option value="name-a-z">Name: A to Z</option>
-                <option value="name-z-a">Name: Z to A</option>
-            </select>
-        </div>
-    </div>
-
-    <section class="categories top-categories">
-        <div class="product-container">
-            <div class="product-cards">
-                <?php
-                // Check if there are products
-                if ($stmt->rowCount() > 0) {
+        <section class="categories top-categories">
+            <div class="product-container">
+                <div class="product-cards">
+                    <?php
+                    if ($stmt->rowCount() > 0)
+                    {
                     // Output data of each row
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         // Create a new Product object

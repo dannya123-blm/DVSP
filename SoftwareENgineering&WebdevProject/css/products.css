@@ -1,52 +1,13 @@
-.product-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+.container {
     display: flex;
-    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 20px;
+    gap: 20px;
 }
-.img{
-    width: 50%;
-    height: auto;
-    max-width: 50px;
-    max-height: 50px;
-    display: block;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 
 .filters {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
-    flex: 0 0 auto;
-}
-
-.filters h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.filter-btn {
-    display: inline-block;
-    margin-bottom: 10px;
-    padding: 8px 16px;
-    background-color: transparent;
-    color: #3C0295;
-    border: 1px solid #3C0295;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.filter-btn:hover {
-    background-color: #3C0295;
-    color: white;
+    flex: 0 0 20px; /* Fixed width for filters */
+    margin-right: 15px; /* Ensure there is a gap after the filters */
 }
 
 .sort-by {
@@ -54,7 +15,6 @@
 }
 
 .sort-by label {
-    margin-right: 10px;
     font-size: 1rem;
 }
 
@@ -63,51 +23,72 @@
     font-size: 1rem;
 }
 
+.product-container {
+    flex-grow: 1;
+    width: 100%; /* Ensure container takes the remaining width */
+}
+
 .product-cards {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start; /* Align products to the start of the container */
     gap: 20px;
 }
 
 .product-card {
-    background-color: #fff;
+    flex: 1 1 calc(33.333% - 20px); /* Take up 1/3 of the space minus gap */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 20px;
-    flex: 1 0 calc(33.33% - 20px);
-    box-sizing: border-box;
+    padding: 10px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+    max-width: calc(33.333% - 20px); /* Max width to support older browsers */
+}
+
+.product-image img {
+    max-width: 100%; /* Make sure the image does not overflow its container */
+    height: auto;
+    border-radius: 8px;
 }
 
 .product-details h3 {
     font-size: 1.2rem;
-    margin-bottom: 10px;
+    color: #333;
+    margin: 10px 0;
 }
 
 .product-details p {
     font-size: 1rem;
-    margin-bottom: 10px;
+    color: #666;
+    line-height: 1.5;
+    margin: 10px 0;
 }
 
 .product-details .price {
     font-size: 1.2rem;
     color: #3C0295;
+    margin: 10px 0;
+}
+
+.product-details .stock {
+    font-size: 0.9rem;
+    margin: 10px 0;
 }
 
 .product-details button {
-    padding: 8px 16px;
-    background-color: transparent;
-    color: #3C0295;
-    border: 1px solid #3C0295;
+    padding: 10px 15px;
+    background-color: #3C0295;
+    color: white;
+    border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 .product-details button:hover {
-    background-color: #3C0295;
-    color: white;
+    background-color: #29066b;
 }
 
 .no-products {
@@ -117,36 +98,25 @@
 }
 
 @media (max-width: 768px) {
-    .product-container {
-        align-items: center;
-        flex-direction: row;
+    .container {
+        flex-direction: column;
     }
 
     .filters {
-        margin-right: 0;
-        margin-bottom: 20px;
+        width: 100%;
+        order: 2; /* Filters come after the products on small screens */
+    }
+
+    .product-container {
+        width: 100%;
+        order: 1; /* Products show before filters on small screens */
     }
 
     .product-cards {
-        width: 100%;
         justify-content: center;
     }
 
     .product-card {
-        flex: 1 0 calc(50% - 20px);
+        flex-basis: 100%; /* Full width on smaller screens */
     }
-}
-
-.container {
-    display: flex;
-    flex-direction: row;
-}
-
-.filters {
-    flex: 0 0 auto;
-    margin-left: auto;
-}
-
-.categories {
-    flex: 1;
 }
