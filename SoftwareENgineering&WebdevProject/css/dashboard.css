@@ -1,19 +1,19 @@
 .dashboard-heading {
-    color: #333;
+    color: black;
 }
 
 .dashboard-details {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid white;
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
 
 .dashboard-details h3 {
-    color: #333;
+    color: black;
 }
 
 .dashboard-details p {
-    margin: 8px 0;
+    margin: 20px 0;
 }
 
 .dashboard-update {
@@ -21,49 +21,48 @@
 }
 
 .dashboard-update h3 {
-    color: #333;
+    color: black;
 }
 
 .dashboard-form {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .dashboard-label {
     display: block;
-    margin-bottom: 8px;
-    color: #333;
+    margin-bottom: 20px;
+    color: black;
 }
 
 .dashboard-input {
-    width: 35%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 40%;
+    padding: 20px;
+    border: 2px solid white;
+    border-radius: 8px;
     box-sizing: border-box;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .dashboard-button {
-    padding: 10px 20px;
-    background-color: rebeccapurple;
+    padding: 20px 20px;
+    background-color: #3C0295;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
 }
 
 .dashboard-button:hover {
-    background-color: #0056b3;
+    background-color: cornflowerblue;
 }
 
 .dashboard-error {
-    color: #ff0000;
-    font-style: italic;
+    color: red;
     margin-top: 5px;
 }
 
 .dashboard-success {
-    color: #008000;
+    color: limegreen;
     font-style: italic;
     margin-top: 5px;
 }

@@ -1,6 +1,7 @@
 <?php
 
-class User {
+class User
+{
     protected $idUser;
     protected $username;
     protected $password;
@@ -8,17 +9,17 @@ class User {
     protected $mobileNumber;
     public $pdo;
 
-    public function setUserID($id) {
+    public function setUserID($id)
+    {
         $this->idUser = $id;
     }
+
     // Constructor with PDO dependency injection
-    public function __construct(PDO $pdo) {
+    public function __construct(PDO $pdo)
+    {
         $this->pdo = $pdo;
     }
 
-    public function setUserID($id) {
-        $this->idUser = $id;
-    }
 
     // Register a new user with unique username and email
     public function registerUser($username, $password, $email, $mobileNumber, $address) {

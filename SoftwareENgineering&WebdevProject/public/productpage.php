@@ -4,15 +4,10 @@ include '../template/header.php';
 require_once '../src/dbconnect.php';
 require_once '../classes/Products.php';
 
-// Initialize Products class with database connection
 $productObj = new Products($pdo);
-
-// Initialize sort and filter variables
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : '';
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
-
-// Build SQL query dynamically based on filters and search term
 $sql = "SELECT * FROM Products";
 $conditions = [];
 $params = [];
@@ -21,12 +16,10 @@ if (!empty($categoryFilter)) {
     $conditions[] = "Category = :category";
     $params[':category'] = $categoryFilter;
 }
-
 if (!empty($searchTerm)) {
     $conditions[] = "Name LIKE :searchTerm";
     $params[':searchTerm'] = "%$searchTerm%";
 }
-
 if ($conditions) {
     $sql .= " WHERE " . implode(" AND ", $conditions);
 }
@@ -52,7 +45,6 @@ foreach ($params as $key => &$val) {
 }
 $stmt->execute();
 
-// Handle product addition to the cart
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
     $_SESSION['cart'][] = $_POST['product_id'];
     $productId = $_POST['product_id'];
@@ -91,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
                     <option value="name-z-a" <?= $sort == 'name-z-a' ? 'selected' : '' ?>>Name: Z to A</option>
                 </select>
             </div>
-            <!-- Preserve other filter states -->
+
             <input type="hidden" name="category" value="<?= htmlspecialchars($categoryFilter) ?>">
             <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm) ?>">
         </form>
@@ -102,9 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
                     <?php
                     if ($stmt->rowCount() > 0)
                     {
-                    // Output data of each row
+
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        // Create a new Product object
+
                         $product = $productObj->getProductById($row["idProducts"]);
                         $category = ucfirst(strtolower($product->getCategory())); // Capitalize the first letter
                         $imageName = "{$category}{$row['idProducts']}.jpg";
