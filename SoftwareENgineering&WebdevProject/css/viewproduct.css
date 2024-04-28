@@ -12,11 +12,13 @@
 }
 
 .product-main-image img {
-    max-width: 80%;
-    height: auto;
-    border: 5px solid #800080;
+    width: auto;
+    height: 800px;
+    object-fit: contain;
+    border: 5px solid #3C0295;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
 }
-
 .product-details-sidebar {
     display: flex;
     flex-direction: column;
@@ -29,12 +31,12 @@
 }
 
 .price {
-    color: #800080;
+    color: #3C0295;
     font-weight: bold;
 }
 
 .add-to-cart-btn {
-    background-color: #800080;
+    background-color:#3C0295;
     color: #FFF;
     border: none;
     padding: 1rem;

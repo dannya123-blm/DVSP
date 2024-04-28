@@ -1,6 +1,6 @@
 .random-products {
     padding: 20px;
-    color: #6a0dad;
+    color: #3C0295;
 }
 
 .random-products .product-container {
@@ -14,9 +14,9 @@
     flex: 0 0 calc(25% - 30px);
     margin: 15px;
     padding: 20px;
-    border: 2px solid #6a0dad;
+    border: 5px solid #3C0295;
     border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     max-width: 250px;
 }
@@ -63,7 +63,7 @@
     width: 100%;
     padding: 10px;
     margin-top: 10px;
-    background-color: #6a0dad;
+    background-color:#3C0295;
     color: #fff;
     border: none;
     border-radius: 4px;

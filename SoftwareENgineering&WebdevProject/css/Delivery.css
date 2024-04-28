@@ -31,12 +31,12 @@
 .order-status strong {
     display: block;
     font-size: 1.1em;
-    color: #800080; /* Purple color for the strong tag */
+    color: #3C0295; /* Purple color for the strong tag */
 }
 
 .btn-view-item {
     padding: 10px 20px;
-    background-color: #800080; /* Purple background for button */
+    background-color:#3C0295; /* Purple background for button */
     color: white;
     border: none;
     cursor: pointer;
@@ -44,7 +44,7 @@
 }
 
 .btn-view-item:hover {
-    background-color: #6a006a;
+    background-color: #3C0295;
 }
 
 /* Responsive adjustments */
