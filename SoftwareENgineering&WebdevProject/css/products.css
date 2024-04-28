@@ -6,13 +6,9 @@
     flex-direction: column;
 }
 
-.img {
-    width: 50%;
-    height: auto;
-    max-width: 50px;
-    max-height: 50px;
-    display: block;
-    margin: 0 auto;
+.product-image img {
+    width: 100%; /* Set the width to 100% of its container */
+    height: auto; /* Maintain the aspect ratio */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

@@ -113,6 +113,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
                                     <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
                                     <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                                 </form>
+                                <br>
+                                <form action="viewproduct.php" method="get">
+                                    <input type="hidden" name="productId" value="<?php echo $product->getProductID(); ?>">
+                                    <button type="submit" class="view-more-btn">View More</button>
+                                </form>
+
                             <?php } else { ?>
                                 <p class="stock out-of-stock">Out of Stock</p>
                             <?php } ?>

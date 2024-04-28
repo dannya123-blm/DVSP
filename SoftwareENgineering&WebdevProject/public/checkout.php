@@ -78,16 +78,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
 
 <div class="payment-info">
     <h2>Payment Methods</h2>
-    <form action="checkout.php" method="post">
-        <?php foreach ($cards as $card): ?>
-            <div class="card">
-                <input type="radio" id="card_<?= $card['idPayment'] ?>" name="payment_method" value="<?= $card['idPayment'] ?>" required>
-                <label for="card_<?= $card['idPayment'] ?>"><?= htmlspecialchars($card['paymentName'] ?? 'Unknown Payment Method') ?></label>
+    <?php if (!empty($cards)): ?>
+        <form action="checkout.php" method="post">
+            <?php foreach ($cards as $card): ?>
+                <div class="card">
+                    <input type="radio" id="card_<?= $card['idPayment'] ?>" name="payment_method" value="<?= $card['idPayment'] ?>" required>
+                    <label for="card_<?= $card['idPayment'] ?>"><?= htmlspecialchars($card['paymentName'] ?? 'Unknown Payment Method') ?></label>
+                </div>
+            <?php endforeach; ?>
+            <button type="submit" class="add-btn">Complete Checkout</button>
+            <div class="add-card-link">
+                <a href="../public/payment.php" class="add-new-card-btn">Add New Card</a>
             </div>
-        <?php endforeach; ?>
-        <button type="submit" class="add-btn">Complete Checkout</button>
-    </form>
+        </form>
+    <?php else: ?>
+        <p>You have no payment methods saved. Please add a payment method to proceed.</p>
+        <a href="../public/payment.php" class="add-btn">Add Card</a>
+    <?php endif; ?>
 </div>
+
 <?php if (isset($message)) echo "<p>$message</p>"; ?>
 <?php include '../template/footer.php'; ?>
 </body>
