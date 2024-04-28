@@ -14,21 +14,23 @@ class PDODummy extends PDO {
     }
 
     public function prepare($statement, $options = array()): PDOStatement|false {
-        $data = $this->data[$statement] ?? null; // Use statement as key to fetch corresponding data
+        $data = $this->data[$statement] ?? null;
 
         return new class($data) extends PDOStatement {
-            private $data;
+            private $result;
 
             public function __construct($data) {
-                $this->data = $data;
+                $this->result = $data; // Directly use passed data as result
             }
 
             public function execute(?array $params = null): bool {
+                // Here the method should just return true indicating success
                 return true;  // Simulate successful execution
             }
 
+            // Method to directly get data after execute if needed
             public function getTestData() {
-                return $this->data;
+                return $this->result;  // Provide the stored data
             }
 
             public function rowCount(): int {
@@ -53,7 +55,8 @@ echo "<!DOCTYPE html><html><head><title>Test Results</title></head><body>";
 echo "<h1>Delivery Class Test Results</h1>";
 
 $stmt = $pdo->prepare("SELECT * FROM delivery WHERE idOrders = :idOrders");
-$result = $stmt->getTestData();  // Use custom method to get data directly
+$stmt->execute();  // Perform the operation
+$result = $stmt->getTestData();  // Get the data directly after execution
 if ($result) {
     assertEqual('123 Main St', $result['DeliveryAddress'], 'Get delivery details by order ID');
 } else {
