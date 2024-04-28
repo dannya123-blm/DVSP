@@ -40,6 +40,7 @@ class Customer extends User
         return false;
     }
 
+
     public function registerUser($username, $password, $email, $mobileNumber, $address)
     {
         try {
@@ -209,5 +210,6 @@ class Customer extends User
             throw new Exception("Error fetching stored password: " . $e->getMessage());
         }
     }
+
 
 }
