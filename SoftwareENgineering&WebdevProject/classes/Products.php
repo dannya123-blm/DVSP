@@ -125,14 +125,6 @@ class Products {
         $this->Category = $category;
     }
 
-    public function getAdminID() {
-        return $this->idAdmin;
-    }
-
-    public function setAdminID($adminID) {
-        $this->idAdmin = $adminID;
-    }
-
     public function searchProducts($searchTerm) {
         $stmt = $this->pdo->prepare("SELECT * FROM Products WHERE Name LIKE :term OR Description LIKE :term");
         $stmt->execute(['term' => '%' . $searchTerm . '%']);
