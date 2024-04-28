@@ -92,7 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($resultType === 'object') {
                     $propertyMismatch = false;
                     foreach ($testCase['expectedProperties'] as $key => $value) {
-                        if ($result->$key != $value) {
+                        // Use getter methods instead of direct property access
+                        $actualValue = call_user_func([$result, 'get' . $key]);
+                        if ($actualValue != $value) {
                             $propertyMismatch = true;
                             break;
                         }
@@ -112,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<p>Test Case with ID {$idDescription} Failed. Caught expected error: {$e->getMessage()}.</p>";
         }
     }
+
 
     // Define test functions for User
     function testRegisterUser($user, $testCase) {

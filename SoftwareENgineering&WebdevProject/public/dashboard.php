@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 include '../template/header.php';
 include '../src/dbconnect.php';
 require '../classes/Customer.php';
