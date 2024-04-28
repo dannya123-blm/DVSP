@@ -5,7 +5,8 @@
     display: flex;
     flex-direction: column;
 }
-.img{
+
+.img {
     width: 50%;
     height: auto;
     max-width: 50px;
@@ -15,7 +16,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 .filters {
     padding: 20px;
@@ -34,8 +34,8 @@
     display: inline-block;
     margin-bottom: 10px;
     padding: 8px 16px;
-    background-color: transparent;
-    color: #3C0295;
+    background-color: #3C0295; /* Updated background color */
+    color: white; /* Updated text color */
     border: 1px solid #3C0295;
     border-radius: 4px;
     cursor: pointer;
@@ -45,8 +45,8 @@
 }
 
 .filter-btn:hover {
-    background-color: #3C0295;
-    color: white;
+    background-color: #fff; /* Updated background color on hover */
+    color: #3C0295; /* Updated text color on hover */
 }
 
 .sort-by {

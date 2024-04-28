@@ -87,48 +87,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
             <input type="hidden" name="category" value="<?= htmlspecialchars($categoryFilter) ?>">
             <input type="hidden" name="search" value="<?= htmlspecialchars($searchTerm) ?>">
         </form>
+    </div>
 
-        <section class="categories top-categories">
-            <div class="product-container">
-                <div class="product-cards">
-                    <?php
-                    if ($stmt->rowCount() > 0)
-                    {
-
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-                        $product = $productObj->getProductById($row["idProducts"]);
-                        $category = ucfirst(strtolower($product->getCategory())); // Capitalize the first letter
-                        $imageName = "{$category}{$row['idProducts']}.jpg";
-                        ?>
-                        <div class="product-card" data-category="<?php echo $category; ?>">
-                            <div class="product-image">
-                                <img src="../images/<?php echo $imageName; ?>" alt="<?php echo $product->getName(); ?>">
-                            </div>
-                            <div class="product-details">
-                                <h3><?php echo $product->getName(); ?></h3>
-                                <p><?php echo $product->getDescription(); ?></p>
-                                <p class="price">€<?php echo $product->getPrice(); ?></p>
-                                <?php if ($product->getStockQuantity() > 0) { ?>
-                                    <p class="stock">Stock: <?php echo $product->getStockQuantity(); ?></p>
-                                    <form action="" method="post">
-                                        <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
-                                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-                                    </form>
-                                <?php } else { ?>
-                                    <p class="stock out-of-stock">Out of Stock</p>
-                                <?php } ?>
-                            </div>
+    <div class="product-container">
+        <div class="product-cards">
+            <?php
+            if ($stmt->rowCount() > 0)
+            {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $product = $productObj->getProductById($row["idProducts"]);
+                    $category = ucfirst(strtolower($product->getCategory())); // Capitalize the first letter
+                    $imageName = "{$category}{$row['idProducts']}.jpg";
+                    ?>
+                    <div class="product-card" data-category="<?php echo $category; ?>">
+                        <div class="product-image">
+                            <img src="../images/<?php echo $imageName; ?>" alt="<?php echo $product->getName(); ?>">
                         </div>
-                        <?php
-                    }
-                } else {
-                    echo '<p class="no-products">No products available</p>';
+                        <div class="product-details">
+                            <h3><?php echo $product->getName(); ?></h3>
+                            <p><?php echo $product->getDescription(); ?></p>
+                            <p class="price">€<?php echo $product->getPrice(); ?></p>
+                            <?php if ($product->getStockQuantity() > 0) { ?>
+                                <p class="stock">Stock: <?php echo $product->getStockQuantity(); ?></p>
+                                <form action="" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
+                                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                                </form>
+                            <?php } else { ?>
+                                <p class="stock out-of-stock">Out of Stock</p>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php
                 }
-                ?>
-            </div>
+            } else {
+                echo '<p class="no-products">No products available</p>';
+            }
+            ?>
         </div>
-    </section>
+    </div>
 </main>
 </body>
 </html>
