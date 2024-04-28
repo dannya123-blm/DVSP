@@ -1,5 +1,7 @@
 <?php
 session_start();
+include '../src/dbconnect.php';
+
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
 $isLoggedIn = isset($_SESSION['user_id']);
 ?>
@@ -64,9 +66,19 @@ $isLoggedIn = isset($_SESSION['user_id']);
             </div>
         </div>
         <div class="searchBarButton">
-            <input type="text" placeholder="Search">
-            <button type="button">Search</button>
+            <input type="text" placeholder="Search" id="searchInput">
+            <button type="button" onclick="redirectToSearch()">Search</button>
         </div>
+
+        <script>
+            function redirectToSearch() {
+                var searchTerm = document.getElementById('searchInput').value;
+                if (searchTerm.trim() !== '') {
+                    window.location.href = 'productpage.php?search=' + encodeURIComponent(searchTerm);
+                }
+            }
+        </script>
+
     </div>
 </header>
 </body>

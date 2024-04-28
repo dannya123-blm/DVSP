@@ -67,5 +67,4 @@ class Delivery {
         $this->status = $data['Status'];
     }
 }
-
 ?>
