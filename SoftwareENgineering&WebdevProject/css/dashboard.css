@@ -53,7 +53,7 @@ body, html {
 }
 
 .dashboard-button {
-    background-color: #7a3dbc;
+    background-color:#3C0295;
     border: none;
     color: white;
     cursor: pointer;
@@ -117,7 +117,7 @@ body, html {
 
 /* Adjustments for the 'Edit User Info' button */
 .edit-btn {
-    background-color: #0056b3;
+    background-color: #3C0295;
     color: white;
     padding: 10px 15px;
     text-decoration: none;
@@ -129,8 +129,6 @@ body, html {
 .edit-btn:hover {
     background-color: #004494;
 }
-
-/* Styling for the container of update forms */
 .dashboard-update {
     background: #fafafa;
     padding: 20px;

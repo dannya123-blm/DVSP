@@ -1,65 +1,61 @@
-/* delivery.css */
+.delivery-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #FFF;
+    color: #4A4A4A;
+}
 
-.container {
-    margin: 20px;
+.delivery-item {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 160px;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    font-family: Arial, sans-serif;
 }
 
-.footer-body {
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    color: #3C0295;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    font-family: "Bubblegum Sans", cursive;
+.delivery-item:first-child {
+    border-top: 1px solid #ccc;
 }
 
-.footer {
+.order-date,
+.order-total,
+.dispatch-to,
+.order-status {
+    font-size: 0.9em;
+}
+
+.order-date strong,
+.order-total strong,
+.dispatch-to strong,
+.order-status strong {
+    display: block;
+    font-size: 1.1em;
+    color: #3C0295; /* Purple color for the strong tag */
+}
+
+.btn-view-item {
+    padding: 10px 20px;
+    background-color:#3C0295; /* Purple background for button */
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.btn-view-item:hover {
     background-color: #3C0295;
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    margin-top: auto;
-    width: 100%;
 }
 
-.social-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .delivery-item {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: auto;
+        grid-gap: 10px;
+    }
 
-.social-item {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-.social-item img {
-    width: 40px;
-    height: auto;
-    transition: transform 0.3s ease;
-}
-
-.social-item img:hover {
-    transform: scale(1.1);
-}
-
-.footer-links {
-    text-align: center;
-}
-
-.footer-link {
-    color: white;
-    text-decoration: none;
-    margin: 0 20px;
-    transition: color 0.3s ease;
-}
-
-.footer-link:hover {
-    color: black;
+    .order-actions {
+        grid-column: 1 / -1; /* Full width */
+    }
 }

@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
         <a href="?category=Mice" class="filter-btn">Mice</a>
         <a href="?category=PC" class="filter-btn">PC</a>
         <a href="?category=Headphone" class="filter-btn">Headphones</a>
-        <a href="?category=Controller" class="filter-btn">Controllers</a>
+        <a href="?category=Controllers" class="filter-btn">Controllers</a>
 
         <form method="GET">
             <div class="sort-by">
@@ -113,6 +113,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
                                     <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
                                     <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                                 </form>
+                                <br>
+                                <form action="viewproduct.php" method="get">
+                                    <input type="hidden" name="productId" value="<?php echo $product->getProductID(); ?>">
+                                    <button type="submit" class="view-more-btn">View More</button>
+                                </form>
+
                             <?php } else { ?>
                                 <p class="stock out-of-stock">Out of Stock</p>
                             <?php } ?>

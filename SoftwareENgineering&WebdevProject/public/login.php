@@ -27,8 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $to = $authenticatedUser['Email'];
                     $subject = 'Your Two-Factor Authentication Code';
                     $message = 'Your two-factor authentication code is: ' . $secret_code;
-                    $headers = 'From: your@example.com' . "\r\n" .
-                        'Reply-To: your@example.com' . "\r\n" .
+                    $headers = 'From: AdefolaSALAMaigbe@gmail.com' . "\r\n" .
+                        'Reply-To: AdefolaSALAMaigbe@gmail.com' . "\r\n" .
                         'X-Mailer: PHP/' . phpversion();
 
                     // Send email

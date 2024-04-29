@@ -7,7 +7,8 @@ require '../classes/Delivery.php';
 global $pdo;
 $order = new Order($pdo);
 $delivery = new Delivery($pdo);
-$orderId = $_GET['orderId'] ?? null;
+
+$orderId = isset($_GET['orderId']) ? filter_var($_GET['orderId'], FILTER_SANITIZE_NUMBER_INT) : null;
 
 if (!$orderId) {
     echo "No order ID provided.";
@@ -23,10 +24,8 @@ if (!$orderDetails) {
 }
 
 $totalAmount = isset($orderDetails['TotalAmount']) ? "€" . number_format($orderDetails['TotalAmount'], 2) : "Amount not available";
-$purchaseDate = isset($orderDetails['purchaseDate']) ? date('d M Y', strtotime($orderDetails['purchaseDate'])) : "Purchase date not available"; // Format the fetched purchase date
-
+$deliveryDate = isset($deliveryDetails['DeliveryDate']) ? date('d M Y', strtotime($deliveryDetails['DeliveryDate'])) : "Delivery date not available";
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +38,7 @@ $purchaseDate = isset($orderDetails['purchaseDate']) ? date('d M Y', strtotime($
     <h1>Order Summary</h1>
     <p><strong>Order ID:</strong> <?= htmlspecialchars($orderId) ?></p>
     <p><strong>Total Amount:</strong> <?= htmlspecialchars($totalAmount) ?></p>
-    <p><strong>Day of Purchase Date:</strong> <?= htmlspecialchars($purchaseDate) ?></p> <!-- Changed label to "Day of Purchase Date" -->
+    <p><strong>Delivery Date:</strong> <?= htmlspecialchars($deliveryDate) ?></p>
 </div>
 <?php include '../template/footer.php'; ?>
 </body>
