@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
             {
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $product = $productObj->getProductById($row["idProducts"]);
-                    $category = ucfirst(strtolower($product->getCategory())); // Capitalize the first letter
+                    $category = ucfirst(strtolower($product->getCategory()));
                     $imageName = "{$category}{$row['idProducts']}.jpg";
                     ?>
                     <div class="product-card" data-category="<?php echo $category; ?>">
