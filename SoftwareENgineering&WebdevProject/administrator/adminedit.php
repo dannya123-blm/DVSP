@@ -1,4 +1,6 @@
 <?php
+// This code is based on the assignment PHP : CRUD, by Robert Smith;
+
 global $pdo;
 include '../template/header.php';
 include "../src/dbconnect.php";

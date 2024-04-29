@@ -1,4 +1,6 @@
 <?php
+// This code is based on the assignment PHP : CRUD & Sessions, by Robert Smith;
+
 require_once '../src/dbconnect.php';
 require_once '../template/header.php';
 require_once '../classes/Admin.php';

@@ -1,4 +1,6 @@
 <?php
+// This code is based on the assignment PHP : Sessions, by Robert Smith;
+
 /**
  * Configuration for database connection
  *

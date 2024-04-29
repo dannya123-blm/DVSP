@@ -1,4 +1,5 @@
 <?php
+// This code has used parts of Arnold Hensman Car.php Class;
 require 'user.php';
 class Customer extends User
 {

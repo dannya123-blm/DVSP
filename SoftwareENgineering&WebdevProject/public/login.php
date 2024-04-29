@@ -1,5 +1,5 @@
 <?php
-
+// This code is based on the assignment PHP : Sessions, by Robert Smith;
 global $pdo;
 require_once '../src/dbconnect.php';
 require_once '../classes/Customer.php';

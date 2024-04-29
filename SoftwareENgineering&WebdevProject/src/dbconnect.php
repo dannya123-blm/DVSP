@@ -1,4 +1,6 @@
 <?php
+// This code is based on the assignment PHP : Sessions, by Robert Smith;
+
 global $dsn, $username, $password, $options;
 require 'config.php';
 try {

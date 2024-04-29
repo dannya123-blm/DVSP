@@ -1,5 +1,5 @@
 <?php
-
+// This code has used parts of Arnold Hensman Car.php Class;
 class Delivery {
     protected $pdo;
     protected $idDelivery;

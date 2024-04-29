@@ -1,4 +1,6 @@
 <?php
+// This code is based on the assignment PHP : CRUD, by Robert Smith;
+
 session_start();
 require_once '../src/dbconnect.php';
 require_once '../classes/User.php';
