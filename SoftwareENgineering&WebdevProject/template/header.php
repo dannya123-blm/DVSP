@@ -1,4 +1,6 @@
 <?php
+// This code is based on the assignment PHP : Sessions, by Robert Smith;
+
 session_start();
 include '../src/dbconnect.php';
 $isAdminLoggedIn = isset($_SESSION['admin_id']);

@@ -1,4 +1,5 @@
 <?php
+// This code has used parts of Arnold Hensman Car.php Class;
 require_once 'User.php';
 class Admin extends User {
     protected $role;
@@ -6,6 +7,7 @@ class Admin extends User {
     public function getRole() {
         return $this->role;
     }
+
     public static function authenticate($username, $password, $admin_id, $pdo) {
         $stmt = $pdo->prepare("SELECT * FROM admin WHERE username = ? AND password = ? AND idAdmin = ?");
         $stmt->execute([$username, $password, $admin_id]);
@@ -16,4 +18,4 @@ class Admin extends User {
         $this->role = $role;
     }
 }
-?>
+

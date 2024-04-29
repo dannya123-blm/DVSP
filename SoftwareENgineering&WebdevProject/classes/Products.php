@@ -1,4 +1,5 @@
 <?php
+// This code has used parts of Arnold Hensman Car.php Class;
 
 class Products {
     protected $pdo;
@@ -123,14 +124,6 @@ class Products {
 
     public function setCategory($category) {
         $this->Category = $category;
-    }
-
-    public function getAdminID() {
-        return $this->idAdmin;
-    }
-
-    public function setAdminID($adminID) {
-        $this->idAdmin = $adminID;
     }
 
     public function searchProducts($searchTerm) {

@@ -216,6 +216,7 @@ class Customer extends User
         } catch (PDOException $e) {
             throw new Exception("Error checking username existence: " . $e->getMessage());
         }
+
     }
 
     public function verifyPassword($userId, $password)
