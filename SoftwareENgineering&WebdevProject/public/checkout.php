@@ -1,5 +1,6 @@
-<?php
 
+<?php
+// This code is based on from SymfonyCasts & W3Schools:
 include '../template/header.php';
 require '../src/dbconnect.php';
 require '../classes/Customer.php';

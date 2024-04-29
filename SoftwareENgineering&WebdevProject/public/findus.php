@@ -1,3 +1,4 @@
+
 <?php
 global $pdo, $userId;
 require '../template/header.php';

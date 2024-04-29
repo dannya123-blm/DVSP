@@ -1,4 +1,5 @@
 <?php
+// This code is based on from SymfonyCasts & Wschools:
 global $pdo;
 include '../template/header.php';
 include '../src/dbconnect.php';

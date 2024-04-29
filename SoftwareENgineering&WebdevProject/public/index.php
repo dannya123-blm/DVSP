@@ -1,4 +1,6 @@
+
 <?php
+// This code is based on the tutorial from SymfonyCasts:
 global $pdo;
 require '../template/header.php';
 require_once '../src/dbconnect.php';

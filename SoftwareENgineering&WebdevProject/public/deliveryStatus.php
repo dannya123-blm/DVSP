@@ -1,4 +1,6 @@
+
 <?php
+// This code is based on the tutorial from SymfonyCasts & W3Schools:
 include '../template/header.php';
 require '../src/dbconnect.php';
 require '../classes/Delivery.php';
