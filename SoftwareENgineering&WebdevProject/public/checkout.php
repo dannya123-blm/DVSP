@@ -12,31 +12,30 @@ global $pdo;
 $userId = $_SESSION['user_id'] ?? null;
 
 if (!$userId) {
-    header("Location: ../public/login.php"); // Redirect if not logged in
+    header("Location: ../public/login.php");
     exit;
 }
-
-$customer = new Customer($pdo);
+$customer = new Customer($pdo, $_SESSION['user_id']);
 $userData = $customer->getUserDataById($userId);
 $payment = new Payment($pdo);
 $cards = $payment->getAllCards($userId);
 
 $productObj = new Products($pdo);
-$cartItems = $productObj->getCartItems(); // Presuming this method gets cart items with quantity and price
-$totalAmount = $_SESSION['totalAmount'] ?? 0; // Retrieve the total amount from session
+$cartItems = $productObj->getCartItems();
+$totalAmount = $_SESSION['totalAmount'] ?? 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
-    session_regenerate_id(); // Security measure to prevent session fixation
+    session_regenerate_id();
     $paymentId = $_POST['payment_method'];
     $order = new Order($pdo);
     $newOrderId = $order->createOrder($userId, $totalAmount, $paymentId);
 
     if ($newOrderId) {
         $delivery = new Delivery($pdo);
-        $delivery->createDelivery($newOrderId, $userData['Address']); // Assuming address from user data
+        $delivery->createDelivery($newOrderId, $userData['Address']);
 
-        unset($_SESSION['cart']); // Clear the cart after the order is successfully placed
-        unset($_SESSION['totalAmount']); // Clear the total amount from session
+        unset($_SESSION['cart']);
+        unset($_SESSION['totalAmount']);
         header("Location: ../public/ordersummary.php?orderId=" . $newOrderId);
         exit;
     } else {
@@ -83,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payment_method'])) {
             <?php foreach ($cards as $card): ?>
                 <div class="card">
                     <input type="radio" id="card_<?= $card['idPayment'] ?>" name="payment_method" value="<?= $card['idPayment'] ?>" required>
-                    <label for="card_<?= $card['idPayment'] ?>"><?= htmlspecialchars($card['paymentName'] ?? 'Unknown Payment Method') ?></label>
+                    <label for="card_<?= $card['idPayment'] ?>">Card Name: <?= htmlspecialchars($card['paymentName'] ?? 'Unknown Payment Method') ?> <br>Card ending in: <?php echo htmlspecialchars($card['lastFourDigits'] ?? 'XXXX') ?></label>
                 </div>
             <?php endforeach; ?>
             <button type="submit" class="add-btn">Complete Checkout</button>

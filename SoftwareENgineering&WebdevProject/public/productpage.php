@@ -1,4 +1,5 @@
 <?php
+
 global $pdo;
 include '../template/header.php';
 require_once '../src/dbconnect.php';
@@ -8,45 +9,16 @@ $productObj = new Products($pdo);
 $categoryFilter = isset($_GET['category']) ? $_GET['category'] : '';
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
-$sql = "SELECT * FROM Products";
-$conditions = [];
-$params = [];
 
-if (!empty($categoryFilter)) {
-    $conditions[] = "Category = :category";
-    $params[':category'] = $categoryFilter;
-}
-if (!empty($searchTerm)) {
-    $conditions[] = "Name LIKE :searchTerm";
-    $params[':searchTerm'] = "%$searchTerm%";
-}
-if ($conditions) {
-    $sql .= " WHERE " . implode(" AND ", $conditions);
-}
-
-switch ($sort) {
-    case 'price-high-low':
-        $sql .= " ORDER BY Price DESC";
-        break;
-    case 'price-low-high':
-        $sql .= " ORDER BY Price ASC";
-        break;
-    case 'name-a-z':
-        $sql .= " ORDER BY Name ASC";
-        break;
-    case 'name-z-a':
-        $sql .= " ORDER BY Name DESC";
-        break;
-}
-
-$stmt = $pdo->prepare($sql);
-foreach ($params as $key => &$val) {
-    $stmt->bindParam($key, $val);
-}
-$stmt->execute();
+$products = $productObj->getFilteredProducts($categoryFilter, $searchTerm, $sort);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+
     $_SESSION['cart'][] = $_POST['product_id'];
+
     $productId = $_POST['product_id'];
     $updateStockStmt = $pdo->prepare("UPDATE Products SET StockQuantity = StockQuantity - 1 WHERE idProducts = :product_id");
     $updateStockStmt->bindParam(':product_id', $productId);
@@ -92,30 +64,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
     <div class="product-container">
         <div class="product-cards">
             <?php
-            if ($stmt->rowCount() > 0)
-            {
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $product = $productObj->getProductById($row["idProducts"]);
-                    $category = ucfirst(strtolower($product->getCategory())); // Capitalize the first letter
-                    $imageName = "{$category}{$row['idProducts']}.jpg";
+            if (!empty($products)) {
+                foreach ($products as $product) {
+                    $category = ucfirst(strtolower($product['Category']));
+                    $imageName = "{$category}{$product['idProducts']}.jpg";
                     ?>
                     <div class="product-card" data-category="<?php echo $category; ?>">
                         <div class="product-image">
-                            <img src="../images/<?php echo $imageName; ?>" alt="<?php echo $product->getName(); ?>">
+                            <img src="../images/<?php echo $imageName; ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
                         </div>
                         <div class="product-details">
-                            <h3><?php echo $product->getName(); ?></h3>
-                            <p><?php echo $product->getDescription(); ?></p>
-                            <p class="price">€<?php echo $product->getPrice(); ?></p>
-                            <?php if ($product->getStockQuantity() > 0) { ?>
-                                <p class="stock">Stock: <?php echo $product->getStockQuantity(); ?></p>
-                                <form action="" method="post">
-                                    <input type="hidden" name="product_id" value="<?php echo $product->getProductID(); ?>">
+                            <h3><?php echo htmlspecialchars($product['Name']); ?></h3>
+                            <p class="price">€<?php echo htmlspecialchars($product['Price']); ?></p>
+                            <?php if ($product['StockQuantity'] > 0) { ?>
+                                <p class="stock">Stock: <?php echo htmlspecialchars($product['StockQuantity']); ?></p>
+                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['idProducts']); ?>">
                                     <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                                 </form>
                                 <br>
                                 <form action="viewproduct.php" method="get">
-                                    <input type="hidden" name="productId" value="<?php echo $product->getProductID(); ?>">
+                                    <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['idProducts']); ?>">
                                     <button type="submit" class="view-more-btn">View More</button>
                                 </form>
 

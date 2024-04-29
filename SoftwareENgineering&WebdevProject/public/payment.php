@@ -36,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Validate expiry date
     $currentDate = date('Y-m');
     if ($paymentExpiryDate < $currentDate) {
         echo "Error: Expiry date cannot be less than the current month and year.";

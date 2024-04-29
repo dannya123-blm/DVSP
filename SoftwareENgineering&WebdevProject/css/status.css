@@ -78,26 +78,23 @@ h1 {
     background-color: #004494;
 }
 
-/* Specific to buttons like 'View your item', 'Buy it again', etc. */
 .btn-small {
     padding: 5px 10px;
     font-size: 0.8em;
 }
 
-/* Specific to statuses like 'Delivered', 'Refunded', etc. */
 .status-label {
     display: inline-block;
     padding: 3px 7px;
     border-radius: 5px;
     color: #fff;
-    background-color: #28a745; /* Green for 'Delivered' */
+    background-color: #28a745;
 }
 
 .status-label.refunded {
-    background-color: #dc3545; /* Red for 'Refunded' */
+    background-color: #dc3545;
 }
 
-/* If you have images for products or icons, you can define styles for them */
 .img-thumbnail {
     width: 100px;
     height: auto;
@@ -126,7 +123,6 @@ h1 {
     color: #555;
 }
 
-/* Responsive styles for smaller screens */
 @media (max-width: 768px) {
     .container {
         width: 90%;

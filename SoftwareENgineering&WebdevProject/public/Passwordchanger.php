@@ -1,43 +1,25 @@
 <?php
+
+global $pdo;
 include '../template/header.php';
 include '../src/dbconnect.php';
 require '../classes/Customer.php';
 
-// Define the validatePasswordStrength function here
-function validatePasswordStrength($password) {
-    return strlen($password) >= 8 && preg_match('/[A-Z]/', $password);
-}
-
 if (isset($_SESSION['user_id'])) {
-    try {
-        $userId = $_SESSION['user_id'];
-        $customer = new Customer($pdo);
+try {
+$userId = $_SESSION['user_id'];
+$customer = new Customer($pdo, $userId);
 
-        $userData = $customer->getUserDataById($userId);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
-            $oldPassword = $_POST['old_password'];
-            $newPassword = $_POST['new_password'];
-
-            if ($customer->verifyPassword($userId, $oldPassword)) {
-                if (validatePasswordStrength($newPassword)) {
-                    $customer->updatePassword($userId, $newPassword);
-                    echo "Password updated successfully.";
-                } else {
-                    echo "New password must be at least 8 characters long and contain at least one uppercase letter.";
-                }
-            } else {
-                echo "Incorrect old password. Please try again.";
-            }
-        }
-    } catch (Exception $e) {
-        die("Error: " . $e->getMessage());
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
+$customer->changePassword($_POST['old_password'], $_POST['new_password']);
+}
+} catch (Exception $e) {
+die("Error: " . $e->getMessage());
+}
 } else {
-    echo "User not logged in";
+echo "User not logged in";
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">

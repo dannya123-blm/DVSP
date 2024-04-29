@@ -2,7 +2,21 @@
     max-width: 1200px;
     margin: 20px auto;
     background-color: #FFF;
-    color: #4A4A4A;
+    color: #3C0295;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.delivery-section {
+    margin-bottom: 30px;
+}
+
+.delivery-section-title {
+    font-size: 1.5em;
+    color: #3C0295;
+    margin-bottom: 20px;
 }
 
 .delivery-item {
@@ -10,8 +24,11 @@
     grid-template-columns: repeat(4, 1fr) 160px;
     align-items: center;
     border-bottom: 1px solid #ccc;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    padding: 10px;
+}
+
+.delivery-item:last-child {
+    border-bottom: none;
 }
 
 .delivery-item:first-child {
@@ -31,23 +48,25 @@
 .order-status strong {
     display: block;
     font-size: 1.1em;
-    color: #3C0295; /* Purple color for the strong tag */
+    color: #3C0295;
 }
 
 .btn-view-item {
     padding: 10px 20px;
-    background-color:#3C0295; /* Purple background for button */
+    background-color: #3C0295;
     color: white;
     border: none;
     cursor: pointer;
     font-size: 0.9em;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .btn-view-item:hover {
-    background-color: #3C0295;
+    background-color: #29196D;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
     .delivery-item {
         grid-template-columns: 1fr 2fr;
@@ -56,6 +75,6 @@
     }
 
     .order-actions {
-        grid-column: 1 / -1; /* Full width */
+        grid-column: 1 / -1;
     }
 }

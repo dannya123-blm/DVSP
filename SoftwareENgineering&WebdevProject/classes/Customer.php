@@ -1,13 +1,16 @@
 <?php
-require 'user.php';
+
+require 'User.php';
+
 class Customer extends User
 {
     protected $address;
-    public $pdo;
+    protected $userId;
 
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $pdo, $userId)
     {
-        $this->pdo = $pdo;
+        parent::__construct($pdo);
+        $this->userId = $userId;
     }
 
     public function getAddress()
@@ -18,6 +21,42 @@ class Customer extends User
     public function setAddress($address)
     {
         $this->address = $address;
+    }
+    public function enableTwoFactorAuth() {
+        try {
+            $stmt = $this->pdo->prepare("UPDATE customer SET twofa = 1 WHERE idCustomer = ?");
+            $stmt->execute([$this->userId]);
+        } catch (PDOException $e) {
+            throw new Exception("Error enabling Two-Factor Authentication: " . $e->getMessage());
+        }
+    }
+
+    public function disableTwoFactorAuth() {
+        try {
+            $stmt = $this->pdo->prepare("UPDATE customer SET twofa = 0 WHERE idCustomer = ?");
+            $stmt->execute([$this->userId]);
+        } catch (PDOException $e) {
+            throw new Exception("Error disabling Two-Factor Authentication: " . $e->getMessage());
+        }
+    }
+    public function changePassword($oldPassword, $newPassword)
+    {
+        if ($this->verifyPassword($this->userId, $oldPassword)) {
+            if ($this->validatePasswordStrength($newPassword)) {
+                $this->updatePassword($this->userId, $newPassword);
+                echo "Password updated successfully.";
+            } else {
+                echo "New password must be at least 8 characters long and contain at least one uppercase letter.";
+            }
+        } else {
+            echo "Incorrect old password. Please try again.";
+        }
+    }
+
+
+    protected function validatePasswordStrength($password)
+    {
+        return strlen($password) >= 8 && preg_match('/[A-Z]/', $password);
     }
 
     public function authenticateUser($username, $password)
@@ -39,7 +78,6 @@ class Customer extends User
 
         return false;
     }
-
 
     public function registerUser($username, $password, $email, $mobileNumber, $address)
     {
@@ -97,7 +135,7 @@ class Customer extends User
     public function getUserDataById($userId)
     {
         try {
-            $stmt = $this->pdo->prepare("SELECT Username, Email, MobileNumber, Address FROM customer WHERE idCustomer = :userId");
+            $stmt = $this->pdo->prepare("SELECT Username, Email, MobileNumber, Address, twofa FROM customer WHERE idCustomer = :userId");
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
@@ -178,7 +216,6 @@ class Customer extends User
         } catch (PDOException $e) {
             throw new Exception("Error checking username existence: " . $e->getMessage());
         }
-
     }
 
     public function verifyPassword($userId, $password)
@@ -191,7 +228,18 @@ class Customer extends User
             return false;
         }
     }
-
+   public function isTwoFactorEnabled($userId)
+   {
+       try {
+           $stmt = $this->pdo->prepare("SELECT 2fa_enabled FROM customer WHERE idCustomer = :userId");
+           $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+           $stmt->execute();
+           $result = $stmt->fetch(PDO::FETCH_ASSOC);
+           return $result && isset($result['2fa_enabled']) && $result['2fa_enabled'] == 1;
+       } catch (PDOException $e) {
+           throw new Exception("Error checking 2FA status: " . $e->getMessage());
+       }
+   }
     public function getStoredPassword($userId)
     {
         try {
@@ -210,6 +258,5 @@ class Customer extends User
             throw new Exception("Error fetching stored password: " . $e->getMessage());
         }
     }
-
-
 }
+?>

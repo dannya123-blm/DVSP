@@ -77,9 +77,9 @@ p {
 }
 .deliverybtn{
     display: block;
-    max-width: 200px; /* Adjust this value to suit the desired width */
+    max-width: 200px;
     padding: 10px;
-    margin: 20px auto; /* Centers the button in the container */
+    margin: 20px auto;
     background-color: #3C0295;
     color: white;
     border: none;
@@ -93,9 +93,9 @@ p {
 }
 .add-btn {
     display: block;
-    max-width: 200px; /* Adjust this value to suit the desired width */
+    max-width: 200px;
     padding: 10px;
-    margin: 20px auto; /* Centers the button in the container */
+    margin: 20px auto;
     background-color: #3C0295;
     color: white;
     border: none;

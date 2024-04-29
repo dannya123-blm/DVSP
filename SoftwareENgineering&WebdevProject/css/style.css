@@ -61,7 +61,7 @@ h2 {
     justify-content: center;
     overflow: hidden;
     padding: 20px;
-    width: 100%; /* Ensures the .categories element takes up the full width */
+    width: 100%;
 }
 
 

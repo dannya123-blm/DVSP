@@ -1,6 +1,7 @@
 <?php
 
-class Delivery {
+class Delivery
+{
     protected $pdo;
     protected $idDelivery;
     protected $idOrders;
@@ -8,18 +9,21 @@ class Delivery {
     protected $deliveryAddress;
     protected $status;
 
-    public function __construct($pdo) {
+    public function __construct($pdo)
+    {
         $this->pdo = $pdo;
     }
 
-
-    public function getOrderDetails($orderId) {
+    public function getOrderDetails($orderId)
+    {
         $stmt = $this->pdo->prepare("SELECT *, purchaseDate FROM orders WHERE idOrder = :idOrder");
         $stmt->bindParam(':idOrder', $orderId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    public function getDeliveryDetailsByOrderID($orderId) {
+
+    public function getDeliveryDetailsByOrderID($orderId)
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM delivery WHERE idOrders = :idOrders");
         $stmt->bindParam(':idOrders', $orderId, PDO::PARAM_INT);
         $stmt->execute();
@@ -30,8 +34,8 @@ class Delivery {
         return $result;
     }
 
-
-    public function createDelivery($orderId, $deliveryAddress) {
+    public function createDelivery($orderId, $deliveryAddress)
+    {
         try {
             $today = date("Y-m-d");
             $stmt = $this->pdo->prepare("INSERT INTO delivery (idOrders, DeliveryDate, DeliveryAddress, Status) VALUES (:idOrders, :DeliveryDate, :DeliveryAddress, 'Pending')");
@@ -46,16 +50,37 @@ class Delivery {
         }
     }
 
-    public function getDeliveriesByUser($userId) {
+    public function checkAndUpdateStatus($idOrders)
+    {
+        $details = $this->getDeliveryDetailsByOrderID($idOrders);
+        if (!$details) {
+            throw new Exception("Order not found.");
+        }
+
+        $currentStatus = $details['Status'];
+        $deliveryDate = new DateTime($details['DeliveryDate']);
+        $now = new DateTime();
+        $interval = $now->diff($deliveryDate);
+
+        // Check if status needs to be updated based on the interval
+        if ($currentStatus === 'Pending' && $interval->i >= 2) {  //  2 minutes to transition from Pending to Delivered
+            $this->updateDeliveryStatus($idOrders, 'Delivered');
+        } elseif ($currentStatus === 'Delivered' && $interval->i >= 5) { // No refunds after 5 minutes
+
+        }
+        return true;
+    }
+
+    public function getDeliveriesByUser($userId)
+    {
         $stmt = $this->pdo->prepare("SELECT `d`.* FROM `delivery` AS `d` JOIN `orders` AS `o` ON `d`.`idOrders` = `o`.`idOrders` WHERE `o`.`idCustomer` = :userId ORDER BY `d`.`DeliveryDate` DESC");
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-
-    public function updateDeliveryStatus($idOrders, $newStatus) {
+    public function updateDeliveryStatus($idOrders, $newStatus)
+    {
         $stmt = $this->pdo->prepare("UPDATE delivery SET Status = :newStatus WHERE idOrders = :idOrders");
         $stmt->bindParam(':newStatus', $newStatus);
         $stmt->bindParam(':idOrders', $idOrders);
@@ -63,7 +88,8 @@ class Delivery {
         return true;
     }
 
-    private function setDeliveryData($data) {
+    private function setDeliveryData($data)
+    {
         $this->idDelivery = $data['idDelivery'];
         $this->idOrders = $data['idOrders'];
         $this->deliveryDate = $data['DeliveryDate'];

@@ -4,7 +4,6 @@ require '../template/header.php';
 require_once '../src/dbconnect.php';
 require_once '../classes/Products.php';
 
-// Initialize Products class with database connection
 $productObj = new Products($pdo);
 
 // Check if the product is added to the cart
@@ -14,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
 }
 ?>
 
-<!-- Start HTML -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -74,7 +72,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'])) {
         <h2>Random Products</h2>
         <div class="product-container">
             <?php
-            // Get a random selection of products (limit to 4)
             $randomProducts = $productObj->getRandomProducts(4);
 
             foreach ($randomProducts as $product) {

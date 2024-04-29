@@ -20,7 +20,7 @@ class Order {
     public function getOrderDetails($orderId) {
         $stmt = $this->pdo->prepare("SELECT * FROM orders WHERE idOrders = :orderId");
         $stmt->execute(['orderId' => $orderId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Returns false if no record is found
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 

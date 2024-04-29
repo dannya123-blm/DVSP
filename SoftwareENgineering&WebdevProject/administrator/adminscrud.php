@@ -1,12 +1,11 @@
 <?php
+global $pdo;
 session_start();
 require_once '../src/dbconnect.php';
 require_once '../classes/User.php';
 require_once '../classes/Admin.php';
 require_once '../classes/Products.php';
 
-
-// Redirect if not logged in as an admin.
 if (!isset($_SESSION['admin_id'])) {
     header("Location: adminlogin.php");
     exit();

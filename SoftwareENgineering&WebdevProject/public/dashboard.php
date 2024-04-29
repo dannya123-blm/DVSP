@@ -6,58 +6,53 @@ require '../classes/Customer.php';
 
 if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
-    $customer = new Customer($pdo);
+    $customer = new Customer($pdo, $_SESSION['user_id']);
     $userData = $customer->getUserDataById($userId);
-
     $errorMsg = '';
 
+    // Check if 2FA is enabled for the user
+    $twoFactorEnabled = false; // Default value
+    try {
+        $twoFactorEnabled = $customer->isTwoFactorEnabled($userId);
+    } catch (Exception $e) {
+        // Handle any exceptions here
+        // For now, you can leave it empty or add a log message
+    }
+
+    // Handle form submissions
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Handle username update
-        if (isset($_POST['update_username'])) {
-            $newUsername = $_POST['new_username'];
-            if ($customer->usernameExists($newUsername)) {
-                $errorMsg = "Username already exists. Please choose a different username.";
-            } else {
-                $customer->updateUsername($userId, $newUsername);
-                header("Location: dashboard.php");
+        if (isset($_POST['enable_2fa'])) {
+            try {
+                // Generate and send 2FA confirmation code via email
+                $confirmationCode = mt_rand(100000, 999999);
+                // Send email code to $userData['Email'] here
+                // For simplicity, let's assume it's sent successfully
+
+                // Store confirmation code in session for verification
+                $_SESSION['2fa_confirmation_code'] = $confirmationCode;
+                // Redirect to confirmation page
+                header("Location: confirm_2fa.php");
                 exit;
+            } catch (Exception $e) {
+                $errorMsg = "Error enabling Two-Factor Authentication: " . $e->getMessage();
             }
         }
 
-        // Handle email update
-        if (isset($_POST['update_email'])) {
-            $newEmail = $_POST['new_email'];
-            if ($customer->emailExists($newEmail)) {
-                $errorMsg = "Email already exists. Please choose a different email.";
-            } else {
-                $customer->updateEmail($userId, $newEmail);
-                header("Location: dashboard.php");
+        if (isset($_POST['disable_2fa'])) {
+            try {
+                // Generate and send 2FA confirmation code via email
+                $confirmationCode = mt_rand(100000, 999999);
+                // Send email code to $userData['Email'] here
+                // For simplicity, let's assume it's sent successfully
+
+                // Store confirmation code in session for verification
+                $_SESSION['2fa_confirmation_code'] = $confirmationCode;
+                // Redirect to confirmation page
+                header("Location: confirm_2fa.php");
                 exit;
+            } catch (Exception $e) {
+                $errorMsg = "Error disabling Two-Factor Authentication: " . $e->getMessage();
             }
-        }
-
-        // Handle mobile number update
-        if (isset($_POST['update_mobile'])) {
-            $newMobile = $_POST['new_mobile'];
-            if (preg_match('/^[0-9]{10,20}$/', $newMobile)) {
-                try {
-                    $customer->updateMobileNumber($userId, $newMobile);
-                    header("Location: dashboard.php");
-                    exit;
-                } catch (Exception $e) {
-                    $errorMsg = "Error updating mobile number: " . $e->getMessage();
-                }
-            } else {
-                $errorMsg = "Invalid mobile number format. Please enter a valid mobile number (10-20 digits).";
-            }
-        }
-
-        // Handle address update
-        if (isset($_POST['update_address'])) {
-            $newAddress = $_POST['new_address'];
-            $customer->updateAddress($userId, $newAddress);
-            header("Location: dashboard.php");
-            exit;
         }
     }
     ?>
@@ -105,6 +100,18 @@ if (isset($_SESSION['user_id'])) {
                 <input type="text" id="new_address" name="new_address" class="dashboard-input" required>
                 <button type="submit" name="update_address" class="dashboard-button">Update Address</button>
             </form>
+
+            <div class="activate-2fa">
+                <?php if ($twoFactorEnabled) : ?>
+                    <form class="dashboard-form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                        <button type="submit" name="disable_2fa" class="dashboard-button">Disable 2FA</button>
+                    </form>
+                <?php else: ?>
+                    <form class="dashboard-form" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                        <button type="submit" name="enable_2fa" class="dashboard-button">Enable 2FA</button>
+                    </form>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
     </body>

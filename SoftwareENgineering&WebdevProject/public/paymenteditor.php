@@ -4,19 +4,18 @@ include '../src/dbconnect.php'; // Include the file containing database connecti
 include '../template/header.php';
 include '../classes/Payment.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
 
 $payment = new Payment($pdo);
-$paymentId = null; // Default to null to prevent undefined variable error
-$paymentInfo = null; // Default to null
+$paymentId = null;
+$paymentInfo = null;
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $paymentId = $_POST['payment_id']; // Get payment ID from form
+    $paymentId = $_POST['payment_id'];
     $paymentInfo = $payment->getPaymentInfo($paymentId);
 
     // Check if payment exists and belongs to the logged-in user
@@ -24,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $paymentName = $_POST['payment_name'];
         $paymentNumber = $_POST['payment_number'];
         $paymentCCV = $_POST['payment_ccv'];
-        $paymentExpiryDate = $_POST['payment_expiry_date'] . '-01'; // Normalize the date format to first of the month
+        $paymentExpiryDate = $_POST['payment_expiry_date'] . '-01';
 
         // Check if expiry date is in the future
         if (strtotime($paymentExpiryDate) < strtotime(date('Y-m'))) {
@@ -39,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Handle retrieval for editing
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $paymentId = $_GET['id'];
     $paymentInfo = $payment->getPaymentInfo($paymentId);

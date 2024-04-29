@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 require_once '../src/dbconnect.php';
 require_once '../template/header.php';
 require_once '../classes/Admin.php';

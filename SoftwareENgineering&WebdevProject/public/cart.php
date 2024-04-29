@@ -55,10 +55,15 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
             <li class="subtotal">Subtotal: €<?= htmlspecialchars($totalAmount) ?></li>
         </ul>
     </div>
-    <form action="checkout.php" method="post">
-        <button type="submit" name="checkout" class="purchase-btn animated">Checkout</button>
-    </form>
     <?php
+    // Show checkout button only when there are items in the cart
+    if (!empty($cartItems)) {
+        ?>
+        <form action="checkout.php" method="post">
+            <button type="submit" name="checkout" class="purchase-btn animated">Checkout</button>
+        </form>
+        <?php
+    }
 } else {
     echo '<div class="empty-cart-message"><p>Your cart is currently empty.</p></div>';
 }

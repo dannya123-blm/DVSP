@@ -1,18 +1,25 @@
 <?php
-global $pdo;
+global $pdo, $userId;
 require '../template/header.php';
-require '../classes/Customer.php'; // Update the path to Customer.php
-require '../src/dbconnect.php'; // Include your database connection
+require '../classes/Customer.php';
+require '../src/dbconnect.php';
 
-// Assuming $pdo is your database connection instance
-$customer = new Customer($pdo); // Pass $pdo to the Customer constructor
+// Assuming $pdo and $userId are defined appropriately before this point
+$customer = new Customer($pdo, $userId);
 
-// Set a new address using the setAddress method
 $newAddress = "Half&Half, Unit 42a Coolmine Industrial Estate, Blanchardstown, Dublin, Ireland Dublin 15";
 $customer->setAddress($newAddress);
 
-// Get the updated address using getAddress method
 $address = $customer->getAddress();
+
+if(isset($_SESSION['user_id'])) {
+    // Assign the value of user_id to $userId
+    $userId = $_SESSION['user_id'];
+} else {
+
+    header("Location: login.php");
+    exit();
+}
 
 ?>
 

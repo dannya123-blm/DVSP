@@ -1,10 +1,10 @@
 <?php
 session_start();
 include '../src/dbconnect.php';
-
 $isAdminLoggedIn = isset($_SESSION['admin_id']);
 $isLoggedIn = isset($_SESSION['user_id']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

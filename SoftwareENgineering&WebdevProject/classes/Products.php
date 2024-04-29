@@ -154,6 +154,46 @@ class Products {
             'productId' => $productId
         ]);
     }
+    public function getFilteredProducts($categoryFilter, $searchTerm, $sort) {
+        $sql = "SELECT * FROM Products";
+        $conditions = [];
+        $params = [];
+
+        if (!empty($categoryFilter)) {
+            $conditions[] = "Category = :category";
+            $params[':category'] = $categoryFilter;
+        }
+        if (!empty($searchTerm)) {
+            $conditions[] = "Name LIKE :searchTerm";
+            $params[':searchTerm'] = "%$searchTerm%";
+        }
+        if ($conditions) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        switch ($sort) {
+            case 'price-high-low':
+                $sql .= " ORDER BY Price DESC";
+                break;
+            case 'price-low-high':
+                $sql .= " ORDER BY Price ASC";
+                break;
+            case 'name-a-z':
+                $sql .= " ORDER BY Name ASC";
+                break;
+            case 'name-z-a':
+                $sql .= " ORDER BY Name DESC";
+                break;
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $key => &$val) {
+            $stmt->bindParam($key, $val);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     public function getRandomProducts($limit = 5) {
         $stmt = $this->pdo->prepare("SELECT * FROM Products ORDER BY RAND() LIMIT :limit");
@@ -164,6 +204,17 @@ class Products {
             $products[] = new self($this->pdo, $productData);
         }
         return $products;
+    }
+    public function updateStockQuantity($productId) {
+        $stmt = $this->pdo->prepare("UPDATE Products SET StockQuantity = StockQuantity - 1 WHERE idProducts = :product_id");
+        $stmt->bindParam(':product_id', $productId);
+        $stmt->execute();
+    }
+
+    public function getProductViewData($productId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM Products WHERE idProducts = :productId");
+        $stmt->execute(['productId' => $productId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getAllProducts() {
